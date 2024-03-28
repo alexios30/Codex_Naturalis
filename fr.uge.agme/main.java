@@ -9,19 +9,14 @@ import java.nio.file.Path;
 public class main {
 
     public static void main(String[] args) throws IOException {
-        // Affichage de la largeur et de la hauteur de l'écran
-        Application.run(Color.ORANGE, context -> {
-            var screenInfo = context.getScreenInfo();
-            var width = screenInfo.getWidth();
-            var height = screenInfo.getHeight();
-            System.out.println(width);
-            System.out.println(height);
-        });
         
-        var src= Path.of("include/Ressource.txt");
-        ResourceCard.createCard(src);
+        var srcRessource= Path.of("include/Ressource.txt");
+        var packRessource = RessourceCard.createRessourceCard(srcRessource);
+        System.out.println(packRessource);
         
-        //ResourceCard c1 = new ResourceCard("vide", "vide", "vide", "vide", "vide", 10);
-        //c1.CardLeft();
+        
+        var srcGolden= Path.of("include/Golden.txt");
+        var packGolden = GoldenCard.createRessourceCard(srcGolden);
+        System.out.println(packGolden);
     }
 }
