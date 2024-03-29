@@ -18,4 +18,4 @@ GoldCard Recto Invisible Invisible Empty Empty Kingdom Animal Cost Animal Animal
 GoldCard Recto Empty Empty Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
 GoldCard Recto Empty Empty Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
 GoldCard Recto Empty Invisible Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
- GoldCard Recto Empty Invisible Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
+GoldCard Recto Empty Invisible Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
