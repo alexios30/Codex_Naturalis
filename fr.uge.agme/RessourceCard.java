@@ -30,6 +30,21 @@ public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, Strin
         //});
     //}
     
+    public static String getcornerTopLeft(RessourceCard card) {
+    	return card.cornerTopLeft;
+    }
+    
+    public static String getcornerBottomLeft(RessourceCard card) {
+    	return card.cornerBottomLeft;
+    }
+    
+    public static String getcornerTopRight(RessourceCard card) {
+    	return card.cornerTopRight;
+    }
+    public static String getcornerBottomRight(RessourceCard card) {
+    	return card.cornerBottomRight;
+    }
+    
     
     public static ArrayList<RessourceCard> createRessourceCard(Path src) throws IOException {
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {

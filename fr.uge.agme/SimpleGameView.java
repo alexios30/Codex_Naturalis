@@ -49,6 +49,14 @@ public record SimpleGameView() {
 		});
 	}
 	
+	public static void dessincard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
+		var bottomleft = RessourceCard.getcornerBottomLeft(card);
+		if (bottomleft ==" Animal") {
+			//hauteur
+			//y= 3/4* hauteur
+		}
+	}
+	
 	private static void checkRange(double min, double value, double max) {
 		if (value < min || value > max) {
 			throw new IllegalArgumentException("Invalid coordinate: " + value);
