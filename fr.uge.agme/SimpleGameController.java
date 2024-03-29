@@ -35,13 +35,13 @@ public class SimpleGameController {
 		var width = screenInfo.getWidth();
 		var height = screenInfo.getHeight();
 		SimpleGameView.intitialisation(context);
+		SimpleGameView.drawcard(context,50,200);
 	}
 
 	
 		public static void main(String[] args) {
 			
 			Application.run(Color.BLACK, context -> lanceLeJeu(context));
-
 			  
 	    	/**Application.run(Color.ORANGE, context -> {
 				var screenInfo = context.getScreenInfo();
@@ -52,4 +52,3 @@ public class SimpleGameController {
 	    
 		}
 }
-

@@ -1,5 +1,4 @@
 package fr.uge.game;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -40,6 +39,13 @@ public record SimpleGameView() {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		});
+	}
+	
+	public static void drawcard(ApplicationContext context, int x, int y ) {
+		context.renderFrame(graphics -> {
+			graphics.setColor(Color.ORANGE);
+			graphics.fill(new Rectangle2D.Float(x, y, 350, 150));
 		});
 	}
 	
