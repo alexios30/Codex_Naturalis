@@ -50,11 +50,44 @@ public record SimpleGameView() {
 	}
 	
 	public static void dessincard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
-		var bottomleft = RessourceCard.getcornerBottomLeft(card);
-		if (bottomleft ==" Animal") {
-			//hauteur
-			//y= 3/4* hauteur
+		var bottomLeft = RessourceCard.getcornerBottomLeft(card);
+		var toLeft = RessourceCard.getcornerTopLeft(card);
+		var topRight = RessourceCard.getcornerTopRight(card);
+		var bottomright = RessourceCard.getcornerBottomRight(card);
+	    int squareSize = 50;
+		
+		if (bottomLeft.equals("Animal") ){ 
+		        int squareY = y + height - squareSize;
+			context.renderFrame(graphics -> {
+				graphics.setColor(Color.RED);
+				graphics.fill(new Rectangle2D.Float(x, squareY, squareSize, squareSize));
+			});
 		}
+		if (toLeft.equals("Animal")) {
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.RED);
+		        graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
+		    });
+		}
+
+		if (topRight.equals("Animal")) {
+		    int squareX = x + width - squareSize; 
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.RED);
+		        graphics.fill(new Rectangle2D.Float(squareX, y, squareSize, squareSize));
+		    });
+		}
+
+		if (bottomright.equals("Animal")) {
+		    int squareX = x + width - squareSize;
+		    int squareY = y + height - squareSize; 
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.RED);
+		        graphics.fill(new Rectangle2D.Float(squareX, squareY, squareSize, squareSize));
+		    });
+		}
+
+		
 	}
 	
 	private static void checkRange(double min, double value, double max) {
