@@ -52,7 +52,7 @@ public record SimpleGameView() {
 		});
 	}
 	
-	public static void dessincard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
+	public static void dessincardRessource(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
 		var bottomLeft = RessourceCard.getcornerBottomLeft(card);
 		var topLeft = RessourceCard.getcornerTopLeft(card);
 		var topRight = RessourceCard.getcornerTopRight(card);
@@ -153,7 +153,134 @@ public record SimpleGameView() {
 
 		
 	}
-	
+	public static void dessincardGolden(ApplicationContext context, GoldenCard card,int x, int y, int width, int height) {
+		var bottomLeft = GoldenCard.getcornerBottomLeft(card);
+		var topLeft =  GoldenCard.getcornerTopLeft(card);
+		var topRight =  GoldenCard.getcornerTopRight(card);
+		var bottomright =  GoldenCard.getcornerBottomRight(card);
+		var kingdom =  GoldenCard.getKingdom(card);
+		var cost = GoldenCard.getCost(card);
+		var typescoring = GoldenCard.gettypescoring(card);
+		var scoring = GoldenCard.getscoring(card);
+	    int squareSize = 50;
+		
+		if (bottomLeft.equals("Animal") ){ 
+		        int squareY = y + height - squareSize;
+			context.renderFrame(graphics -> {
+				graphics.setColor(Color.RED);
+				graphics.fill(new Rectangle2D.Float(x, squareY, squareSize, squareSize));
+			});
+		}
+		if (bottomLeft.equals("Empty")) {
+		    int startX = x ; 
+		    int endX = x + squareSize ; 
+		    int lineY = y + height - squareSize ; 
+
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(startX, lineY, endX, lineY);
+		        graphics.drawLine(endX, lineY, endX, lineY + squareSize);
+		    });
+		}
+		if (topLeft.equals("Animal")) {
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.RED);
+		        graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
+		    });
+		}
+		if (topLeft.equals("Empty")) {
+		    int startX = x; 
+		    int startY = y ; 
+		    int endX = x + squareSize; 
+
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(startX, startY + squareSize , endX, startY + squareSize); 
+		        graphics.drawLine(startX + squareSize, startY, startX + squareSize, startY + squareSize); 
+		    });
+		}
+
+
+		if (topRight.equals("Animal")) {
+		    int squareX = x + width - squareSize; 
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.RED);
+		        graphics.fill(new Rectangle2D.Float(squareX, y, squareSize, squareSize));
+		    });
+		}
+		if (topRight.equals("Empty")) {
+		    context.renderFrame(graphics -> {
+		        int startX = x + squareSize;  
+		        int startY = y;               
+		        int endX = x + squareSize * 7;    
+
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(endX - squareSize, startY + squareSize, endX, startY + squareSize); 
+		        graphics.drawLine(endX - squareSize, startY, endX - squareSize, startY + squareSize); 
+		    });
+		}
+		
+		if (bottomright.equals("Animal")) {
+		    int squareX = x + width - squareSize;
+		    int squareY = y + height - squareSize; 
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.RED);
+		        graphics.fill(new Rectangle2D.Float(squareX, squareY, squareSize, squareSize));
+		    });
+		}
+		
+		if (bottomright.equals("Empty")) {
+		    context.renderFrame(graphics -> {
+		        int startX = x + squareSize * 7; 
+		        int startY =y + height - squareSize ;  
+
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(startX - squareSize, startY, startX, startY); 
+		        graphics.drawLine(startX - squareSize, startY, startX - squareSize, startY + squareSize); 
+		    });
+		}
+		if (kingdom.equals("Animal")) {
+			context.renderFrame(graphics -> {
+		        String lettre = "Animal";
+		        int tailleLettre = 20;
+		        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+
+		  
+		        int startX = x + squareSize * 3 ; 
+		        int startY = y + tailleLettre * 4;
+		        graphics.setFont(font);
+		        graphics.drawString(lettre, startX, startY);
+		    });
+		}
+		
+		if (cost>0) {
+			context.renderFrame(graphics -> {
+			String lettre= Integer.toString(cost);
+			String newlettre= "Cost: A:" + lettre ;
+			int tailleLettre= 20;
+			Font font = new Font("Arial",Font.PLAIN,tailleLettre);
+			
+	        int startX = x + squareSize * 3 ; 
+	        int startY = y + tailleLettre;
+	        graphics.setFont(font);
+	        graphics.drawString(newlettre, startX, startY);
+	    });
+			
+		}
+		context.renderFrame(graphics ->{
+			String lettre = Character.toString(typescoring);
+			String lettre1 = Character.toString(scoring);
+			String fusion = "Score:" + lettre + lettre1;
+			int tailleLettre= 20;
+			Font font = new Font("Arial",Font.PLAIN,tailleLettre);
+			
+			int startX = x + squareSize * 3 ; 
+	        int startY = y + tailleLettre * 7;
+	        graphics.setFont(font);
+	        graphics.drawString(fusion, startX, startY);
+		});
+		
+	}
 	
 	private static void checkRange(double min, double value, double max) {
 		if (value < min || value > max) {
