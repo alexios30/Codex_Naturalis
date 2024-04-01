@@ -1,5 +1,6 @@
 package fr.uge.game;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -7,7 +8,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -51,9 +54,10 @@ public record SimpleGameView() {
 	
 	public static void dessincard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
 		var bottomLeft = RessourceCard.getcornerBottomLeft(card);
-		var toLeft = RessourceCard.getcornerTopLeft(card);
+		var topLeft = RessourceCard.getcornerTopLeft(card);
 		var topRight = RessourceCard.getcornerTopRight(card);
 		var bottomright = RessourceCard.getcornerBottomRight(card);
+		var scoring = RessourceCard.getscoring(card);
 	    int squareSize = 50;
 		
 		if (bottomLeft.equals("Animal") ){ 
@@ -63,12 +67,35 @@ public record SimpleGameView() {
 				graphics.fill(new Rectangle2D.Float(x, squareY, squareSize, squareSize));
 			});
 		}
-		if (toLeft.equals("Animal")) {
+		if (bottomLeft.equals("Empty")) {
+		    int startX = x ; 
+		    int endX = x + squareSize ; 
+		    int lineY = y + height - squareSize ; 
+
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(startX, lineY, endX, lineY);
+		        graphics.drawLine(endX, lineY, endX, lineY + squareSize);
+		    });
+		}
+		if (topLeft.equals("Animal")) {
 		    context.renderFrame(graphics -> {
 		        graphics.setColor(Color.RED);
 		        graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
 		    });
 		}
+		if (topLeft.equals("Empty")) {
+		    int startX = x; 
+		    int startY = y ; 
+		    int endX = x + squareSize; 
+
+		    context.renderFrame(graphics -> {
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(startX, startY + squareSize , endX, startY + squareSize); 
+		        graphics.drawLine(startX + squareSize, startY, startX + squareSize, startY + squareSize); 
+		    });
+		}
+
 
 		if (topRight.equals("Animal")) {
 		    int squareX = x + width - squareSize; 
@@ -77,7 +104,18 @@ public record SimpleGameView() {
 		        graphics.fill(new Rectangle2D.Float(squareX, y, squareSize, squareSize));
 		    });
 		}
+		if (topRight.equals("Empty")) {
+		    context.renderFrame(graphics -> {
+		        int startX = x + squareSize;  
+		        int startY = y;               
+		        int endX = x + squareSize * 7;    
 
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(endX - squareSize, startY + squareSize, endX, startY + squareSize); 
+		        graphics.drawLine(endX - squareSize, startY, endX - squareSize, startY + squareSize); 
+		    });
+		}
+		
 		if (bottomright.equals("Animal")) {
 		    int squareX = x + width - squareSize;
 		    int squareY = y + height - squareSize; 
@@ -86,9 +124,36 @@ public record SimpleGameView() {
 		        graphics.fill(new Rectangle2D.Float(squareX, squareY, squareSize, squareSize));
 		    });
 		}
+		
+		if (bottomright.equals("Empty")) {
+		    context.renderFrame(graphics -> {
+		        int startX = x + squareSize * 7; 
+		        int startY =y + height - squareSize ;  
+
+		        graphics.setColor(Color.BLACK);
+		        graphics.drawLine(startX - squareSize, startY, startX, startY); 
+		        graphics.drawLine(startX - squareSize, startY, startX - squareSize, startY + squareSize); 
+		    });
+		}
+		if (scoring.equals("1")) {
+		    context.renderFrame(graphics -> {
+		        String lettre = " S : 1";
+		        int tailleLettre = 20;
+		        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+
+		  
+		        int startX = x + squareSize * 3 ; 
+		        int startY = y + tailleLettre;
+		        graphics.setFont(font);
+		        graphics.drawString(lettre, startX, startY);
+		    });
+		}
+
+
 
 		
 	}
+	
 	
 	private static void checkRange(double min, double value, double max) {
 		if (value < min || value > max) {
