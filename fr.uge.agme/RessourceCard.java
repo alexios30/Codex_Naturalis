@@ -1,95 +1,102 @@
 package fr.uge.game;
 
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Objects;
 
-import fr.umlv.zen5.Application;
-
-public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight,String scoring, int resource) {
-    public RessourceCard {
-        Objects.requireNonNull(cornerTopLeft);
+public record GoldenCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight,String kingdom, int cost, char typescoring,char scoring) {
+	
+	public GoldenCard{
+		Objects.requireNonNull(cornerTopLeft);
         Objects.requireNonNull(cornerBottomLeft);
         Objects.requireNonNull(cornerTopRight);
         Objects.requireNonNull(cornerBottomRight);
-    }
-
-    //public void CardLeft() {
-            //context.renderFrame(graphics -> {
-                //graphics.setColor(Color.BLACK);
-               // graphics.fill(new Rectangle2D.Float(400, 800, 350, 150));
-           // });
-        //});
-    //}
-    
-    public static String getcornerTopLeft(RessourceCard card) {
-    	return card.cornerTopLeft;
-    }
-    
-    public static String getcornerBottomLeft(RessourceCard card) {
-    	return card.cornerBottomLeft;
-    }
-    
-    public static String getcornerTopRight(RessourceCard card) {
-    	return card.cornerTopRight;
-    }
-    public static String getcornerBottomRight(RessourceCard card) {
-    	return card.cornerBottomRight;
-    }
-    
-    
-    public static ArrayList<RessourceCard> createRessourceCard(Path src) throws IOException {
+	}
+	
+	
+    public static ArrayList<GoldenCard> createRessourceCard(Path src) throws IOException {
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
             String line;
-            ArrayList<RessourceCard>ressource= new ArrayList<>();
+            ArrayList<GoldenCard>golden= new ArrayList<>();
             while ((line = reader.readLine()) != null) {
-            	 var card =RessourceCard.addressourcecard(line);
-            	 ressource.add(card);
+            	 var card =GoldenCard.addgoldencard(line);
+            	 golden.add(card);
 
         } 
-            return ressource;
+            return golden;
     }
  }
-
     
-    
-    public static RessourceCard addressourcecard(String line) {
+    public static GoldenCard addgoldencard(String line) {
         String[] parts = line.split(" ");
 
-        String cornerTopLeft = parts[2].substring(2);
+        String cornerTopLeft = parts[2];
         String cornerBottomLeft = parts[3];
         String cornerTopRight = parts[4];
         String cornerBottomRight = parts[5];
-        String scoring = "0";
-
+        String kindgom =  parts[7];
+        String dernier = parts[parts.length - 1];
+        
+        var typescoring = dernier.charAt(0);
+        
+        var scoring = dernier.charAt(2);
+        
+        boolean countAnimals = false; 
         int animalCount = 0;
 
         for (String part : parts) {
-            if (part.equalsIgnoreCase("Animal")) {
+            if (part.equalsIgnoreCase("Cost")) {
+                countAnimals = true; 
+            } else if (part.equalsIgnoreCase("Scoring")) {
+                break; 
+            } else if (countAnimals && part.equalsIgnoreCase("Animal")) {
                 animalCount++;
             }
+            
+            
         }
-        
-        if (parts.length > 8) {
-            scoring = parts[8].substring(2);
-        } 
-        RessourceCard card = new RessourceCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, scoring, animalCount);
+        GoldenCard card = new GoldenCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, kindgom, animalCount, typescoring,scoring);
         return card;
     }
+    public static String getcornerTopLeft(GoldenCard card) {
+    	return card.cornerTopLeft;
+    }
+    
+    public static String getcornerBottomLeft(GoldenCard card) {
+    	return card.cornerBottomLeft;
+    }
+    
+    public static String getcornerTopRight(GoldenCard card) {
+    	return card.cornerTopRight;
+    }
+    public static String getcornerBottomRight(GoldenCard card) {
+    	return card.cornerBottomRight;
+    }
+    public static String getKingdom(GoldenCard card) {
+    	return card.kingdom;
+    }
+    public static int getCost(GoldenCard card) {
+    	return card.cost;
+    }
+    
+    public static char gettypescoring(GoldenCard card) {
+    	return card.typescoring;
+    }
 
+    public static char getscoring(GoldenCard card) {
+    	return card.scoring;
+    }
+    
 	@Override
 	public String toString() {
-		return "RessourceCard [cornerTopLeft=" + cornerTopLeft + ", cornerBottomLeft=" + cornerBottomLeft
-				+ ", cornerTopRight=" + cornerTopRight + ", cornerBottomRight=" + cornerBottomRight + ", scoring="
-				+ scoring + ", resource=" + resource + "]" + "\n";
+		return "GoldenCard [cornerTopLeft=" + cornerTopLeft + ", cornerBottomLeft=" + cornerBottomLeft
+				+ ", cornerTopRight=" + cornerTopRight + ", cornerBottomRight=" + cornerBottomRight + ", kindgom="
+				+ kingdom + ", cost=" + cost + ", typescoring=" + typescoring + ", scoring=" + scoring + "]" + "\n";
 	}
-
+    
+    
+	
 }
