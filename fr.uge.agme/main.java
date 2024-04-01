@@ -33,7 +33,7 @@ public class main {
 				graphics.fill(new Rectangle2D.Float(400, 800, 350, 150));
 				
 			});
-			SimpleGameView.dessincard(context, test, 400, 800, 350, 150);
+			SimpleGameView.dessincardRessource(context, test, 400, 800, 350, 150);
         });
         
     }
