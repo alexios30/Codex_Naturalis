@@ -69,7 +69,7 @@ public class SimpleGameController {
 		     var carte2 = SimpleGameController.piocheRessource(packRessource);
 		     
 		     var carteGolden1  = SimpleGameController.piocheGolden(packGolden);
-		     
+		     var carteGolden2 = SimpleGameController.piocheGolden(packGolden);
 		     
 			Application.run(Color.BLACK, context -> {
 				SimpleGameController.lanceLeJeu(context);
@@ -86,7 +86,7 @@ public class SimpleGameController {
 				SimpleGameView.dessincardRessource(context, carte1, x, y, 350, 150);
 				SimpleGameView.dessincardRessource(context, carte2, x, y1, 350, 150);
 				SimpleGameView.dessincardGolden(context, carteGolden1, xgolden, y, 350, 150);
-				SimpleGameView.dessincardGolden(context, carteGolden1, xgolden, y1, 350, 150);
+				SimpleGameView.dessincardGolden(context, carteGolden2, xgolden, y1, 350, 150);
 			});
 			
 	    
