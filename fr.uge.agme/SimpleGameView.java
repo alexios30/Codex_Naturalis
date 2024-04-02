@@ -14,6 +14,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+
 //import java.awt.Color;
 //import java.awt.Graphics2D;
 //import java.awt.geom.AffineTransform;
@@ -25,7 +26,7 @@ import fr.umlv.zen5.ApplicationContext;
 
 
 
-public record SimpleGameView() {
+public record SimpleGameView(int height, int width) {
 
 	// ecran de debut
 	public static void intitialisation(ApplicationContext context) { //, BackPack backPack
@@ -34,12 +35,21 @@ public record SimpleGameView() {
 		var height = screenInfo.getHeight();
 
 		context.renderFrame(graphics -> {
-			graphics.clearRect(0, 0, 1920, 1080);
+			graphics.clearRect(0, 0, (int) width, (int) height);
+			drawBackGround(context, width, height);
 			
+			
+		});
+		//return new SimpleGameView((int) height , (int)width );
+	}
+	
+	public static void drawBackGround(ApplicationContext context, float width, float height) {
+		context.renderFrame(graphics -> {
 			try {
 				SimpleGameView.image(graphics, ImageIO.read(Files.newInputStream(Path.of("include" + "/" + "img" + "/" +"Background.png"))),
 						0, 0, width, height);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -281,14 +291,15 @@ public record SimpleGameView() {
 		});
 		
 	}
+	
 	public static void startpiocheleft(ApplicationContext context, ArrayList<RessourceCard> packRessource) {
 		int x = 35;
 		int y=300;
 		int y1 = 500;
-		var cartetop = SimpleGameController.piocheRessource(packRessource);
-	    var cartebottom = SimpleGameController.piocheRessource(packRessource);
+		var cartetop = SimpleGameData.piocheRessource(packRessource);
+	    var cartebottom = SimpleGameData.piocheRessource(packRessource);
 	    
-		SimpleGameView.drawcard(context,x,100);
+		SimpleGameView.drawcard(context,35,100);
 		SimpleGameView.drawcard(context,x,y);
 		SimpleGameView.drawcard(context,x,y1);
 		
@@ -297,12 +308,13 @@ public record SimpleGameView() {
 	}
 	
 	public static void startpiocheright(ApplicationContext context, ArrayList<GoldenCard> packGolden) {
+		int x = 35;
 		int y=300;
 		int y1 = 500;
 		int xgolden= 1535;
 		
-		var cartetop = SimpleGameController.piocheGolden(packGolden);
-	    var cartebottom = SimpleGameController.piocheGolden(packGolden);
+		var cartetop = SimpleGameData.piocheGolden(packGolden);
+	    var cartebottom = SimpleGameData.piocheGolden(packGolden);
 	    
 		SimpleGameView.drawcard(context,1535,100);
 		SimpleGameView.drawcard(context,xgolden,y1);
@@ -320,25 +332,29 @@ public record SimpleGameView() {
 		int xmiddle= 800;
 		int xright = 1400;
 		
-		 ArrayList<RessourceCard> cartedepart = new ArrayList<>();
+		ArrayList<RessourceCard> cartedepart = new ArrayList<>();
 		SimpleGameView.drawcard(context,xleft,y);
 		SimpleGameView.drawcard(context,xmiddle,y);
 		SimpleGameView.drawcard(context,xright,y);
 		
-		var carteleft = SimpleGameController.piocheRessource(packRessource);
-	    var cartemiddle = SimpleGameController.piocheRessource(packRessource);
-	    var carteright = SimpleGameController.piocheRessource(packRessource);
-	    cartedepart.add(carteleft);
-	    cartedepart.add(cartemiddle);
-	    cartedepart.add(carteright);
+		 var carteleft = SimpleGameData.piocheRessource(packRessource);
+	     var cartemiddle = SimpleGameData.piocheRessource(packRessource);
+	     var carteright = SimpleGameData.piocheRessource(packRessource);
+	     
+	     cartedepart.add(carteleft);
+	     cartedepart.add(cartemiddle);
+		 cartedepart.add(carteright);
+	     
 		SimpleGameView.dessincardRessource(context, carteleft, xleft, y, width, height);
 		SimpleGameView.dessincardRessource(context, cartemiddle, xmiddle, y, width, height);
 		SimpleGameView.dessincardRessource(context, carteright, xright, y, width, height);
 		
 		return cartedepart;
 	}
+	
+	
 
-	public s
+	
 	private static void checkRange(double min, double value, double max) {
 		if (value < min || value > max) {
 			throw new IllegalArgumentException("Invalid coordinate: " + value);
@@ -376,6 +392,14 @@ public record SimpleGameView() {
 				y + (dimY - scale * height) / 2);
 		graphics.drawImage(image, transform, null);
 	}
+	
+	private void draw(Graphics2D graphics, SimpleGameData data) {
+		// example
+		graphics.setColor(Color.RED);
+		graphics.fill(new Rectangle2D.Float(0, 0, height, width));
+		}
+		
+	
 
 
 
@@ -388,6 +412,6 @@ public record SimpleGameView() {
 	 * @param view    GameView on which to draw.
 	 */
 	public static void draw(ApplicationContext context, SimpleGameData data, SimpleGameView view) {
-		//context.renderFrame(graphics -> view.draw(graphics, data)); // do not modify
+		context.renderFrame(graphics -> view.draw(graphics, data)); // do not modify
 	}
 }
