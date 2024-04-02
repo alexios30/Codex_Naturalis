@@ -281,7 +281,58 @@ public record SimpleGameView() {
 		});
 		
 	}
+	public static void startpiocheleft(ApplicationContext context, ArrayList<RessourceCard> packRessource) {
+		int x = 35;
+		int y=300;
+		int y1 = 500;
+		var cartetop = SimpleGameController.piocheRessource(packRessource);
+	    var cartebottom = SimpleGameController.piocheRessource(packRessource);
+	    
+		SimpleGameView.drawcard(context,35,100);
+		SimpleGameView.drawcard(context,x,y);
+		SimpleGameView.drawcard(context,x,y1);
+		
+		SimpleGameView.dessincardRessource(context, cartetop, x, y, 350, 150);
+		SimpleGameView.dessincardRessource(context, cartebottom, x, y1, 350, 150);
+	}
 	
+	public static void startpiocheright(ApplicationContext context, ArrayList<GoldenCard> packGolden) {
+		int x = 35;
+		int y=300;
+		int y1 = 500;
+		int xgolden= 1535;
+		
+		var cartetop = SimpleGameController.piocheGolden(packGolden);
+	    var cartebottom = SimpleGameController.piocheGolden(packGolden);
+	    
+		SimpleGameView.drawcard(context,1535,100);
+		SimpleGameView.drawcard(context,xgolden,y1);
+		SimpleGameView.drawcard(context, xgolden, y);
+		
+		SimpleGameView.dessincardGolden(context, cartetop, xgolden, y, 350, 150);
+		SimpleGameView.dessincardGolden(context, cartebottom, xgolden, y1, 350, 150);
+	}
+	
+	public static void startmaincard(ApplicationContext context, ArrayList<RessourceCard> packRessource) {
+		int width = 350;
+		int height = 150;
+		int y = 875;
+		int xleft = 200;
+		int xmiddle= 800;
+		int xright = 1400;
+		
+		SimpleGameView.drawcard(context,xleft,y);
+		SimpleGameView.drawcard(context,xmiddle,y);
+		SimpleGameView.drawcard(context,xright,y);
+		
+		 var carteleft = SimpleGameController.piocheRessource(packRessource);
+	     var cartemiddle = SimpleGameController.piocheRessource(packRessource);
+	     var carteright = SimpleGameController.piocheRessource(packRessource);
+	     
+		SimpleGameView.dessincardRessource(context, carteleft, xleft, y, width, height);
+		SimpleGameView.dessincardRessource(context, cartemiddle, xmiddle, y, width, height);
+		SimpleGameView.dessincardRessource(context, carteright, xright, y, width, height);
+	}
 	private static void checkRange(double min, double value, double max) {
 		if (value < min || value > max) {
 			throw new IllegalArgumentException("Invalid coordinate: " + value);
