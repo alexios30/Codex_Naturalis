@@ -78,12 +78,15 @@ public class SimpleGameController {
 				int y1 = 500;
 				int xgolden= 1535;
 				SimpleGameView.drawcard(context,35,100);
+				SimpleGameView.drawcard(context,1535,100);
 				SimpleGameView.drawcard(context,x,y);
 				SimpleGameView.drawcard(context,x,y1);
+				SimpleGameView.drawcard(context,xgolden,y1);
 				SimpleGameView.drawcard(context, xgolden, y);
 				SimpleGameView.dessincardRessource(context, carte1, x, y, 350, 150);
 				SimpleGameView.dessincardRessource(context, carte2, x, y1, 350, 150);
 				SimpleGameView.dessincardGolden(context, carteGolden1, xgolden, y, 350, 150);
+				SimpleGameView.dessincardGolden(context, carteGolden1, xgolden, y1, 350, 150);
 			});
 			
 	    
