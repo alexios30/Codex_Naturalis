@@ -1,21 +1,12 @@
 package fr.uge.game;
 
 import java.awt.Color;
-import java.awt.geom.Ellipse2D;
 import java.io.IOException;
-import java.lang.reflect.AccessFlag.Location;
 import java.nio.file.Path;
-
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
-import fr.umlv.zen5.Event;
-
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Set;
-
-import fr.umlv.zen5.Application;
-import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event.Action;
 
 
@@ -67,16 +58,114 @@ public class SimpleGameController {
 		return carte1;
 	}
 	
-	 public static int positionclicksouris(ApplicationContext context) {
+	 public static void positionclicksourisdebut(ApplicationContext context) {
 	        while (true) {
+	        	int cardWidth = 350; 
+	        	int cardHeight = 150; 
+
 	            var event = context.pollOrWaitEvent(10);
 	            if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
 	                var location = event.getLocation();
-	                System.out.println("Coordonnées de la souris - X: " + location.x + ", Y: " + location.y);
+	                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight);
+	                
+	               
 	            }
 	        }
 	    }
+	 public static void positionclicksouris(ApplicationContext context) {
+	        while (true) {
+	        	int cardWidth = 350; 
+	        	int cardHeight = 150; 
 
+	            var event = context.pollOrWaitEvent(10);
+	            if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
+	                var location = event.getLocation();
+	                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight);
+	                
+	                SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectpiocheleftbottom(location.x, location.y,cardWidth, cardHeight);
+	                
+	                SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight);
+	                SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight);
+	                
+	               
+	            }
+	        }
+	    }
+	 
+	 public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur ) {
+	     	int x = 35; 
+	     	int y = 875;
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    System.out.println("carte gauche");
+				}
+		 }
+	 
+	 public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ) {
+     	int x = 800; 
+     	int y = 875;
+		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+			    System.out.println("carte milieu");
+			}
+	 }
+
+	 public static void detectmaincardright( float x2,float y2,  int largeur, int hauteur ) {
+     	int x = 1400; 
+     	int y = 875;
+		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+			    System.out.println("carte droite");
+			}
+	 }
+
+	 public static void detectpiochelefttop( float x2,float y2,  int largeur, int hauteur ) {
+	     	int x = 35; 
+	     	int y = 100;
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    System.out.println("carte pioche gauche, carte haut");
+				}
+		 }
+	 public static void detectpiocheleftmiddle( float x2,float y2,  int largeur, int hauteur ) {
+	     	int x = 35; 
+	     	int y = 300;
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    System.out.println("carte pioche gauche, carte moyenne");
+				}
+		 }
+	 public static void detectpiocheleftbottom( float x2,float y2,  int largeur, int hauteur ) {
+	     	int x = 35; 
+	     	int y = 500;
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    System.out.println("carte pioche gauche, carte bas");
+				}
+		 }
+	 public static void detectpiocherighttop( float x2,float y2,  int largeur, int hauteur ) {
+	     	int x = 1535; 
+	     	int y = 100;
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    System.out.println("carte pioche droite, carte haut");
+				}
+		 }
+	 public static void detectpiocherightmiddle( float x2,float y2,  int largeur, int hauteur ) {
+	     	int x = 1535; 
+	     	int y = 300;
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    System.out.println("carte pioche droite, carte moyenne");
+				}
+		 }
+	 public static void detectpiocherightbottom( float x2,float y2,  int largeur, int hauteur ) {
+	     	int x = 1535; 
+	     	int y = 500;
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    System.out.println("carte pioche droite, carte bas");
+				}
+		 }
+	 
 	
 		public static void main(String[] args) throws IOException {
 			
@@ -87,12 +176,10 @@ public class SimpleGameController {
 		     
 			Application.run(Color.BLACK, context -> {
 				SimpleGameController.lanceLeJeu(context);
-				
-				//SimpleGameController.positionclicksouris(context);
-				
-				SimpleGameView.startmaincard(context,packRessource);
+				var r1 =SimpleGameView.startmaincard(context,packRessource);
 				SimpleGameView.startpiocheleft(context, packRessource);
 				SimpleGameView.startpiocheright(context, packGolden);
+				SimpleGameController.positionclicksourisdebut(context);
 			});
 			
 	    
