@@ -3,19 +3,32 @@ package fr.uge.game;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 public class SimpleGameData {
 
 	private RessourceCard[] RessourceTable; 
 	private GoldenCard[] GoldenTable; 
+	private RessourceCard[] MainTable; 
+
+	
 	private ArrayList<RessourceCard> packRessource;
 	private ArrayList<GoldenCard> packGolden;
 	
-	public SimpleGameData(int nbLines, int nbColumns) {
-		if (nbLines < 0 || nbColumns < 0) {
-			throw new IllegalArgumentException();
-		}
-		
+	/**private RessourceCard RessourceCard1;
+	private RessourceCard RessourceCard2;
+	private RessourceCard RessourceCard3;
+	
+	private GoldenCard GoldenCard1;
+	private GoldenCard GoldenCard2;
+	private GoldenCard GoldenCard3;
+	
+	private RessourceCard MainCard1;
+	private RessourceCard MainCard2;
+	private RessourceCard MainCard3;**/
+	
+	public SimpleGameData() {
 		try {
 			packRessource = RessourceCard.createRessourceCard(Path.of("include/Ressource.txt"));
 		} catch (IOException e) {
@@ -28,9 +41,49 @@ public class SimpleGameData {
 			e.printStackTrace();
 		}
 		
+		RessourceTable = new RessourceCard[3];
+		GoldenTable = new GoldenCard[3];
+		MainTable = new RessourceCard[3];
 		
-		//RessourceTable = ;
-		//GoldenTable = ;
+		for (int i = 0; i < 3; i++) {
+			RessourceTable[i] = piocheRessource(getPackRessource());
+			GoldenTable[i] = piocheGolden(getPackGolden());
+		}
+	}
+	
+	public static RessourceCard piocheRessource(ArrayList<RessourceCard> packRessource) {
+        
+		Random rand = new Random();
+		int indexAleatoire = rand.nextInt(packRessource.size());
+		RessourceCard carte1 = packRessource.get(indexAleatoire);
+		packRessource.remove(carte1);
+
+		return carte1;
+	}
+	
+	public static GoldenCard piocheGolden(ArrayList<GoldenCard> packGolden) {
+        
+		Random rand = new Random();
+		int indexAleatoire = rand.nextInt(packGolden.size());
+		GoldenCard carte1 = packGolden.get(indexAleatoire);
+		packGolden.remove(carte1);
+		return carte1;
+	}
+
+	public RessourceCard[] getRessourceTable() {
+		return RessourceTable;
+	}
+
+	public GoldenCard[] getGoldenTable() {
+		return GoldenTable;
+	}
+
+	public ArrayList<RessourceCard> getPackRessource() {
+		return packRessource;
+	}
+
+	public ArrayList<GoldenCard> getPackGolden() {
+		return packGolden;
 	}
 	
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
