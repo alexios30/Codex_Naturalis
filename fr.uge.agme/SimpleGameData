@@ -1,0 +1,38 @@
+package fr.uge.game;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+
+public class SimpleGameData {
+
+	private RessourceCard[] RessourceTable; 
+	private GoldenCard[] GoldenTable; 
+	private ArrayList<RessourceCard> packRessource;
+	private ArrayList<GoldenCard> packGolden;
+	
+	public SimpleGameData(int nbLines, int nbColumns) {
+		if (nbLines < 0 || nbColumns < 0) {
+			throw new IllegalArgumentException();
+		}
+		
+		try {
+			packRessource = RessourceCard.createRessourceCard(Path.of("include/Ressource.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			packGolden = GoldenCard.createRessourceCard(Path.of("include/Golden.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		//RessourceTable = ;
+		//GoldenTable = ;
+	}
+	
+	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
+	}
+
