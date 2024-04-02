@@ -3,13 +3,20 @@ package fr.uge.game;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.io.IOException;
+import java.lang.reflect.AccessFlag.Location;
 import java.nio.file.Path;
 
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
+import fr.umlv.zen5.Event;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
+
+import fr.umlv.zen5.Application;
+import fr.umlv.zen5.ApplicationContext;
+import fr.umlv.zen5.Event.Action;
 
 
 
@@ -46,6 +53,8 @@ public class SimpleGameController {
 		Random rand = new Random();
 		int indexAleatoire = rand.nextInt(packRessource.size());
 		RessourceCard carte1 = packRessource.get(indexAleatoire);
+		packRessource.remove(carte1);
+
 		return carte1;
 	}
 	
@@ -54,8 +63,19 @@ public class SimpleGameController {
 		Random rand = new Random();
 		int indexAleatoire = rand.nextInt(packGolden.size());
 		GoldenCard carte1 = packGolden.get(indexAleatoire);
+		packGolden.remove(carte1);
 		return carte1;
 	}
+	
+	 public static int positionclicksouris(ApplicationContext context) {
+	        while (true) {
+	            var event = context.pollOrWaitEvent(10);
+	            if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
+	                var location = event.getLocation();
+	                System.out.println("Coordonnées de la souris - X: " + location.x + ", Y: " + location.y);
+	            }
+	        }
+	    }
 
 	
 		public static void main(String[] args) throws IOException {
@@ -64,29 +84,15 @@ public class SimpleGameController {
 		     var packRessource = RessourceCard.createRessourceCard(srcRessource);
 		     var srcGolden= Path.of("include/Golden.txt");
 		     var packGolden = GoldenCard.createRessourceCard(srcGolden);
-	        
-		     var carte1 = SimpleGameController.piocheRessource(packRessource);
-		     var carte2 = SimpleGameController.piocheRessource(packRessource);
-		     
-		     var carteGolden1  = SimpleGameController.piocheGolden(packGolden);
-		     var carteGolden2 = SimpleGameController.piocheGolden(packGolden);
 		     
 			Application.run(Color.BLACK, context -> {
 				SimpleGameController.lanceLeJeu(context);
-				int x = 35;
-				int y=300;
-				int y1 = 500;
-				int xgolden= 1535;
-				SimpleGameView.drawcard(context,35,100);
-				SimpleGameView.drawcard(context,1535,100);
-				SimpleGameView.drawcard(context,x,y);
-				SimpleGameView.drawcard(context,x,y1);
-				SimpleGameView.drawcard(context,xgolden,y1);
-				SimpleGameView.drawcard(context, xgolden, y);
-				SimpleGameView.dessincardRessource(context, carte1, x, y, 350, 150);
-				SimpleGameView.dessincardRessource(context, carte2, x, y1, 350, 150);
-				SimpleGameView.dessincardGolden(context, carteGolden1, xgolden, y, 350, 150);
-				SimpleGameView.dessincardGolden(context, carteGolden2, xgolden, y1, 350, 150);
+				
+				//SimpleGameController.positionclicksouris(context);
+				
+				SimpleGameView.startmaincard(context,packRessource);
+				SimpleGameView.startpiocheleft(context, packRessource);
+				SimpleGameView.startpiocheright(context, packGolden);
 			});
 			
 	    
