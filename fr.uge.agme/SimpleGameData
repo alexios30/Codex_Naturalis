@@ -3,18 +3,21 @@ package fr.uge.game;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 
 public class SimpleGameData {
 
-	private RessourceCard[] RessourceTable; 
-	private GoldenCard[] GoldenTable; 
-	private RessourceCard[] MainTable; 
+	private RessourceCard[] ressourceTable; 
+	private GoldenCard[] goldenTable; 
+	private Card[] mainTable; 
 
 	
 	private ArrayList<RessourceCard> packRessource;
 	private ArrayList<GoldenCard> packGolden;
+	
+	private HashMap<Pair, Card> plateau;
 	
 	/**private RessourceCard RessourceCard1;
 	private RessourceCard RessourceCard2;
@@ -41,14 +44,18 @@ public class SimpleGameData {
 			e.printStackTrace();
 		}
 		
-		RessourceTable = new RessourceCard[3];
-		GoldenTable = new GoldenCard[3];
-		MainTable = new RessourceCard[3];
+		ressourceTable = new RessourceCard[3];
+		goldenTable = new GoldenCard[3];
+		mainTable = new Card[3];
+		plateau = new HashMap<Pair, Card>();
 		
 		for (int i = 0; i < 3; i++) {
-			RessourceTable[i] = piocheRessource(getPackRessource());
-			GoldenTable[i] = piocheGolden(getPackGolden());
+			ressourceTable[i] = piocheRessource(getPackRessource());
+			goldenTable[i] = piocheGolden(getPackGolden());
 		}
+		mainTable[0] = piocheRessource(getPackRessource());
+		mainTable[1] = piocheRessource(getPackRessource());
+		mainTable[2] = piocheGolden(getPackGolden());
 	}
 	
 	public static RessourceCard piocheRessource(ArrayList<RessourceCard> packRessource) {
@@ -71,11 +78,15 @@ public class SimpleGameData {
 	}
 
 	public RessourceCard[] getRessourceTable() {
-		return RessourceTable;
+		return ressourceTable;
 	}
 
 	public GoldenCard[] getGoldenTable() {
-		return GoldenTable;
+		return goldenTable;
+	}
+	
+	public Card[] getMainTable() {
+		return mainTable;
 	}
 
 	public ArrayList<RessourceCard> getPackRessource() {
@@ -84,6 +95,10 @@ public class SimpleGameData {
 
 	public ArrayList<GoldenCard> getPackGolden() {
 		return packGolden;
+	}
+	
+	public HashMap<Pair, Card> getPlateau() {
+		return plateau;
 	}
 	
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
