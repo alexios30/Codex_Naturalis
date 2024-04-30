@@ -71,7 +71,7 @@ public class SimpleGameController {
 		}
 		
 		//SimpleGameController.positionclicksourisdebut(context);
-		SimpleGameController.positionclicksouris(context);
+		SimpleGameController.positionclicksouris(context, data);
 		
 		
 		return true;
@@ -89,7 +89,7 @@ public class SimpleGameController {
 		var data = new SimpleGameData();
 		SimpleGameView.intitialisation(context);
 		SimpleGameView.startmaincard(context,data.getPackRessource());
-		SimpleGameView.startpiocheleft(context, data.getPackRessource());
+		SimpleGameView.startpiocheleft(context, data.getPackRessource(), data);
 		SimpleGameView.startpiocheright(context, data.getPackGolden());
 		while (true) {			
 
@@ -120,7 +120,7 @@ public class SimpleGameController {
             }
         }
     }
- public static void positionclicksouris(ApplicationContext context) {
+ public static void positionclicksouris(ApplicationContext context, SimpleGameData data) {
         while (true) {
         	int cardWidth = 350; 
         	int cardHeight = 150; 
@@ -132,8 +132,8 @@ public class SimpleGameController {
                 SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight);
                 SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight);
                 
-                SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight);
-                SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight);
+                SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocheleftbottom(location.x, location.y,cardWidth, cardHeight);
                 
                 SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight);
@@ -142,6 +142,11 @@ public class SimpleGameController {
                 return;
                
             }
+            if (event != null && event.getAction() == Action.KEY_PRESSED && event.getKey() == KeyboardKey.Q) {
+    			System.out.println("Thank you for quitting!");
+    			context.exit(0);
+            	return;
+    		}
         }
     }
  
@@ -169,18 +174,28 @@ public class SimpleGameController {
 		}
  }
 
- public static void detectpiochelefttop( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectpiochelefttop( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
      	int x = 35; 
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    System.out.println("carte pioche gauche, carte haut");
 			}
 	 }
- public static void detectpiocheleftmiddle( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectpiocheleftmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context ) {
      	int x = 35; 
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    System.out.println("carte pioche gauche, carte moyenne");
+			    Pair posi = new Pair(0, 0);
+			    RessourceCard card = data.getRessourceTable()[0];
+			    System.out.println("plateau :" + data.getPlateau());
+			    System.out.println("sa passe");
+			    data.getPlateau().put(posi, card);
+			    System.out.println("plateau :" + data.getPlateau());
+			    System.out.println(card);
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+
 			}
 	 }
  public static void detectpiocheleftbottom( float x2,float y2,  int largeur, int hauteur ) {
