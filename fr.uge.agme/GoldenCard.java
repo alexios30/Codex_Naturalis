@@ -1,3 +1,4 @@
+
 package fr.uge.game;
 
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public record GoldenCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight,String kingdom, int cost, char typescoring,char scoring) {
+public record GoldenCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight,String kingdom, int cost, char typescoring,char scoring) implements Card {
 	
 	public GoldenCard{
 		Objects.requireNonNull(cornerTopLeft);
