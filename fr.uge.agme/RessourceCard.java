@@ -14,7 +14,7 @@ import java.nio.file.StandardOpenOption;
 
 import fr.umlv.zen5.Application;
 
-public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight,String scoring, int resource) {
+public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight,String scoring, int resource) implements Card {
     public RessourceCard {
         Objects.requireNonNull(cornerTopLeft);
         Objects.requireNonNull(cornerBottomLeft);
