@@ -292,19 +292,29 @@ public record SimpleGameView(int height, int width) {
 		
 	}
 	
-	public static void startpiocheleft(ApplicationContext context, ArrayList<RessourceCard> packRessource) {
+	public static void startpiocheleft(ApplicationContext context, ArrayList<RessourceCard> packRessource, SimpleGameData data) {
 		int x = 35;
 		int y=300;
 		int y1 = 500;
-		var cartetop = SimpleGameData.piocheRessource(packRessource);
-	    var cartebottom = SimpleGameData.piocheRessource(packRessource);
-	    
+		//var cartetop = SimpleGameData.piocheRessource(packRessource);
+	    //var cartebottom = SimpleGameData.piocheRessource(packRessource);
+		var carteTop = data.getRessourceTable()[1];
+		//var carteTop = new RessourceCard(null, null, null, null, null, y1)
+		var carteBottom = data.getRessourceTable()[2];
+		
+		System.out.println("carteTop :" + carteTop);
+		System.out.println("carteBottom :" + carteBottom);
+
 		SimpleGameView.drawcard(context,35,100);
 		SimpleGameView.drawcard(context,x,y);
 		SimpleGameView.drawcard(context,x,y1);
 		
-		SimpleGameView.dessincardRessource(context, cartetop, x, y, 350, 150);
-		SimpleGameView.dessincardRessource(context, cartebottom, x, y1, 350, 150);
+		//SimpleGameView.dessincardRessource(context, cartetop, x, y, 350, 150);
+		//SimpleGameView.dessincardRessource(context, cartebottom, x, y1, 350, 150);
+		
+		SimpleGameView.dessincardRessource(context, carteTop, x, y, 350, 150);
+		SimpleGameView.dessincardRessource(context, carteBottom, x, y1, 350, 150);
+
 	}
 	
 	public static void startpiocheright(ApplicationContext context, ArrayList<GoldenCard> packGolden) {
@@ -316,12 +326,12 @@ public record SimpleGameView(int height, int width) {
 		var cartetop = SimpleGameData.piocheGolden(packGolden);
 	    var cartebottom = SimpleGameData.piocheGolden(packGolden);
 	    
-		SimpleGameView.drawcard(context,1535,100);
+		SimpleGameView.drawcard(context,xgolden	,100);
 		SimpleGameView.drawcard(context,xgolden,y1);
 		SimpleGameView.drawcard(context, xgolden, y);
 		
-		SimpleGameView.dessincardGolden(context, cartetop, xgolden, y, 350, 150);
-		SimpleGameView.dessincardGolden(context, cartebottom, xgolden, y1, 350, 150);
+		//SimpleGameView.dessincardGolden(context, cartetop, xgolden, y, 350, 150);
+		//SimpleGameView.dessincardGolden(context, cartebottom, xgolden, y1, 350, 150);
 	}
 	
 	public static ArrayList<RessourceCard> startmaincard(ApplicationContext context, ArrayList<RessourceCard> packRessource) {
@@ -345,9 +355,9 @@ public record SimpleGameView(int height, int width) {
 	     cartedepart.add(cartemiddle);
 		 cartedepart.add(carteright);
 	     
-		SimpleGameView.dessincardRessource(context, carteleft, xleft, y, width, height);
-		SimpleGameView.dessincardRessource(context, cartemiddle, xmiddle, y, width, height);
-		SimpleGameView.dessincardRessource(context, carteright, xright, y, width, height);
+		//SimpleGameView.dessincardRessource(context, carteleft, xleft, y, width, height);
+		//SimpleGameView.dessincardRessource(context, cartemiddle, xmiddle, y, width, height);
+		//SimpleGameView.dessincardRessource(context, carteright, xright, y, width, height);
 		
 		return cartedepart;
 	}
