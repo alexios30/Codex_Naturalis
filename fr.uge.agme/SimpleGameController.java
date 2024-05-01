@@ -197,6 +197,9 @@ public class SimpleGameController {
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
 			    System.out.println(mainTable.length);
+			    if(mainTable.length<3) {
+			    data.addCardToMainTable(card);
+			    }
 
 			}
 	 }
@@ -205,8 +208,12 @@ public class SimpleGameController {
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    RessourceCard card = data.getRessourceTable()[1];
+			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+			    if(mainTable.length<3) {
+			    data.addCardToMainTable(card);
+			    }
 
 			}
 	 }
@@ -215,8 +222,12 @@ public class SimpleGameController {
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    RessourceCard card = data.getRessourceTable()[2];
+			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+			    if(mainTable.length<3) {
+			    data.addCardToMainTable(card);
+			    }
 			}
 	 }
  public static void detectpiocherighttop( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
@@ -224,8 +235,12 @@ public class SimpleGameController {
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    GoldenCard card = data.getGoldenTable()[0];
+			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
+			    if(mainTable.length<3) {
+				    data.addCardToMainTable(card);
+				    }
 			}
 	 }
  public static void detectpiocherightmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
@@ -233,8 +248,12 @@ public class SimpleGameController {
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    GoldenCard card = data.getGoldenTable()[1];
+			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
+			    if(mainTable.length<3) {
+				    data.addCardToMainTable(card);
+				    }
 			}
 	 }
  public static void detectpiocherightbottom( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
@@ -242,8 +261,12 @@ public class SimpleGameController {
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    GoldenCard card = data.getGoldenTable()[2];
+			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
+			    if(mainTable.length<3) {
+				    data.addCardToMainTable(card);
+				    }
 			}
 	 }
 
