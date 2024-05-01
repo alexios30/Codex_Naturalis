@@ -30,7 +30,7 @@ import fr.umlv.zen5.ApplicationContext;
 public record SimpleGameView(int height, int width) {
 
 	// ecran de debut
-	public static void intitialisation(ApplicationContext context) { //, BackPack backPack
+	public static void intitialisation(ApplicationContext context) {
 		var screenInfo = context.getScreenInfo();
 		var width = screenInfo.getWidth();
 		var height = screenInfo.getHeight();
@@ -53,6 +53,15 @@ public record SimpleGameView(int height, int width) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		});
+	}
+	
+	public static void drawBackGround2(ApplicationContext context, float width, float height) {
+		context.renderFrame(graphics -> {
+			graphics.setColor(Color.LIGHT_GRAY);
+			graphics.fill(new Rectangle2D.Float(0, 0, width, height));
+			graphics.setColor(Color.BLACK);
+			graphics.drawLine((int) width/5+30, 0, (int) width/5+30, (int) height);
 		});
 	}
 	
@@ -335,23 +344,35 @@ public record SimpleGameView(int height, int width) {
 		int xright = 1400;
 		
 		
-		SimpleGameView.drawcard(context,xleft,y);
-		SimpleGameView.drawcard(context,xmiddle,y);
-		SimpleGameView.drawcard(context,xright,y);
-		
 		var mainTable = data.getMainTable();
 	     
 	    for (int i = 0; i < mainTable.length; i++) {
             // Vérification du type de la carte
             if (mainTable[i] instanceof GoldenCard) {
+            	SimpleGameView.drawcard(context,200+600*i,y);
             	SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[i]), 200+600*i, y, width, height); 
             } else if (mainTable[i] instanceof RessourceCard) {
+            	SimpleGameView.drawcard(context,200+600*i,y);
             	SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[i]), 200+600*i, y, width, height); 
             }
 	    }
 	}
 	
+	public static void drawPlateau(ApplicationContext context, SimpleGameData data) {
+		var screenInfo = context.getScreenInfo();
+		var width = screenInfo.getWidth();
+		var height = screenInfo.getHeight();
+		
+		var plateau = data.getPlateau();
+		
+	}
 	
+	public static void refreshScreen(ApplicationContext context, SimpleGameData data) {
+		SimpleGameView.intitialisation(context);
+		SimpleGameView.drawLeftPack(context, data);
+		SimpleGameView.drawRightPack(context, data);
+		SimpleGameView.drawMainPack(context, data);	
+	}
 
 	
 	private static void checkRange(double min, double value, double max) {
