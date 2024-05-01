@@ -88,12 +88,12 @@ public class SimpleGameController {
 		var view = new SimpleGameView((int)height, (int)width );
 		var data = new SimpleGameData();
 		SimpleGameView.intitialisation(context);
-		SimpleGameView.startmaincard(context,data.getPackRessource());
-		SimpleGameView.startpiocheleft(context, data.getPackRessource(), data);
-		SimpleGameView.startpiocheright(context, data.getPackGolden());
+		SimpleGameView.drawLeftPack(context, data);;
+		SimpleGameView.drawRightPack(context, data);;
+		SimpleGameView.drawMainPack(context, data);;
 		while (true) {			
 
-			if (!gameLoop(context, view, data)) { //, data, view
+			if (!gameLoop(context, view, data)) {
 				System.out.println("Thank you for quitting!");
 				context.exit(0);
 				return;
@@ -186,15 +186,11 @@ public class SimpleGameController {
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    System.out.println("carte pioche gauche, carte moyenne");
-			    Pair posi = new Pair(0, 0);
-			    RessourceCard card = data.getRessourceTable()[0];
-			    System.out.println("plateau :" + data.getPlateau());
-			    System.out.println("sa passe");
-			    data.getPlateau().put(posi, card);
-			    System.out.println("plateau :" + data.getPlateau());
+			    RessourceCard card = data.getRessourceTable()[1];
 			    System.out.println(card);
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+			   
+			    //SimpleGameView.drawcard(context, 1000, 700);
+			    //SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
 
 			}
 	 }
