@@ -122,6 +122,7 @@ public class SimpleGameController {
                 SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameView.refreshScreen(context, data);
                 return;
                
             }
