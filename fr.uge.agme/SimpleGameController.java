@@ -196,9 +196,10 @@ public class SimpleGameController {
 			 RessourceCard card = data.getRessourceTable()[0];
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
-			    System.out.println(mainTable.length);
+			    data.removeCardFromRessourceTable(0);
+			    
 			    if(mainTable.length<3) {
-			    data.addCardToMainTable(card);
+			    	data.addCardToMainTable(card);
 			    }
 
 			}
@@ -211,8 +212,10 @@ public class SimpleGameController {
 			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+			    data.removeCardFromRessourceTable(1);
+			    
 			    if(mainTable.length<3) {
-			    data.addCardToMainTable(card);
+			    	data.addCardToMainTable(card);
 			    }
 
 			}
@@ -225,8 +228,10 @@ public class SimpleGameController {
 			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+			    data.removeCardFromRessourceTable(2);
+			    
 			    if(mainTable.length<3) {
-			    data.addCardToMainTable(card);
+			    	data.addCardToMainTable(card);
 			    }
 			}
 	 }
@@ -238,9 +243,11 @@ public class SimpleGameController {
 			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
+			    data.removeCardFromGoldenTable(0);
+			    
 			    if(mainTable.length<3) {
 				    data.addCardToMainTable(card);
-				    }
+				 }
 			}
 	 }
  public static void detectpiocherightmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
@@ -251,6 +258,8 @@ public class SimpleGameController {
 			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
+			    data.removeCardFromGoldenTable(1);
+			    
 			    if(mainTable.length<3) {
 				    data.addCardToMainTable(card);
 				    }
@@ -264,6 +273,8 @@ public class SimpleGameController {
 			    var mainTable = data.getMainTable();
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
+			    data.removeCardFromGoldenTable(2);
+			    
 			    if(mainTable.length<3) {
 				    data.addCardToMainTable(card);
 				    }
