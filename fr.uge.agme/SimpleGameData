@@ -119,6 +119,26 @@ public class SimpleGameData {
 		return plateau;
 	}
 	
-	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
+	public void removeCardFromMainTable(int index) {
+	    if (index >= 0 && index < mainTable.length) {
+	        // Créer un nouveau tableau avec une taille inférieure de 1
+	        Card[] newMainTable = new Card[mainTable.length - 1];
+	        System.arraycopy(mainTable, 0, newMainTable, 0, index);
+	        System.arraycopy(mainTable, index + 1, newMainTable, index, mainTable.length - index - 1);
+	        mainTable = newMainTable;
+	        System.out.println("Bien suprimé");
+	        displayMainTable(mainTable);
+	    } else {
+	        System.out.println("L'indice fourni est invalide.");
+	    }
+	}
+	
+	public static void displayMainTable(Card[] mainTable) {
+	    System.out.println("Contenu de mainTable :");
+	    for (Card card : mainTable) {
+	        System.out.println(card);
+	    }
 	}
 
+	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
+	}
