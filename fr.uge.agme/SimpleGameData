@@ -3,6 +3,7 @@ package fr.uge.game;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -32,6 +33,8 @@ public class SimpleGameData {
 	private RessourceCard MainCard3;**/
 	
 	public SimpleGameData() {
+		
+		// Ouverture des fichiers pour créer les decks resssources et les dorées
 		try {
 			packRessource = RessourceCard.createRessourceCard(Path.of("include/Ressource.txt"));
 		} catch (IOException e) {
@@ -49,33 +52,48 @@ public class SimpleGameData {
 		mainTable = new Card[3];
 		plateau = new HashMap<Pair, Card>();
 		
+		melangeRessource(packRessource);
+        melangeGolden(packGolden);
+		
+		
+		// initialisation des pioches
 		for (int i = 0; i < 3; i++) {
 			ressourceTable[i] = piocheRessource(getPackRessource());
 			goldenTable[i] = piocheGolden(getPackGolden());
 		}
+		
+		// initialisation des cartes en main
 		mainTable[0] = piocheRessource(getPackRessource());
 		mainTable[1] = piocheRessource(getPackRessource());
 		mainTable[2] = piocheGolden(getPackGolden());
+		
+		// carte de départ
+		plateau.put(new Pair(0, 0), piocheRessource(getPackRessource()));
+		
 	}
 	
-	public static RessourceCard piocheRessource(ArrayList<RessourceCard> packRessource) {
-        
-		Random rand = new Random();
-		int indexAleatoire = rand.nextInt(packRessource.size());
-		RessourceCard carte1 = packRessource.get(indexAleatoire);
-		packRessource.remove(carte1);
+	
+	
+	public static ArrayList<RessourceCard> melangeRessource(ArrayList<RessourceCard> packRessource) {
+        Random rand = new Random();
+        Collections.shuffle(packRessource, rand);
+        return packRessource;
+   }
 
-		return carte1;
-	}
-	
-	public static GoldenCard piocheGolden(ArrayList<GoldenCard> packGolden) {
-        
-		Random rand = new Random();
-		int indexAleatoire = rand.nextInt(packGolden.size());
-		GoldenCard carte1 = packGolden.get(indexAleatoire);
-		packGolden.remove(carte1);
-		return carte1;
-	}
+   public static RessourceCard piocheRessource(ArrayList<RessourceCard> packRessource) {
+       RessourceCard carte1 = packRessource.remove(0);
+       return carte1;
+   }
+   public static ArrayList<GoldenCard> melangeGolden(ArrayList<GoldenCard> packGolden) {
+        Random rand = new Random();
+        Collections.shuffle(packGolden, rand);
+        return packGolden;
+   }
+
+   public static GoldenCard piocheGolden(ArrayList<GoldenCard> packGolden) {
+       GoldenCard carte1 = packGolden.remove(0);
+       return carte1;
+   }
 
 	public RessourceCard[] getRessourceTable() {
 		return ressourceTable;
