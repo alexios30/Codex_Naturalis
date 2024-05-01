@@ -128,9 +128,9 @@ public class SimpleGameController {
             var event = context.pollOrWaitEvent(10);
             if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
                 var location = event.getLocation();
-                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight);
-                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight);
-                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight);
+                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight, data, context);
                 
                 SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
@@ -150,27 +150,58 @@ public class SimpleGameController {
         }
     }
  
- public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
      	int x = 35; 
      	int y = 875;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    System.out.println("carte gauche");
+			    var mainTable = data.getMainTable();
+			    if (mainTable[0] instanceof GoldenCard) {
+				    GoldenCard card = data.getGoldenTable()[0];
+				   
+				    SimpleGameView.drawcard(context, 1000, 700);
+				    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[0]), 1000, 700, largeur, hauteur);
+	            } else if (mainTable[0] instanceof RessourceCard) {
+	            	 RessourceCard card = data.getRessourceTable()[0];
+	 			   
+	 			    SimpleGameView.drawcard(context, 1000, 700);
+	 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[0]), 1000, 700, largeur, hauteur);
+
+	            }
 			}
 	 }
  
- public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ,SimpleGameData data, ApplicationContext context) {
  	int x = 800; 
  	int y = 875;
 	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-		    System.out.println("carte milieu");
+		 var mainTable = data.getMainTable();
+		    if (mainTable[1] instanceof GoldenCard) {
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[1]), 1000, 700, largeur, hauteur);
+         } else if (mainTable[1] instanceof RessourceCard) {
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[1]), 1000, 700, largeur, hauteur);
+
+         }
 		}
  }
 
- public static void detectmaincardright( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectmaincardright( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
  	int x = 1400; 
  	int y = 875;
 	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-		    System.out.println("carte droite");
+		 var mainTable = data.getMainTable();
+		    if (mainTable[2] instanceof GoldenCard) {
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[2]), 1000, 700, largeur, hauteur);
+      } else if (mainTable[2] instanceof RessourceCard) {
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
+
+      }
 		}
  }
 
@@ -178,11 +209,10 @@ public class SimpleGameController {
      	int x = 35; 
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    RessourceCard card = data.getRessourceTable()[0];
-			    System.out.println(card);
-			   
+			 RessourceCard card = data.getRessourceTable()[0];
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+
 
 			}
 	 }
@@ -191,8 +221,6 @@ public class SimpleGameController {
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    RessourceCard card = data.getRessourceTable()[1];
-			    System.out.println(card);
-			   
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
 
@@ -203,8 +231,6 @@ public class SimpleGameController {
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    RessourceCard card = data.getRessourceTable()[2];
-			    System.out.println(card);
-			   
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
 			}
@@ -214,8 +240,6 @@ public class SimpleGameController {
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    GoldenCard card = data.getGoldenTable()[0];
-			    System.out.println(card);
-			   
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
 			}
@@ -225,8 +249,6 @@ public class SimpleGameController {
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    GoldenCard card = data.getGoldenTable()[1];
-			    System.out.println(card);
-			   
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
 			}
@@ -236,8 +258,6 @@ public class SimpleGameController {
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    GoldenCard card = data.getGoldenTable()[2];
-			    System.out.println(card);
-			   
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
 			}
