@@ -146,6 +146,7 @@ public class SimpleGameController {
 	 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[0]), 1000, 700, largeur, hauteur);
 
 	            }
+			    data.removeCardFromMainTable(0);
 			}
 	 }
  
@@ -164,6 +165,7 @@ public class SimpleGameController {
 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[1]), 1000, 700, largeur, hauteur);
 
          }
+		    data.removeCardFromMainTable(1);
 		}
  }
 
@@ -181,6 +183,7 @@ public class SimpleGameController {
 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
 
       }
+		    data.removeCardFromMainTable(2);
 		}
  }
 
