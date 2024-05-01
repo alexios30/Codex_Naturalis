@@ -132,7 +132,13 @@ public class SimpleGameData {
 	        System.out.println("L'indice fourni est invalide.");
 	    }
 	}
-	
+	public void addCardToMainTable(Card card) {
+	    Card[] newMainTable = new Card[mainTable.length + 1];
+	    System.arraycopy(mainTable, 0, newMainTable, 0, mainTable.length);
+	    newMainTable[mainTable.length] = card;
+	    mainTable = newMainTable;
+	}
+
 	public static void displayMainTable(Card[] mainTable) {
 	    System.out.println("Contenu de mainTable :");
 	    for (Card card : mainTable) {
