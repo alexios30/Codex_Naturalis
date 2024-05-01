@@ -340,26 +340,15 @@ public record SimpleGameView(int height, int width) {
 		SimpleGameView.drawcard(context,xright,y);
 		
 		var mainTable = data.getMainTable();
-		var carteleft = mainTable[0];
-	    var cartemiddle =  mainTable[1];
-	    var carteright =  mainTable[2];
 	     
 	    for (int i = 0; i < mainTable.length; i++) {
             // Vérification du type de la carte
             if (mainTable[i] instanceof GoldenCard) {
-            	SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[i]), 200+600*i, y, 350, 150); 
+            	SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[i]), 200+600*i, y, width, height); 
             } else if (mainTable[i] instanceof RessourceCard) {
-            	SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[i]), xleft, y, 350, 150); 
+            	SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[i]), 200+600*i, y, width, height); 
             }
 	    }
-	     
-	    
-	    
-		//SimpleGameView.dessincardRessource(context, carteleft, xleft, y, width, height);
-		//SimpleGameView.dessincardRessource(context, cartemiddle, xmiddle, y, width, height);
-		//SimpleGameView.dessincardRessource(context, carteright, xright, y, width, height);
-		
-		//return cartedepart;
 	}
 	
 	
