@@ -103,23 +103,6 @@ public class SimpleGameController {
 	}
 	
 	
-	public static void positionclicksourisdebut(ApplicationContext context) {
-        while (true) {
-        	int cardWidth = 350; 
-        	int cardHeight = 150; 
-
-            var event = context.pollOrWaitEvent(10);
-            if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
-                var location = event.getLocation();
-                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight);
-                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight);
-                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight);
-                return;
-                
-               
-            }
-        }
-    }
  public static void positionclicksouris(ApplicationContext context, SimpleGameData data) {
         while (true) {
         	int cardWidth = 350; 
@@ -156,13 +139,9 @@ public class SimpleGameController {
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 			    var mainTable = data.getMainTable();
 			    if (mainTable[0] instanceof GoldenCard) {
-				    GoldenCard card = data.getGoldenTable()[0];
-				   
 				    SimpleGameView.drawcard(context, 1000, 700);
 				    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[0]), 1000, 700, largeur, hauteur);
 	            } else if (mainTable[0] instanceof RessourceCard) {
-	            	 RessourceCard card = data.getRessourceTable()[0];
-	 			   
 	 			    SimpleGameView.drawcard(context, 1000, 700);
 	 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[0]), 1000, 700, largeur, hauteur);
 
