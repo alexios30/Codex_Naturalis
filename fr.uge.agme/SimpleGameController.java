@@ -88,9 +88,9 @@ public class SimpleGameController {
 		var view = new SimpleGameView((int)height, (int)width );
 		var data = new SimpleGameData();
 		SimpleGameView.intitialisation(context);
-		SimpleGameView.drawLeftPack(context, data);;
-		SimpleGameView.drawRightPack(context, data);;
-		SimpleGameView.drawMainPack(context, data);;
+		SimpleGameView.drawLeftPack(context, data);
+		SimpleGameView.drawRightPack(context, data);
+		SimpleGameView.drawMainPack(context, data);
 		while (true) {			
 
 			if (!gameLoop(context, view, data)) {
@@ -134,11 +134,11 @@ public class SimpleGameController {
                 
                 SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
-                SimpleGameController.detectpiocheleftbottom(location.x, location.y,cardWidth, cardHeight);
+                SimpleGameController.detectpiocheleftbottom(location.x, location.y,cardWidth, cardHeight, data, context);
                 
-                SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight);
-                SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight);
-                SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight);
+                SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
                 return;
                
             }
@@ -178,48 +178,68 @@ public class SimpleGameController {
      	int x = 35; 
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    System.out.println("carte pioche gauche, carte haut");
+			    RessourceCard card = data.getRessourceTable()[0];
+			    System.out.println(card);
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+
 			}
 	 }
  public static void detectpiocheleftmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context ) {
      	int x = 35; 
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    System.out.println("carte pioche gauche, carte moyenne");
 			    RessourceCard card = data.getRessourceTable()[1];
 			    System.out.println(card);
 			   
-			    //SimpleGameView.drawcard(context, 1000, 700);
-			    //SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
 
 			}
 	 }
- public static void detectpiocheleftbottom( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectpiocheleftbottom( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
      	int x = 35; 
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    System.out.println("carte pioche gauche, carte bas");
+			    RessourceCard card = data.getRessourceTable()[2];
+			    System.out.println(card);
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
 			}
 	 }
- public static void detectpiocherighttop( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectpiocherighttop( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
      	int x = 1535; 
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    System.out.println("carte pioche droite, carte haut");
+			    GoldenCard card = data.getGoldenTable()[0];
+			    System.out.println(card);
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
 			}
 	 }
- public static void detectpiocherightmiddle( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectpiocherightmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
      	int x = 1535; 
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    System.out.println("carte pioche droite, carte moyenne");
+			    GoldenCard card = data.getGoldenTable()[1];
+			    System.out.println(card);
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
 			}
 	 }
- public static void detectpiocherightbottom( float x2,float y2,  int largeur, int hauteur ) {
+ public static void detectpiocherightbottom( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
      	int x = 1535; 
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    System.out.println("carte pioche droite, carte bas");
+			    GoldenCard card = data.getGoldenTable()[2];
+			    System.out.println(card);
+			   
+			    SimpleGameView.drawcard(context, 1000, 700);
+			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
 			}
 	 }
 
