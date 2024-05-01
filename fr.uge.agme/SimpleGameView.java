@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
 
@@ -338,13 +339,20 @@ public record SimpleGameView(int height, int width) {
 		SimpleGameView.drawcard(context,xmiddle,y);
 		SimpleGameView.drawcard(context,xright,y);
 		
-		 var carteleft = data.getMainTable()[0];
-	     var cartemiddle =  data.getMainTable()[1];
-	     var carteright =  data.getMainTable()[2];
+		var mainTable = data.getMainTable();
+		var carteleft = mainTable[0];
+	    var cartemiddle =  mainTable[1];
+	    var carteright =  mainTable[2];
 	     
-	     //cartedepart.add(carteleft);
-	     //cartedepart.add(cartemiddle);
-		 //cartedepart.add(carteright);
+	    for (int i = 0; i < mainTable.length; i++) {
+            // Vérification du type de la carte
+            if (mainTable[i] instanceof GoldenCard) {
+            	SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[i]), 200+600*i, y, 350, 150); 
+            } else if (mainTable[i] instanceof RessourceCard) {
+            	SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[i]), xleft, y, 350, 150); 
+            }
+	    }
+	     
 	    
 	    
 		//SimpleGameView.dessincardRessource(context, carteleft, xleft, y, width, height);
