@@ -191,10 +191,11 @@ public class SimpleGameController {
      	int x = 35; 
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+			 var mainTable = data.getMainTable();
 			 RessourceCard card = data.getRessourceTable()[0];
 			    SimpleGameView.drawcard(context, 1000, 700);
 			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
-
+			    System.out.println(mainTable.length);
 
 			}
 	 }
