@@ -126,17 +126,46 @@ public class SimpleGameData {
 	        System.arraycopy(mainTable, 0, newMainTable, 0, index);
 	        System.arraycopy(mainTable, index + 1, newMainTable, index, mainTable.length - index - 1);
 	        mainTable = newMainTable;
-	        System.out.println("Bien suprimé");
+	        System.out.println("Bien supprimé");
 	        displayMainTable(mainTable);
-	    } else {
-	        System.out.println("L'indice fourni est invalide.");
 	    }
 	}
+	public void removeCardFromRessourceTable(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        // Créer un nouveau tableau avec une taille inférieure de 1
+	        RessourceCard[] newressourceTable = new RessourceCard[ressourceTable.length - 1];
+	        System.arraycopy(ressourceTable, 0, newressourceTable, 0, index);
+	        System.arraycopy(ressourceTable, index + 1, newressourceTable, index, ressourceTable.length - index - 1);
+	        ressourceTable = newressourceTable;
+	        RessourceCard carte = piocheRessource(getPackRessource());
+	        addCardToRessourceTable(carte);
+	        System.out.println("Bien supprimé");
+	    }
+	}
+	
+	public void removeCardFromGoldenTable(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        // Créer un nouveau tableau avec une taille inférieure de 1
+	        GoldenCard[] newgoldenTable = new GoldenCard[goldenTable.length - 1];
+	        System.arraycopy(goldenTable, 0, newgoldenTable, 0, index);
+	        System.arraycopy(goldenTable, index + 1, newgoldenTable, index, goldenTable.length - index - 1);
+	        goldenTable = newgoldenTable;
+	        System.out.println("Bien supprimé");
+	    }
+	}
+	
 	public void addCardToMainTable(Card card) {
 	    Card[] newMainTable = new Card[mainTable.length + 1];
 	    System.arraycopy(mainTable, 0, newMainTable, 0, mainTable.length);
 	    newMainTable[mainTable.length] = card;
 	    mainTable = newMainTable;
+	}
+	
+	public void addCardToRessourceTable(RessourceCard card) {
+	    RessourceCard[] newressourcetable = new RessourceCard[ressourceTable.length + 1];
+	    System.arraycopy(ressourceTable, 0, newressourcetable, 0, ressourceTable.length);
+	    newressourcetable[ressourceTable.length] = card;
+	    ressourceTable = newressourcetable;
 	}
 
 	public static void displayMainTable(Card[] mainTable) {
