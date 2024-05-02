@@ -1,5 +1,5 @@
 package fr.uge.game;
 
-public record Pair(int a, int b) {
+public record Pair(int x, int y) {
 
 }
