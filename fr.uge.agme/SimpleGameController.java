@@ -92,7 +92,6 @@ public class SimpleGameController {
 		SimpleGameView.drawRightPack(context, data);
 		SimpleGameView.drawMainPack(context, data);
 		SimpleGameView.drawPlateau(context, data);
-
 		while (true) {			
 
 			if (!gameLoop(context, view, data)) {
@@ -140,15 +139,16 @@ public class SimpleGameController {
      	int x = 35; 
      	int y = 875;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    var mainTable = data.getMainTable();
-			    if (mainTable[0] instanceof GoldenCard) {
-				    SimpleGameView.drawcard(context, 1000, 700);
-				    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[0]), 1000, 700, largeur, hauteur);
-	            } else if (mainTable[0] instanceof RessourceCard) {
-	 			    SimpleGameView.drawcard(context, 1000, 700);
-	 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[0]), 1000, 700, largeur, hauteur);
-
-	            }
+//			    var mainTable = data.getMainTable();
+//			    if (mainTable[0] instanceof GoldenCard) {
+//				    SimpleGameView.drawcard(context, 1000, 700);
+//				    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[0]), 1000, 700, largeur, hauteur);
+//	            } else if (mainTable[0] instanceof RessourceCard) {
+//	 			    SimpleGameView.drawcard(context, 1000, 700);
+//	 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[0]), 1000, 700, largeur, hauteur);
+//
+//	            }
+			 //Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 			    data.removeCardFromMainTable(0);
 			}
 	 }
@@ -157,17 +157,18 @@ public class SimpleGameController {
  	int x = 800; 
  	int y = 875;
 	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-		 var mainTable = data.getMainTable();
-		    if (mainTable[1] instanceof GoldenCard) {
-			   
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[1]), 1000, 700, largeur, hauteur);
-         } else if (mainTable[1] instanceof RessourceCard) {
-			   
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[1]), 1000, 700, largeur, hauteur);
-
-         }
+//		 var mainTable = data.getMainTable();
+//		    if (mainTable[1] instanceof GoldenCard) {
+//			   
+//			    SimpleGameView.drawcard(context, 1000, 700);
+//			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[1]), 1000, 700, largeur, hauteur);
+//         } else if (mainTable[1] instanceof RessourceCard) {
+//			   
+//			    SimpleGameView.drawcard(context, 1000, 700);
+//			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[1]), 1000, 700, largeur, hauteur);
+//
+//         }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
+		 
 		    data.removeCardFromMainTable(1);
 		}
  }
@@ -176,16 +177,18 @@ public class SimpleGameController {
  	int x = 1400; 
  	int y = 875;
 	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-		 var mainTable = data.getMainTable();
-		    if (mainTable[2] instanceof GoldenCard) {
-			   
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[2]), 1000, 700, largeur, hauteur);
-      } else if (mainTable[2] instanceof RessourceCard) {
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
-
-      }
+//		 var mainTable = data.getMainTable();
+//		    if (mainTable[2] instanceof GoldenCard) {
+//			   
+//			    SimpleGameView.drawcard(context, 1000, 700);
+//			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[2]), 1000, 700, largeur, hauteur);
+//      } else if (mainTable[2] instanceof RessourceCard) {
+//			    SimpleGameView.drawcard(context, 1000, 700);
+//			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
+//
+//      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
+		 
+		 
 		    data.removeCardFromMainTable(2);
 		}
  }
@@ -194,82 +197,79 @@ public class SimpleGameController {
      	int x = 35; 
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			 var mainTable = data.getMainTable();
-			 RessourceCard card = data.getRessourceTable()[0];
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
-			    System.out.println(mainTable.length);
-			    if(mainTable.length<3) {
-			    data.addCardToMainTable(card);
-			    }
-
+			    var mainTable = data.getMainTable();
+			    	RessourceCard card = data.getRessourceTable()[0];
+				    if(mainTable.length<3) {
+				    	data.removeCardFromRessourceTableElement0(0);
+				    	data.addCardToMainTable(card);
+				    }
 			}
 	 }
+ 
  public static void detectpiocheleftmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context ) {
      	int x = 35; 
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    RessourceCard card = data.getRessourceTable()[1];
 			    var mainTable = data.getMainTable();
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
-			    if(mainTable.length<3) {
-			    data.addCardToMainTable(card);
+			    	RessourceCard card = data.getRessourceTable()[1];
+				    if(mainTable.length<3) {
+				    	data.removeCardFromRessourceTableElement1(1);
+				    	data.addCardToMainTable(card);
 			    }
-
 			}
 	 }
+ 
  public static void detectpiocheleftbottom( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
      	int x = 35; 
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    RessourceCard card = data.getRessourceTable()[2];
 			    var mainTable = data.getMainTable();
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardRessource(context, card, 1000, 700, largeur, hauteur);
-			    if(mainTable.length<3) {
-			    data.addCardToMainTable(card);
-			    }
+			    	RessourceCard card = data.getRessourceTable()[2];
+				    if(mainTable.length<3) {
+				    	data.removeCardFromRessourceTableElement2(2);
+				    	data.addCardToMainTable(card);
+				    }
 			}
 	 }
+ 
  public static void detectpiocherighttop( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
      	int x = 1535; 
      	int y = 100;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    GoldenCard card = data.getGoldenTable()[0];
 			    var mainTable = data.getMainTable();
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
-			    if(mainTable.length<3) {
-				    data.addCardToMainTable(card);
-				    }
-			}
+			    	GoldenCard card = data.getGoldenTable()[0];
+				    if(mainTable.length<3) {
+				    	data.removeCardFromGoldenTableElement0(0);
+					    data.addCardToMainTable(card);
+					    }
+		 }
 	 }
+
  public static void detectpiocherightmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
      	int x = 1535; 
      	int y = 300;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    GoldenCard card = data.getGoldenTable()[1];
 			    var mainTable = data.getMainTable();
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
-			    if(mainTable.length<3) {
-				    data.addCardToMainTable(card);
-				    }
+			    	GoldenCard card = data.getGoldenTable()[1];
+				    if(mainTable.length<3) {
+				    	data.removeCardFromGoldenTableElement1(1);
+					    data.addCardToMainTable(card);
+
 			}
+		 }
 	 }
+
  public static void detectpiocherightbottom( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
      	int x = 1535; 
      	int y = 500;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    GoldenCard card = data.getGoldenTable()[2];
 			    var mainTable = data.getMainTable();
-			    SimpleGameView.drawcard(context, 1000, 700);
-			    SimpleGameView.dessincardGolden(context, card, 1000, 700, largeur, hauteur);
-			    if(mainTable.length<3) {
-				    data.addCardToMainTable(card);
-				    }
+			    	GoldenCard card = data.getGoldenTable()[2];
+				    if(mainTable.length<3) {
+				    	data.removeCardFromGoldenTableElement2(2);
+					    data.addCardToMainTable(card);
 			}
+		 }
 	 }
 
 	
