@@ -81,9 +81,15 @@ public class SimpleGameData {
    }
 
    public static RessourceCard piocheRessource(ArrayList<RessourceCard> packRessource) {
+	   int size = packRessource.size();
+	   if(size==0) {
+		   System.out.println("Partie fini");
+		   return null;
+	   }
        RessourceCard carte1 = packRessource.remove(0);
        return carte1;
    }
+   
    public static ArrayList<GoldenCard> melangeGolden(ArrayList<GoldenCard> packGolden) {
         Random rand = new Random();
         Collections.shuffle(packGolden, rand);
@@ -91,6 +97,11 @@ public class SimpleGameData {
    }
 
    public static GoldenCard piocheGolden(ArrayList<GoldenCard> packGolden) {
+	   int size = packGolden.size();
+	   if(size==0) {
+		   System.out.println("Partie fini");
+		   return null;
+	   }
        GoldenCard carte1 = packGolden.remove(0);
        return carte1;
    }
@@ -101,6 +112,9 @@ public class SimpleGameData {
 
 	public GoldenCard[] getGoldenTable() {
 		return goldenTable;
+	}
+	public int getGoldenTableSize() {
+		return goldenTable.length;
 	}
 	
 	public Card[] getMainTable() {
@@ -121,36 +135,74 @@ public class SimpleGameData {
 	
 	public void removeCardFromMainTable(int index) {
 	    if (index >= 0 && index < mainTable.length) {
-	        // Créer un nouveau tableau avec une taille inférieure de 1
 	        Card[] newMainTable = new Card[mainTable.length - 1];
 	        System.arraycopy(mainTable, 0, newMainTable, 0, index);
 	        System.arraycopy(mainTable, index + 1, newMainTable, index, mainTable.length - index - 1);
 	        mainTable = newMainTable;
-	        System.out.println("Bien supprimé");
 	        displayMainTable(mainTable);
 	    }
 	}
-	public void removeCardFromRessourceTable(int index) {
+
+	public void removeCardFromRessourceTableElement0(int index) {
 	    if (index >= 0 && index < ressourceTable.length) {
-	        // Créer un nouveau tableau avec une taille inférieure de 1
+	        RessourceCard[] newressourceTable = new RessourceCard[ressourceTable.length - 1];
+	        System.arraycopy(ressourceTable, 0, newressourceTable, 0, index);
+	        System.arraycopy(ressourceTable, 1, newressourceTable, index, ressourceTable.length - index - 1);
+	        ressourceTable = newressourceTable;
+	        RessourceCard carte = piocheRessource(getPackRessource());
+	        addCardToRessourceTable(carte,0);
+	    }
+	}
+	public void removeCardFromRessourceTableElement1(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
 	        RessourceCard[] newressourceTable = new RessourceCard[ressourceTable.length - 1];
 	        System.arraycopy(ressourceTable, 0, newressourceTable, 0, index);
 	        System.arraycopy(ressourceTable, index + 1, newressourceTable, index, ressourceTable.length - index - 1);
 	        ressourceTable = newressourceTable;
 	        RessourceCard carte = piocheRessource(getPackRessource());
-	        addCardToRessourceTable(carte);
-	        System.out.println("Bien supprimé");
+	        addCardToRessourceTable(carte, 1);
 	    }
 	}
+
 	
-	public void removeCardFromGoldenTable(int index) {
+	public void removeCardFromRessourceTableElement2(int index) {
 	    if (index >= 0 && index < ressourceTable.length) {
-	        // Créer un nouveau tableau avec une taille inférieure de 1
+	        RessourceCard[] newressourceTable = new RessourceCard[ressourceTable.length - 1];
+	        System.arraycopy(ressourceTable, 0, newressourceTable, 0, index);
+	        System.arraycopy(ressourceTable, 2, newressourceTable, index, ressourceTable.length - index - 1);
+	        ressourceTable = newressourceTable;
+	        RessourceCard carte = piocheRessource(getPackRessource());
+	        addCardToRessourceTable(carte,2);
+	    }
+	}
+	public void removeCardFromGoldenTableElement0(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        GoldenCard[] newgoldenTable = new GoldenCard[goldenTable.length - 1];
+	        System.arraycopy(goldenTable, 0, newgoldenTable, 0, index);
+	        System.arraycopy(goldenTable, 1, newgoldenTable, index, goldenTable.length - index - 1);
+	        goldenTable = newgoldenTable;
+	        GoldenCard carte = piocheGolden(getPackGolden());
+	        addCardToGoldenTable(carte,0);
+	    }
+	}
+	public void removeCardFromGoldenTableElement1(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
 	        GoldenCard[] newgoldenTable = new GoldenCard[goldenTable.length - 1];
 	        System.arraycopy(goldenTable, 0, newgoldenTable, 0, index);
 	        System.arraycopy(goldenTable, index + 1, newgoldenTable, index, goldenTable.length - index - 1);
 	        goldenTable = newgoldenTable;
-	        System.out.println("Bien supprimé");
+	        GoldenCard carte = piocheGolden(getPackGolden());
+	        addCardToGoldenTable(carte,1);
+	    }
+	}
+	public void removeCardFromGoldenTableElement2(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        GoldenCard[] newgoldenTable = new GoldenCard[goldenTable.length - 1];
+	        System.arraycopy(goldenTable, 0, newgoldenTable, 0, index);
+	        System.arraycopy(goldenTable, 2, newgoldenTable, index, goldenTable.length - index - 1);
+	        goldenTable = newgoldenTable;
+	        GoldenCard carte = piocheGolden(getPackGolden());
+	        addCardToGoldenTable(carte,2);
 	    }
 	}
 	
@@ -161,12 +213,25 @@ public class SimpleGameData {
 	    mainTable = newMainTable;
 	}
 	
-	public void addCardToRessourceTable(RessourceCard card) {
-	    RessourceCard[] newressourcetable = new RessourceCard[ressourceTable.length + 1];
-	    System.arraycopy(ressourceTable, 0, newressourcetable, 0, ressourceTable.length);
-	    newressourcetable[ressourceTable.length] = card;
-	    ressourceTable = newressourcetable;
+	public void addCardToRessourceTable(RessourceCard card, int index) {
+	    if (index >= 0 && index <= ressourceTable.length) {
+	        RessourceCard[] newRessourceTable = new RessourceCard[ressourceTable.length + 1];
+	        System.arraycopy(ressourceTable, 0, newRessourceTable, 0, index);
+	        newRessourceTable[index] = card;
+	        System.arraycopy(ressourceTable, index, newRessourceTable, index + 1, ressourceTable.length - index);
+	        ressourceTable = newRessourceTable;
+	    }
 	}
+	public void addCardToGoldenTable(GoldenCard card, int index) {
+	    if (index >= 0 && index <= goldenTable.length) {
+	        GoldenCard[] newGoldenCard = new GoldenCard[goldenTable.length + 1];
+	        System.arraycopy(goldenTable, 0, newGoldenCard, 0, index);
+	        newGoldenCard[index] = card;
+	        System.arraycopy(goldenTable, index, newGoldenCard, index + 1, goldenTable.length - index);
+	        goldenTable = newGoldenCard;
+	    }
+	}
+
 
 	public static void displayMainTable(Card[] mainTable) {
 	    System.out.println("Contenu de mainTable :");
