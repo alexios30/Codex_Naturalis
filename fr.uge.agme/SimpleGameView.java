@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
 
@@ -309,12 +311,12 @@ public record SimpleGameView(int height, int width) {
 		var carteTop = data.getRessourceTable()[1];
 		var carteBottom = data.getRessourceTable()[2];
 
-		SimpleGameView.drawcard(context,35,100);
-		SimpleGameView.drawcard(context,x,y);
-		SimpleGameView.drawcard(context,x,y1);
+		drawcard(context,35,100);
+		drawcard(context,x,y);
+		drawcard(context,x,y1);
 		
-		SimpleGameView.dessincardRessource(context, carteTop, x, y, 350, 150);
-		SimpleGameView.dessincardRessource(context, carteBottom, x, y1, 350, 150);
+		dessincardRessource(context, carteTop, x, y, 350, 150);
+		dessincardRessource(context, carteBottom, x, y1, 350, 150);
 
 	}
 	
@@ -327,12 +329,12 @@ public record SimpleGameView(int height, int width) {
 		var carteTop = data.getGoldenTable()[1];
 		var carteBottom = data.getGoldenTable()[2];
 	    
-		SimpleGameView.drawcard(context,xgolden	,100);
-		SimpleGameView.drawcard(context,xgolden,y1);
-		SimpleGameView.drawcard(context, xgolden, y);
+		drawcard(context,xgolden	,100);
+		drawcard(context,xgolden,y1);
+		drawcard(context, xgolden, y);
 		
-		SimpleGameView.dessincardGolden(context, carteTop, xgolden, y, 350, 150);
-		SimpleGameView.dessincardGolden(context, carteBottom, xgolden, y1, 350, 150);
+		dessincardGolden(context, carteTop, xgolden, y, 350, 150);
+		dessincardGolden(context, carteBottom, xgolden, y1, 350, 150);
 	}
 	
 	public static void drawMainPack(ApplicationContext context, SimpleGameData data) {
@@ -349,11 +351,11 @@ public record SimpleGameView(int height, int width) {
 	    for (int i = 0; i < mainTable.length; i++) {
             // Vérification du type de la carte
             if (mainTable[i] instanceof GoldenCard) {
-            	SimpleGameView.drawcard(context,200+600*i,y);
-            	SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[i]), 200+600*i, y, width, height); 
+            	drawcard(context,200+600*i,y);
+            	dessincardGolden(context, ((GoldenCard) mainTable[i]), 200+600*i, y, width, height); 
             } else if (mainTable[i] instanceof RessourceCard) {
-            	SimpleGameView.drawcard(context,200+600*i,y);
-            	SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[i]), 200+600*i, y, width, height); 
+            	drawcard(context,200+600*i,y);
+            	dessincardRessource(context, ((RessourceCard) mainTable[i]), 200+600*i, y, width, height); 
             }
 	    }
 	}
@@ -362,16 +364,45 @@ public record SimpleGameView(int height, int width) {
 		var screenInfo = context.getScreenInfo();
 		var width = screenInfo.getWidth();
 		var height = screenInfo.getHeight();
-		
+		int widthCard = 350;
+		int heightCard = 150;
 		var plateau = data.getPlateau();
+		var ordre = data.getOrdre();
+		Pair paire1 = new Pair(0,0);	
+		int xFirstCard = (int) (width/2 - widthCard/2);
+		int yFirstCard = (int) (height/2 - heightCard/2);
+		
+		RessourceCard firstCard = (RessourceCard) plateau.get(paire1);
+		System.out.println(firstCard);
+		
+		drawcard(context, xFirstCard, yFirstCard);
+		dessincardRessource(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
+		
+		for (Map.Entry<Integer, Pair> entry : ordre.entrySet()) {
+            int ordeDeJeu = entry.getKey();
+            Pair pair = entry.getValue();
+            Card card = plateau.get(pair); // Récupérer la carte à partir de la deuxième map
+            
+            System.out.println("Ordre: " + ordeDeJeu + ", Position: "+ pair + ", Carte: " + card);
+            
+            int xCard = xFirstCard + 300 * pair.x();
+            int yCard = yFirstCard + 100 * pair.y();
+            
+            drawcard(context,xCard,yCard);
+            if (card instanceof GoldenCard) {
+            	dessincardGolden(context, ((GoldenCard) card), xCard, yCard, widthCard, heightCard); 
+            } else if (card instanceof RessourceCard) {
+            	dessincardRessource(context, ((RessourceCard) card), xCard, yCard, widthCard, heightCard);   
+            }
+		}
 		
 	}
 	
 	public static void refreshScreen(ApplicationContext context, SimpleGameData data) {
-		SimpleGameView.intitialisation(context);
-		SimpleGameView.drawLeftPack(context, data);
-		SimpleGameView.drawRightPack(context, data);
-		SimpleGameView.drawMainPack(context, data);	
+		intitialisation(context);
+		drawLeftPack(context, data);
+		drawRightPack(context, data);
+		drawMainPack(context, data);	
 	}
 
 	
