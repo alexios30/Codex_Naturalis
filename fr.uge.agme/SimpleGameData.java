@@ -18,8 +18,8 @@ public class SimpleGameData {
 	private ArrayList<RessourceCard> packRessource;
 	private ArrayList<GoldenCard> packGolden;
 	
-	private HashMap<Pair, Card> plateau;
-	private HashMap<Integer, Pair> ordre;
+	private static HashMap<Pair, Card> plateau;
+	private static HashMap<Integer, Pair> ordre;
 	/**private RessourceCard RessourceCard1;
 	private RessourceCard RessourceCard2;
 	private RessourceCard RessourceCard3;
@@ -252,6 +252,11 @@ public class SimpleGameData {
 	    for (Card card : mainTable) {
 	        System.out.println(card);
 	    }
+	}
+	
+	public static void addcardtoPlateau(Card card) {
+		plateau.put(new Pair(1, 1),card);
+		ordre.put(5, new Pair(1, 1));
 	}
 
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
