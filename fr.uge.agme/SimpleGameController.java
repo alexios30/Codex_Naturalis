@@ -149,6 +149,9 @@ public class SimpleGameController {
 //
 //	            }
 			 //Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
+			 	var maintable = data.getMainTable();
+			 	SimpleGameData.addcardtoPlateau(maintable[0]);
+			 	SimpleGameView.drawPlateau(context, data);
 			    data.removeCardFromMainTable(0);
 			}
 	 }
