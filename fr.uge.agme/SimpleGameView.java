@@ -402,7 +402,8 @@ public record SimpleGameView(int height, int width) {
 		intitialisation(context);
 		drawLeftPack(context, data);
 		drawRightPack(context, data);
-		drawMainPack(context, data);	
+		drawMainPack(context, data);
+		drawPlateau(context,data);
 	}
 
 	
