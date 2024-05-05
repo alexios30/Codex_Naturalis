@@ -150,7 +150,7 @@ public class SimpleGameController {
 //	            }
 			 //Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 			 	var maintable = data.getMainTable();
-			 	SimpleGameData.addcardtoPlateau(maintable[0]);
+			 	SimpleGameData.TopLeft(maintable[0]);
 			 	SimpleGameView.drawPlateau(context, data);
 			    data.removeCardFromMainTable(0);
 			}
@@ -171,7 +171,9 @@ public class SimpleGameController {
 //			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[1]), 1000, 700, largeur, hauteur);
 //
 //         }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
-		 
+		 	var maintable = data.getMainTable();
+		 	SimpleGameData.BottomRight(maintable[1]);
+		 	SimpleGameView.drawPlateau(context, data);
 		    data.removeCardFromMainTable(1);
 		}
  }
@@ -190,8 +192,26 @@ public class SimpleGameController {
 //			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
 //
 //      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
-		 
-		 
+		    int squareSize = 50;
+		    int squareY = y + hauteur - squareSize;
+		    var maintable = data.getMainTable();
+		    if (isBottomleftclicked(x2, y2, x, squareY, squareSize, squareSize)) {
+		    	SimpleGameData.BottomLeft(maintable[2]);
+		        System.out.println("en bas a gauche !");
+	    }
+		    if (isBottomRightClicked(x2, y2, x + largeur - squareSize, squareY, squareSize, squareSize)) {
+		    	SimpleGameData.BottomRight(maintable[2]);
+		        System.out.println("Coin en bas à droite cliqué !");
+		    }
+		   if (isTopLeftClicked(x2, y2, x, y, squareSize, squareSize)) {
+			   SimpleGameData.TopLeft(maintable[2]);
+	            System.out.println("Coin en haut à gauche cliqué !");	        
+	            }
+	    if (isTopRightClicked(x2, y2, x, y, squareSize, squareSize)) {
+	    	SimpleGameData.TopRight(maintable[2]);
+	    	System.out.println("Coin en haut à droite cliqué !");
+	    }
+	        
 		    data.removeCardFromMainTable(2);
 		}
  }
@@ -274,8 +294,27 @@ public class SimpleGameController {
 			}
 		 }
 	 }
+ public static boolean isBottomleftclicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
+	    return x2 >= rectangleX && x2 <= rectangleX + rectangleWidth && 
+	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight;
+	}
+public static boolean isBottomRightClicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
+	    return x2 >= rectangleX && x2 <= rectangleX + rectangleWidth && 
+	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight;
+	}
+public static boolean isTopLeftClicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
+	    return x2 >= rectangleX && x2 <= rectangleX + rectangleWidth / 2 &&
+	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight / 2;
+	}
+public static boolean isTopRightClicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
+	    return x2 >= rectangleX && x2 >= rectangleX + rectangleWidth / 2 &&
+	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight / 2;
+	}
 
-	
+
+
+
+
 		public static void main(String[] args) throws IOException {
 			Application.run(Color.BLACK, t -> {
 				try {
