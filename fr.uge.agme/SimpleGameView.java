@@ -372,19 +372,18 @@ public record SimpleGameView(int height, int width) {
 		int xFirstCard = (int) (width/2 - widthCard/2);
 		int yFirstCard = (int) (height/2 - heightCard/2);
 		
+		if (!plateau.isEmpty()) {
 		RessourceCard firstCard = (RessourceCard) plateau.get(paire1);
-		System.out.println(firstCard);
+		//System.out.println(firstCard);
 		
 		drawcard(context, xFirstCard, yFirstCard);
 		dessincardRessource(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
-		
+        if (plateau.size()>=2) {
 		for (Map.Entry<Integer, Pair> entry : ordre.entrySet()) {
             int ordeDeJeu = entry.getKey();
             Pair pair = entry.getValue();
             Card card = plateau.get(pair); // Récupérer la carte à partir de la deuxième map
-            
-            System.out.println("Ordre: " + ordeDeJeu + ", Position: "+ pair + ", Carte: " + card);
-            
+            //System.out.println("Ordre: " + ordeDeJeu + ", Position: "+ pair + ", Carte: " + card);
             int xCard = xFirstCard + 300 * pair.x();
             int yCard = yFirstCard + 100 * pair.y();
             
@@ -394,6 +393,8 @@ public record SimpleGameView(int height, int width) {
             } else if (card instanceof RessourceCard) {
             	dessincardRessource(context, ((RessourceCard) card), xCard, yCard, widthCard, heightCard);   
             }
+            }
+		}
 		}
 		
 	}
