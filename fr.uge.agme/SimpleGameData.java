@@ -3,6 +3,7 @@ package fr.uge.game;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +21,7 @@ public class SimpleGameData {
 	
 	private static HashMap<Pair, Card> plateau;
 	private static HashMap<Integer, Pair> ordre;
+	private static int numOrdre;
 	/**private RessourceCard RessourceCard1;
 	private RessourceCard RessourceCard2;
 	private RessourceCard RessourceCard3;
@@ -52,6 +54,7 @@ public class SimpleGameData {
 		mainTable = new Card[3];
 		plateau = new HashMap<Pair, Card>();
 		ordre = new HashMap<Integer, Pair>();
+		numOrdre=0;
 		melangeRessource(packRessource);
         melangeGolden(packGolden);
 		
@@ -67,18 +70,18 @@ public class SimpleGameData {
 		mainTable[1] = piocheRessource(getPackRessource());
 		mainTable[2] = piocheGolden(getPackGolden());
 		
-		// carte de départ
-		plateau.put(new Pair(0, 0), piocheRessource(getPackRessource()));
-		plateau.put(new Pair(1, 1), piocheRessource(getPackRessource()));
-		plateau.put(new Pair(2, 2), piocheRessource(getPackRessource()));
-		plateau.put(new Pair(-1, -1), piocheRessource(getPackRessource()));
-		plateau.put(new Pair(-1, 1), piocheRessource(getPackRessource()));
-
-		//ordre.put(0, new Pair(0, 0));
-		ordre.put(1, new Pair(1, 1));
-		ordre.put(2, new Pair(2, 2));
-		ordre.put(3, new Pair(-1, -1));
-		ordre.put(4, new Pair(-1, 1));
+//		// carte de départ
+//		plateau.put(new Pair(0, 0), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(1, 1), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(2, 2), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(-1, -1), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(-1, 1), piocheRessource(getPackRessource()));
+//
+//		ordre.put(0, new Pair(0, 0));
+//		ordre.put(1, new Pair(1, 1));
+//		ordre.put(2, new Pair(2, 2));
+//		ordre.put(3, new Pair(-1, -1));
+//		ordre.put(4, new Pair(-1, 1));
 		
 	}
 	
@@ -153,7 +156,7 @@ public class SimpleGameData {
 	        System.arraycopy(mainTable, 0, newMainTable, 0, index);
 	        System.arraycopy(mainTable, index + 1, newMainTable, index, mainTable.length - index - 1);
 	        mainTable = newMainTable;
-	        displayMainTable(mainTable);
+	        //displayMainTable(mainTable);
 	    }
 	}
 
@@ -253,11 +256,57 @@ public class SimpleGameData {
 	        System.out.println(card);
 	    }
 	}
-	
-	public static void addcardtoPlateau(Card card) {
-		plateau.put(new Pair(1, 1),card);
-		ordre.put(5, new Pair(1, 1));
-	}
 
+	public static void BottomRight(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
+		
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(1, 1),card);
+		ordre.put(numOrdre, new Pair(1, 1));
+		}
+	}
+	public static void TopLeft(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(-1, -1),card);
+		ordre.put(numOrdre, new Pair(-1, -1));
+		}
+	}
+	public static void BottomLeft(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(-1, 1),card);
+		ordre.put(numOrdre, new Pair(-1, 1));
+		}
+	}
+	public static void TopRight(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(1, -1),card);
+		ordre.put(numOrdre, new Pair(1, -1));
+		}
+	}
+	public static Card[] ajoutercarteplateau() {
+		Collection<Card> values = plateau.values();
+	    Card[] cards = values.toArray(new Card[0]);
+	    return cards;
+	}
+	
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
 	}
