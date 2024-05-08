@@ -41,9 +41,19 @@ public record SimpleGameView(int height, int width) {
 			graphics.clearRect(0, 0, (int) width, (int) height);
 			drawBackGround(context, width, height);
 			
+			graphics.setColor(Color.ORANGE);
+			graphics.fill(new Rectangle2D.Float(1440, 50, 50, 50));
+			graphics.fill(new Rectangle2D.Float(1365, 50, 50, 50));
+			
+			Font font = new Font("Arial", Font.PLAIN, 50);
+			graphics.setFont(font);
+			graphics.setColor(Color.WHITE);
+			graphics.drawString("+", 1440+12, 92);
+			graphics.drawString("-", 1365+18, 90);
+			
+						
 			
 		});
-		//return new SimpleGameView((int) height , (int)width );
 	}
 	
 	public static void drawBackGround(ApplicationContext context, float width, float height) {
@@ -67,222 +77,108 @@ public record SimpleGameView(int height, int width) {
 		});
 	}
 	
-	public static void drawcard(ApplicationContext context, int x, int y ) {
+	public static void drawBackCard(ApplicationContext context, int x, int y , int width, int height) {
 		context.renderFrame(graphics -> {
 			graphics.setColor(Color.ORANGE);
-			graphics.fill(new Rectangle2D.Float(x, y, 350, 150));
+			graphics.fill(new Rectangle2D.Float(x, y, width, height));
 		});
 	}
 	
-	public static void dessincardRessource(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
-		var bottomLeft = RessourceCard.getcornerBottomLeft(card);
-		var topLeft = RessourceCard.getcornerTopLeft(card);
-		var topRight = RessourceCard.getcornerTopRight(card);
-		var bottomright = RessourceCard.getcornerBottomRight(card);
-		var scoring = RessourceCard.getscoring(card);
-	    int squareSize = 50;
+	
+	public static void drawCard(ApplicationContext context, Card card,int x, int y, int width, int height) {
+			
+		if (card instanceof GoldenCard) {
+			drawBackCard(context, x, y, width, height);
+			drawGoldenCard(context, ((GoldenCard) card), x, y, width, height); 
+		} else if (card instanceof RessourceCard) {
+			drawBackCard(context, x, y, width, height);
+			drawRessourceCard(context, ((RessourceCard) card), x, y, width, height); 
+		}
+	}
+	
+	public static void drawCorner(ApplicationContext context, Card card, int x, int y, int width, int height) {
+		ArrayList<String> Corner = card.getCorner();
+		int squareSize = width/7;
 		
-		if (bottomLeft.equals("Animal") ){ 
-		        int squareY = y + height - squareSize;
-			context.renderFrame(graphics -> {
-				graphics.setColor(Color.RED);
-				graphics.fill(new Rectangle2D.Float(x, squareY, squareSize, squareSize));
-			});
-		}
-		if (bottomLeft.equals("Empty")) {
-		    int startX = x ; 
-		    int endX = x + squareSize ; 
-		    int lineY = y + height - squareSize ; 
-
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(startX, lineY, endX, lineY);
-		        graphics.drawLine(endX, lineY, endX, lineY + squareSize);
-		    });
-		}
-		if (topLeft.equals("Animal")) {
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.RED);
-		        graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
-		    });
-		}
-		if (topLeft.equals("Empty")) {
-		    int startX = x; 
-		    int startY = y ; 
-		    int endX = x + squareSize; 
-
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(startX, startY + squareSize , endX, startY + squareSize); 
-		        graphics.drawLine(startX + squareSize, startY, startX + squareSize, startY + squareSize); 
-		    });
-		}
-
-
-		if (topRight.equals("Animal")) {
-		    int squareX = x + width - squareSize; 
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.RED);
-		        graphics.fill(new Rectangle2D.Float(squareX, y, squareSize, squareSize));
-		    });
-		}
-		if (topRight.equals("Empty")) {
-		    context.renderFrame(graphics -> {
-		        int startX = x + squareSize;  
-		        int startY = y;               
-		        int endX = x + squareSize * 7;    
-
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(endX - squareSize, startY + squareSize, endX, startY + squareSize); 
-		        graphics.drawLine(endX - squareSize, startY, endX - squareSize, startY + squareSize); 
-		    });
+		switch (card.cornerBottomLeft()) {
+		case "Animal" -> drawCornerColor(context, x, (y + height - squareSize), squareSize, Color.RED);
+		case "Empty" -> drawCornerColor(context, x, (y + height - squareSize), squareSize, Color.WHITE);
 		}
 		
-		if (bottomright.equals("Animal")) {
-		    int squareX = x + width - squareSize;
-		    int squareY = y + height - squareSize; 
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.RED);
-		        graphics.fill(new Rectangle2D.Float(squareX, squareY, squareSize, squareSize));
-		    });
+		switch (card.cornerTopLeft()) {
+		case "Animal" -> drawCornerColor(context, x, y, squareSize, Color.RED);
+		case "Empty" -> drawCornerColor(context, x, y, squareSize, Color.WHITE);
 		}
 		
-		if (bottomright.equals("Empty")) {
-		    context.renderFrame(graphics -> {
-		        int startX = x + squareSize * 7; 
-		        int startY =y + height - squareSize ;  
-
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(startX - squareSize, startY, startX, startY); 
-		        graphics.drawLine(startX - squareSize, startY, startX - squareSize, startY + squareSize); 
-		    });
+		switch (card.cornerTopRight()) {
+		case "Animal" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.RED);
+		case "Empty" -> drawCornerColor(context, x, y, squareSize, Color.WHITE);
 		}
-		if (scoring.equals("1")) {
+		
+		switch (card.cornerBottomRight()) {
+		case "Animal" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.RED);
+		case "Empty" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.WHITE);
+		}
+		
+	}
+
+	public static void drawCornerColor(ApplicationContext context, int x, int y, int squareSize, Color color) {
+		context.renderFrame(graphics -> {
+			graphics.setColor(color);
+			graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
+		});
+	}
+	
+	public static void drawRessourceCard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
+		var scoring = card.getScoring();
+	    int squareSize = width / 7;  
+		
+	    drawCorner(context, card, x, y, width, height);	    
+	    if (scoring.equals("1")) {
 		    context.renderFrame(graphics -> {
 		        String lettre = " S : 1";
-		        int tailleLettre = 20;
+		        int tailleLettre = (int) (width/11.667);
 		        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
-
+	
 		  
 		        int startX = x + squareSize * 3 ; 
 		        int startY = y + tailleLettre;
 		        graphics.setFont(font);
 		        graphics.drawString(lettre, startX, startY);
-		    });
-		}
-
-
-
-		
+		    	});
+	    }
 	}
-	public static void dessincardGolden(ApplicationContext context, GoldenCard card,int x, int y, int width, int height) {
-		var bottomLeft = GoldenCard.getcornerBottomLeft(card);
-		var topLeft =  GoldenCard.getcornerTopLeft(card);
-		var topRight =  GoldenCard.getcornerTopRight(card);
-		var bottomright =  GoldenCard.getcornerBottomRight(card);
-		var kingdom =  GoldenCard.getKingdom(card);
-		var cost = GoldenCard.getCost(card);
-		var typescoring = GoldenCard.gettypescoring(card);
-		var scoring = GoldenCard.getscoring(card);
-	    int squareSize = 50;
+
+	public static void drawGoldenCard(ApplicationContext context, GoldenCard card,int x, int y, int width, int height) {
+		int squareSize = width / 7; 
+		var kingdom =  card.getKingdom();
+		var cost = card.getCost();
+		var typescoring = card.gettypescoring();
+		var scoring = card.getScoring();
 		
-		if (bottomLeft.equals("Animal") ){ 
-		        int squareY = y + height - squareSize;
-			context.renderFrame(graphics -> {
-				graphics.setColor(Color.RED);
-				graphics.fill(new Rectangle2D.Float(x, squareY, squareSize, squareSize));
-			});
-		}
-		if (bottomLeft.equals("Empty")) {
-		    int startX = x ; 
-		    int endX = x + squareSize ; 
-		    int lineY = y + height - squareSize ; 
-
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(startX, lineY, endX, lineY);
-		        graphics.drawLine(endX, lineY, endX, lineY + squareSize);
-		    });
-		}
-		if (topLeft.equals("Animal")) {
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.RED);
-		        graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
-		    });
-		}
-		if (topLeft.equals("Empty")) {
-		    int startX = x; 
-		    int startY = y ; 
-		    int endX = x + squareSize; 
-
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(startX, startY + squareSize , endX, startY + squareSize); 
-		        graphics.drawLine(startX + squareSize, startY, startX + squareSize, startY + squareSize); 
-		    });
-		}
-
-
-		if (topRight.equals("Animal")) {
-		    int squareX = x + width - squareSize; 
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.RED);
-		        graphics.fill(new Rectangle2D.Float(squareX, y, squareSize, squareSize));
-		    });
-		}
-		if (topRight.equals("Empty")) {
-		    context.renderFrame(graphics -> {
-		        int startX = x + squareSize;  
-		        int startY = y;               
-		        int endX = x + squareSize * 7;    
-
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(endX - squareSize, startY + squareSize, endX, startY + squareSize); 
-		        graphics.drawLine(endX - squareSize, startY, endX - squareSize, startY + squareSize); 
-		    });
-		}
-		
-		if (bottomright.equals("Animal")) {
-		    int squareX = x + width - squareSize;
-		    int squareY = y + height - squareSize; 
-		    context.renderFrame(graphics -> {
-		        graphics.setColor(Color.RED);
-		        graphics.fill(new Rectangle2D.Float(squareX, squareY, squareSize, squareSize));
-		    });
-		}
-		
-		if (bottomright.equals("Empty")) {
-		    context.renderFrame(graphics -> {
-		        int startX = x + squareSize * 7; 
-		        int startY =y + height - squareSize ;  
-
-		        graphics.setColor(Color.BLACK);
-		        graphics.drawLine(startX - squareSize, startY, startX, startY); 
-		        graphics.drawLine(startX - squareSize, startY, startX - squareSize, startY + squareSize); 
-		    });
-		}
-		if (kingdom.equals("Animal")) {
-			context.renderFrame(graphics -> {
-		        String lettre = "Animal";
-		        int tailleLettre = 20;
-		        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
-
-		  
-		        int startX = x + squareSize * 3 ; 
-		        int startY = y + tailleLettre * 4;
-		        graphics.setFont(font);
-		        graphics.drawString(lettre, startX, startY);
-		    });
+	    drawCorner(context, card, x, y, width, height);	  
+	    
+	    int tailleLettre = (int) (width/11.667);
+        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+	    
+	    switch (kingdom) {
+		case "Animal" -> context.renderFrame(graphics -> {
+	        String lettre = "Animal";	
+	  
+	        int startX = (int) (x + squareSize * 2.5) ; 
+	        int startY = y + tailleLettre * 3;
+	        graphics.setFont(font);
+	        graphics.drawString(lettre, startX, startY);
+	    	});
+	
 		}
 		
 		if (cost>0) {
 			context.renderFrame(graphics -> {
 			String lettre= Integer.toString(cost);
 			String newlettre= "Cost: A:" + lettre ;
-			int tailleLettre= 20;
-			Font font = new Font("Arial",Font.PLAIN,tailleLettre);
 			
-	        int startX = x + squareSize * 3 ; 
+	        int startX = (int) (x + squareSize * 2.5) ; 
 	        int startY = y + tailleLettre;
 	        graphics.setFont(font);
 	        graphics.drawString(newlettre, startX, startY);
@@ -293,33 +189,32 @@ public record SimpleGameView(int height, int width) {
 			String lettre = Character.toString(typescoring);
 			String lettre1 = Character.toString(scoring);
 			String fusion = "Score:" + lettre + lettre1;
-			int tailleLettre= 20;
-			Font font = new Font("Arial",Font.PLAIN,tailleLettre);
 			
-			int startX = x + squareSize * 3 ; 
-	        int startY = y + tailleLettre * 7;
+			int startX = (int) (x + squareSize * 2.5); 
+	        int startY = y + tailleLettre * 5;
 	        graphics.setFont(font);
 	        graphics.drawString(fusion, startX, startY);
 		});
-		
-	}
-	
+	    
+	    
+	}	
+
 	public static void drawLeftPack(ApplicationContext context, SimpleGameData data) {
 		int x = 35;
 		int y=300;
 		int y1 = 500;
 		var carteTop = data.getRessourceTable()[1];
 		var carteBottom = data.getRessourceTable()[2];
-
-		drawcard(context,35,100);
-		drawcard(context,x,y);
-		drawcard(context,x,y1);
-		
-		dessincardRessource(context, carteTop, x, y, 350, 150);
-		dessincardRessource(context, carteBottom, x, y1, 350, 150);
-
-	}
 	
+		drawBackCard(context,35,100, 350, 150);
+		drawBackCard(context,x,y, 350, 150);
+		drawBackCard(context,x,y1, 350, 150);
+		
+		drawRessourceCard(context, carteTop, x, y, 350, 150);
+		drawRessourceCard(context, carteBottom, x, y1, 350, 150);
+	
+	}
+
 	public static void drawRightPack(ApplicationContext context, SimpleGameData data) {
 		int x = 35;
 		int y=300;
@@ -329,14 +224,14 @@ public record SimpleGameView(int height, int width) {
 		var carteTop = data.getGoldenTable()[1];
 		var carteBottom = data.getGoldenTable()[2];
 	    
-		drawcard(context,xgolden	,100);
-		drawcard(context,xgolden,y1);
-		drawcard(context, xgolden, y);
+		drawBackCard(context,xgolden,100, 350, 150);
+		drawBackCard(context,xgolden,y1, 350, 150);
+		drawBackCard(context, xgolden, y, 350, 150);
 		
-		dessincardGolden(context, carteTop, xgolden, y, 350, 150);
-		dessincardGolden(context, carteBottom, xgolden, y1, 350, 150);
+		drawGoldenCard(context, carteTop, xgolden, y, 350, 150);
+		drawGoldenCard(context, carteBottom, xgolden, y1, 350, 150);
 	}
-	
+
 	public static void drawMainPack(ApplicationContext context, SimpleGameData data) {
 		int width = 350;
 		int height = 150;
@@ -349,23 +244,29 @@ public record SimpleGameView(int height, int width) {
 		var mainTable = data.getMainTable();
 	     
 	    for (int i = 0; i < mainTable.length; i++) {
-            // Vérification du type de la carte
-            if (mainTable[i] instanceof GoldenCard) {
-            	drawcard(context,200+600*i,y);
-            	dessincardGolden(context, ((GoldenCard) mainTable[i]), 200+600*i, y, width, height); 
-            } else if (mainTable[i] instanceof RessourceCard) {
-            	drawcard(context,200+600*i,y);
-            	dessincardRessource(context, ((RessourceCard) mainTable[i]), 200+600*i, y, width, height); 
-            }
+	    	drawCard(context, mainTable[i], 200+600*i,y, 350, 150);
+	    	
+	    	/** Vérification du type de la carte
+	        if (mainTable[i] instanceof GoldenCard) {
+	        	drawBackCard(context,200+600*i,y, 350, 150);
+	        	drawGoldenCard(context, ((GoldenCard) mainTable[i]), 200+600*i, y, width, height); 
+	        } else if (mainTable[i] instanceof RessourceCard) {
+	        	drawBackCard(context,200+600*i,y, 350, 150);
+	        	drawRessourceCard(context, ((RessourceCard) mainTable[i]), 200+600*i, y, width, height); 
+	        }**/
 	    }
 	}
-	
-	public static void drawPlateau(ApplicationContext context, SimpleGameData data) {
+
+
+	public static void drawPlateau(ApplicationContext context, SimpleGameData data, int widthCard) {
 		var screenInfo = context.getScreenInfo();
 		var width = screenInfo.getWidth();
 		var height = screenInfo.getHeight();
-		int widthCard = 350;
-		int heightCard = 150;
+		//int widthCard = 350;
+		int heightCard = widthCard / 7 * 3;
+		
+		System.out.println("widthCard : " + widthCard + ", heightCard : " + heightCard);
+		
 		var plateau = data.getPlateau();
 		var ordre = data.getOrdre();
 		Pair paire1 = new Pair(0,0);	
@@ -373,38 +274,33 @@ public record SimpleGameView(int height, int width) {
 		int yFirstCard = (int) (height/2 - heightCard/2);
 		
 		if (!plateau.isEmpty()) {
-		RessourceCard firstCard = (RessourceCard) plateau.get(paire1);
-		//System.out.println(firstCard);
 		
-		drawcard(context, xFirstCard, yFirstCard);
-		dessincardRessource(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
-        if (plateau.size()>=2) {
-		for (Map.Entry<Integer, Pair> entry : ordre.entrySet()) {
-            int ordeDeJeu = entry.getKey();
-            Pair pair = entry.getValue();
-            Card card = plateau.get(pair); // Récupérer la carte à partir de la deuxième map
-            //System.out.println("Ordre: " + ordeDeJeu + ", Position: "+ pair + ", Carte: " + card);
-            int xCard = xFirstCard + 300 * pair.x();
-            int yCard = yFirstCard + 100 * pair.y();
-            
-            drawcard(context,xCard,yCard);
-            if (card instanceof GoldenCard) {
-            	dessincardGolden(context, ((GoldenCard) card), xCard, yCard, widthCard, heightCard); 
-            } else if (card instanceof RessourceCard) {
-            	dessincardRessource(context, ((RessourceCard) card), xCard, yCard, widthCard, heightCard);   
-            }
-            }
-		}
-		}
+			RessourceCard firstCard = (RessourceCard) plateau.get(paire1);
+			//System.out.println(firstCard);
 		
+			drawBackCard(context, xFirstCard, yFirstCard, widthCard, heightCard);
+			drawRessourceCard(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
+			if (plateau.size()>=2) {
+				for (Map.Entry<Integer, Pair> entry : ordre.entrySet()) {
+					int ordeDeJeu = entry.getKey();
+					Pair pair = entry.getValue();
+					Card card = plateau.get(pair); // Récupérer la carte à partir de la deuxième map
+					//System.out.println("Ordre: " + ordeDeJeu + ", Position: "+ pair + ", Carte: " + card);
+					int xCard = xFirstCard + (widthCard - widthCard/7) * pair.x();
+					int yCard = yFirstCard + (heightCard - heightCard/3) * pair.y();
+					drawCard(context, card, xCard, yCard, widthCard, heightCard);
+				}
+			}
+		}
+	
 	}
 	
-	public static void refreshScreen(ApplicationContext context, SimpleGameData data) {
+	public static void refreshScreen(ApplicationContext context, SimpleGameData data, int widthCard) {
 		intitialisation(context);
 		drawLeftPack(context, data);
 		drawRightPack(context, data);
 		drawMainPack(context, data);
-		drawPlateau(context,data);
+		drawPlateau(context, data, widthCard);
 	}
 
 	
