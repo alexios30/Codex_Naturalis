@@ -62,33 +62,33 @@ public record GoldenCard(String cornerTopLeft, String cornerBottomLeft, String c
         GoldenCard card = new GoldenCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, kindgom, animalCount, typescoring,scoring);
         return card;
     }
-    public static String getcornerTopLeft(GoldenCard card) {
-    	return card.cornerTopLeft;
+    public String cornerTopLeft() {
+    	return cornerTopLeft;
     }
     
-    public static String getcornerBottomLeft(GoldenCard card) {
-    	return card.cornerBottomLeft;
+    public String cornerBottomLeft() {
+    	return cornerTopRight;
     }
     
-    public static String getcornerTopRight(GoldenCard card) {
-    	return card.cornerTopRight;
+    public String cornerTopRight() {
+    	return cornerTopRight;
     }
-    public static String getcornerBottomRight(GoldenCard card) {
-    	return card.cornerBottomRight;
+    public String cornerBottomRight() {
+    	return cornerBottomRight;
     }
-    public static String getKingdom(GoldenCard card) {
-    	return card.kingdom;
+    public String getKingdom() {
+    	return kingdom;
     }
-    public static int getCost(GoldenCard card) {
-    	return card.cost;
+    public int getCost() {
+    	return cost;
     }
     
-    public static char gettypescoring(GoldenCard card) {
-    	return card.typescoring;
+    public char gettypescoring() {
+    	return typescoring;
     }
 
-    public static char getscoring(GoldenCard card) {
-    	return card.scoring;
+    public char getScoring() {
+    	return scoring;
     }
     
 	@Override
@@ -97,7 +97,20 @@ public record GoldenCard(String cornerTopLeft, String cornerBottomLeft, String c
 				+ ", cornerTopRight=" + cornerTopRight + ", cornerBottomRight=" + cornerBottomRight + ", kindgom="
 				+ kingdom + ", cost=" + cost + ", typescoring=" + typescoring + ", scoring=" + scoring + "]" + "\n";
 	}
-    
+
+
+	public ArrayList<String> getCorner() {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(cornerBottomLeft);
+		list.add(cornerBottomRight);
+		list.add(cornerTopLeft);
+		list.add(cornerTopRight);
+		return list;
+	}
+
+
+
+
     
 	
 }
