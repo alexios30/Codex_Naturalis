@@ -30,23 +30,24 @@ public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, Strin
         //});
     //}
     
-    public static String getcornerTopLeft(RessourceCard card) {
-    	return card.cornerTopLeft;
+    public String cornerTopLeft() {
+    	return cornerTopLeft;
     }
     
-    public static String getcornerBottomLeft(RessourceCard card) {
-    	return card.cornerBottomLeft;
+    public  String cornerBottomLeft() {
+    	return cornerBottomLeft;
     }
     
-    public static String getcornerTopRight(RessourceCard card) {
-    	return card.cornerTopRight;
+    public String cornerTopRight() {
+    	return cornerTopRight;
     }
-    public static String getcornerBottomRight(RessourceCard card) {
-    	return card.cornerBottomRight;
+    public String cornerBottomRight() {
+    	return cornerBottomRight;
     }
-    public static String getscoring(RessourceCard card) {
-    	return card.scoring;
+    public String getScoring() {
+    	return scoring;
     }
+    
     
     
     public static ArrayList<RessourceCard> createRessourceCard(Path src) throws IOException {
@@ -93,6 +94,15 @@ public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, Strin
 		return "RessourceCard [cornerTopLeft=" + cornerTopLeft + ", cornerBottomLeft=" + cornerBottomLeft
 				+ ", cornerTopRight=" + cornerTopRight + ", cornerBottomRight=" + cornerBottomRight + ", scoring="
 				+ scoring + ", resource=" + resource + "]" + "\n";
+	}
+
+	public ArrayList<String> getCorner() {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(cornerBottomLeft);
+		list.add(cornerBottomRight);
+		list.add(cornerTopLeft);
+		list.add(cornerTopRight);
+		return list;
 	}
 
 }
