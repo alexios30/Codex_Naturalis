@@ -71,7 +71,7 @@ public class SimpleGameController {
 		}
 		
 		//SimpleGameController.positionclicksourisdebut(context);
-		SimpleGameController.positionclicksouris(context, data);
+		SimpleGameController.positionclicksouris(context, data, 140);
 		
 		
 		return true;
@@ -87,11 +87,7 @@ public class SimpleGameController {
 		var height = screenInfo.getHeight();
 		var view = new SimpleGameView((int)height, (int)width );
 		var data = new SimpleGameData();
-		SimpleGameView.intitialisation(context);
-		SimpleGameView.drawLeftPack(context, data);
-		SimpleGameView.drawRightPack(context, data);
-		SimpleGameView.drawMainPack(context, data);
-		SimpleGameView.drawPlateau(context, data);
+		SimpleGameView.refreshScreen(context, data, 140);
 		while (true) {			
 
 			if (!gameLoop(context, view, data)) {
@@ -104,16 +100,18 @@ public class SimpleGameController {
 	}
 	
 	
- public static void positionclicksouris(ApplicationContext context, SimpleGameData data) {
+ public static void positionclicksouris(ApplicationContext context, SimpleGameData data, int widthCardPlateau) {
         while (true) {
         	int cardWidth = 350; 
         	int cardHeight = 150; 
+        	int widthCardPlateau2 = widthCardPlateau ;
+        	//System.out.println(widthCardPlateau2);
 
             var event = context.pollOrWaitEvent(10);
             if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
                 var location = event.getLocation();
-                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight, data, context);
-                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
+                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
                 SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight, data, context);
                 
                 SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight, data, context);
@@ -123,9 +121,10 @@ public class SimpleGameController {
                 SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
-                SimpleGameView.refreshScreen(context, data);
+                //detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
+                //detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
+                SimpleGameView.refreshScreen(context, data, widthCardPlateau);
                 return;
-               
             }
             if (event != null && event.getAction() == Action.KEY_PRESSED && event.getKey() == KeyboardKey.Q) {
     			System.out.println("Thank you for quitting!");
@@ -135,8 +134,8 @@ public class SimpleGameController {
         }
     }
  
- public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
-     	int x = 35; 
+ public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context, int widthCardPlateau ) {
+     	int x = 200; 
      	int y = 875;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 //			    var mainTable = data.getMainTable();
@@ -151,12 +150,12 @@ public class SimpleGameController {
 			 //Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 			 	var maintable = data.getMainTable();
 			 	SimpleGameData.TopLeft(maintable[0]);
-			 	SimpleGameView.drawPlateau(context, data);
+			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 			    data.removeCardFromMainTable(0);
 			}
 	 }
  
- public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ,SimpleGameData data, ApplicationContext context) {
+ public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ,SimpleGameData data, ApplicationContext context, int widthCardPlateau) {
  	int x = 800; 
  	int y = 875;
 	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
@@ -173,49 +172,50 @@ public class SimpleGameController {
 //         }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 		 	var maintable = data.getMainTable();
 		 	SimpleGameData.BottomRight(maintable[1]);
-		 	SimpleGameView.drawPlateau(context, data);
+		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 		    data.removeCardFromMainTable(1);
 		}
  }
 
  public static void detectmaincardright( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
- 	int x = 1400; 
- 	int y = 875;
-	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-//		 var mainTable = data.getMainTable();
-//		    if (mainTable[2] instanceof GoldenCard) {
-//			   
-//			    SimpleGameView.drawcard(context, 1000, 700);
-//			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[2]), 1000, 700, largeur, hauteur);
-//      } else if (mainTable[2] instanceof RessourceCard) {
-//			    SimpleGameView.drawcard(context, 1000, 700);
-//			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
-//
-//      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
-		    int squareSize = 50;
-		    int squareY = y + hauteur - squareSize;
-		    var maintable = data.getMainTable();
-		    if (isBottomleftclicked(x2, y2, x, squareY, squareSize, squareSize)) {
-		    	SimpleGameData.BottomLeft(maintable[2]);
-		        System.out.println("en bas a gauche !");
-	    }
-		    if (isBottomRightClicked(x2, y2, x + largeur - squareSize, squareY, squareSize, squareSize)) {
-		    	SimpleGameData.BottomRight(maintable[2]);
-		        System.out.println("Coin en bas à droite cliqué !");
+	 	int x = 1400; 
+	 	int y = 875;
+		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+//			 var mainTable = data.getMainTable();
+//			    if (mainTable[2] instanceof GoldenCard) {
+//				   
+//				    SimpleGameView.drawcard(context, 1000, 700);
+//				    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[2]), 1000, 700, largeur, hauteur);
+//	      } else if (mainTable[2] instanceof RessourceCard) {
+//				    SimpleGameView.drawcard(context, 1000, 700);
+//				    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
+	//
+//	      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
+			    int squareSize = 50;
+			    int squareY = y + hauteur - squareSize;
+			    var maintable = data.getMainTable();
+			    if (isBottomleftclicked(x2, y2, x, squareY, squareSize, squareSize)) {
+			    	SimpleGameData.BottomLeft(maintable[2]);
+			        System.out.println("en bas a gauche !");
 		    }
-		   if (isTopLeftClicked(x2, y2, x, y, squareSize, squareSize)) {
-			   SimpleGameData.TopLeft(maintable[2]);
-	            System.out.println("Coin en haut à gauche cliqué !");	        
-	            }
-	    if (isTopRightClicked(x2, y2, x, y, squareSize, squareSize)) {
-	    	SimpleGameData.TopRight(maintable[2]);
-	    	System.out.println("Coin en haut à droite cliqué !");
-	    }
-	        
-		    data.removeCardFromMainTable(2);
-		}
- }
+			    if (isBottomRightClicked(x2, y2, x + largeur - squareSize, squareY, squareSize, squareSize)) {
+			    	SimpleGameData.BottomRight(maintable[2]);
+			        System.out.println("Coin en bas à droite cliqué !");
+			    }
+			   if (isTopLeftClicked(x2, y2, x, y, squareSize, squareSize)) {
+				   SimpleGameData.TopLeft(maintable[2]);
+		            System.out.println("Coin en haut à gauche cliqué !");	        
+		            }
+		    if (isTopRightClicked(x2, y2, x, y, squareSize, squareSize)) {
+		    	SimpleGameData.TopRight(maintable[2]);
+		    	System.out.println("Coin en haut à droite cliqué !");
+		    }
+		        
+			    data.removeCardFromMainTable(2);
+			}
+	 }
 
+ 
  public static void detectpiochelefttop( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
      	int x = 35; 
      	int y = 100;
@@ -294,6 +294,7 @@ public class SimpleGameController {
 			}
 		 }
 	 }
+ 
  public static boolean isBottomleftclicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
 	    return x2 >= rectangleX && x2 <= rectangleX + rectangleWidth && 
 	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight;
@@ -312,9 +313,29 @@ public static boolean isTopRightClicked(float x2, float y2, int rectangleX, int 
 	}
 
 
-
-
-
+ public static int detectButtonLess( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context, int cardWidth ) {
+  	int x = 1440; 
+  	int y = 50;
+  	int cardWidth2 = cardWidth*(80/100);
+		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+			    //SimpleGameView.refreshScreen(context, data, cardWidth2);
+			    return cardWidth2;
+		 }
+		 return cardWidth2;
+ 	}
+ 
+ public static int detectButtonMore( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context, int cardWidth ) {
+	  	int x = 1365; 
+	  	int y = 50;
+	  	int cardWidth2 = cardWidth*(1+20/100);
+			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+				    //SimpleGameView.refreshScreen(context, data, cardWidth2);
+				    return cardWidth2;
+			 }
+			 return cardWidth;
+	 	}
+	 
+	
 		public static void main(String[] args) throws IOException {
 			Application.run(Color.BLACK, t -> {
 				try {
