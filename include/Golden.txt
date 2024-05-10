@@ -1,21 +1,40 @@
-GoldCard Recto Invisible Empty Empty Empty Kingdom Animal Cost Animal Animal Animal Scoring D:3
-GoldCard Recto Invisible Empty Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:3
-GoldCard Recto Invisible Invisible Empty Empty Kingdom Animal Cost Animal Animal Animal Scoring D:3
-GoldCard Recto Empty Empty Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:3
-GoldCard Recto Empty Empty Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:3
-GoldCard Recto Empty Invisible Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:3
-GoldCard Recto Empty Invisible Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:3
-GoldCard Recto Invisible Empty Empty Empty Kingdom Animal Cost Animal Animal Animal Scoring D:5
-GoldCard Recto Invisible Empty Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:5
-GoldCard Recto Invisible Invisible Empty Empty Kingdom Animal Cost Animal Animal Animal Scoring D:5
-GoldCard Recto Empty Empty Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:5
-GoldCard Recto Empty Empty Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:5
-GoldCard Recto Empty Invisible Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:5
-GoldCard Recto Empty Invisible Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring D:5
-GoldCard Recto Invisible Empty Empty Empty Kingdom Animal Cost Animal Animal Animal Scoring C:2
-GoldCard Recto Invisible Empty Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
-GoldCard Recto Invisible Invisible Empty Empty Kingdom Animal Cost Animal Animal Animal Scoring C:2
-GoldCard Recto Empty Empty Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
-GoldCard Recto Empty Empty Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
-GoldCard Recto Empty Invisible Invisible Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
-GoldCard Recto Empty Invisible Empty Invisible Kingdom Animal Cost Animal Animal Animal Scoring C:2
+ResourceCard Recto Empty R:Fungi Empty Invisible Kingdom Fungi Scoring D:1
+ResourceCard Recto R:Fungi R:Insect A:Manuscript Invisible Kingdom Fungi Scoring None
+ResourceCard Recto A:Manuscript R:Insect Invisible R:Fungi Kingdom Insect Scoring None
+ResourceCard Recto R:Insect R:Plant A:Inkwell Invisible Kingdom Insect Scoring None
+ResourceCard Recto R:Insect Invisible Empty Empty Kingdom Insect Scoring D:1
+ResourceCard Recto Invisible Empty R:Insect R:insect Kingdom Insect Scoring None
+ResourceCard Recto A:Quill Invisible R:Animal R:Fungi Kingdom Animal Scoring None
+ResourceCard Recto A:Manuscript Invisible R:Plant R:Animal Kingdom Plant Scoring None
+ResourceCard Recto R:Plant R:Animal Invisible A:Manuscript Kingdom Animal Scoring None
+ResourceCard Recto Invisible Empty R:Animal R:Animal Kingdom Animal Scoring None
+ResourceCard Recto R:Fungi Empty R:Fungi Invisible Kingdom Fungi Scoring None
+ResourceCard Recto Empty R:Animal Invisible R:Animal Kingdom Animal Scoring None
+ResourceCard Recto Empty R:Insect Invisible R:Insect Kingdom Insect Scoring None
+ResourceCard Recto Empty R:Animal Empty Invisible Kingdom Animal Scoring None
+ResourceCard Recto Empty Empty Invisible R:Plant Kingdom Plant Scoring D:1
+ResourceCard Recto R:Plant Empty R:Plant Invisible Kingdom Plant Scoring None
+ResourceCard Recto Empty Invisible R:Fungi R:Fungi Kingdom Fungi Scoring None
+ResourceCard Recto Invisible Empty R:Animal Empty Kingdom Animal Scoring D:1
+ResourceCard Recto Invisible R:Insect Empty Empty Kingdom Insect Scoring D:1
+ResourceCard Recto R:Fungi Invisible Empty Empty Kingdom Fungi Scoring D:1
+ResourceCard Recto R:Fungi R:Plant Invisible A:Inkwell Kingdom Plant Scoring None
+ResourceCard Recto R:Plant R:Plant Invisible Empty Kingdom Plant Scoring None
+ResourceCard Recto Invisible R:Plant Empty R:Plant Kingdom Plant Scoring None
+ResourceCard Recto Invisible R:Insect A:Quill R:Plant Kingdom Plant Scoring None
+ResourceCard Recto Empty Empty Invisible R:Insect Kingdom Insect Scoring D:1
+ResourceCard Recto R:Insect R:Insect Empty Invisible Kingdom Insect Scoring None
+ResourceCard Recto R:Insect Invisible R:Insect Empty Kingdom Insect Scoring None
+ResourceCard Recto Invisible R:Fungi Empty R:Fungi Kingdom Fungi Scoring None
+ResourceCard Recto A:Inkwell R:Fungi Invisible R:Animal Kingdom Fungi Scoring None
+ResourceCard Recto R:Fungi R:Fungi Invisible Empty Kingdom Fungi Scoring None
+ResourceCard Recto R:Animal Invisible R:Animal Empty Kingdom Animal Scoring None
+ResourceCard Recto Invisible A:Quill R:Plant R:Fungi Kingdom Fungi Scoring None
+ResourceCard Recto Invisible Empty R:Fungi Empty Kingdom Fungi Scoring D:1
+ResourceCard Recto Invisible R:Insect A:Inkwell R:Animal Kingdom Animal Scoring None
+ResourceCard Recto Empty Empty R:Plant Invisible Kingdom Plant Scoring D:1
+ResourceCard Recto R:Animal R:Animal Empty Invisible Kingdom Animal Scoring None
+ResourceCard Recto Empty Invisible R:Plant R:Plant Kingdom Plant Scoring None
+ResourceCard Recto Empty Invisible Empty R:Animal Kingdom Animal Scoring None
+ResourceCard Recto Invisible R:Plant Empty Empty Kingdom Plant Scoring D:1
+ResourceCard Recto Invisible A:Quill R:Animal R:Insect Kingdom Insect Scoring None
