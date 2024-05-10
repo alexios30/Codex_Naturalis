@@ -1,381 +1,319 @@
 package fr.uge.game;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
+
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
+public class SimpleGameData {
 
+	private RessourceCard[] ressourceTable; 
+	private GoldenCard[] goldenTable; 
+	private Card[] mainTable; 
 
-//import java.awt.Color;
-//import java.awt.Graphics2D;
-//import java.awt.geom.AffineTransform;
-//import java.awt.geom.Rectangle2D;
-//import java.awt.image.BufferedImage;
-//import java.util.Objects;
-
-import fr.umlv.zen5.ApplicationContext;
-
-
-
-public record SimpleGameView(int height, int width) {
-
-	// ecran de debut
-	public static void intitialisation(ApplicationContext context) {
-		var screenInfo = context.getScreenInfo();
-		var width = screenInfo.getWidth();
-		var height = screenInfo.getHeight();
-
-		context.renderFrame(graphics -> {
-			graphics.clearRect(0, 0, (int) width, (int) height);
-			drawBackGround(context, width, height);
-			
-			graphics.setColor(Color.ORANGE);
-			graphics.fill(new Rectangle2D.Float(1440, 50, 50, 50));
-			graphics.fill(new Rectangle2D.Float(1365, 50, 50, 50));
-			
-			Font font = new Font("Arial", Font.PLAIN, 50);
-			graphics.setFont(font);
-			graphics.setColor(Color.WHITE);
-			graphics.drawString("+", 1440+12, 92);
-			graphics.drawString("-", 1365+18, 90);
-			
-						
-			
-		});
-	}
 	
-	public static void drawBackGround(ApplicationContext context, float width, float height) {
-		context.renderFrame(graphics -> {
-			try {
-				SimpleGameView.image(graphics, ImageIO.read(Files.newInputStream(Path.of("include" + "/" + "img" + "/" +"Background.png"))),
-						0, 0, width, height);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-	}
+	private ArrayList<RessourceCard> packRessource;
+	private ArrayList<GoldenCard> packGolden;
 	
-	public static void drawBackGround2(ApplicationContext context, float width, float height) {
-		context.renderFrame(graphics -> {
-			graphics.setColor(Color.LIGHT_GRAY);
-			graphics.fill(new Rectangle2D.Float(0, 0, width, height));
-			graphics.setColor(Color.BLACK);
-			graphics.drawLine((int) width/5+30, 0, (int) width/5+30, (int) height);
-		});
-	}
+	private static HashMap<Pair, Card> plateau;
+	private static HashMap<Integer, Pair> ordre;
+	private static HashMap<Card, Pair> coordinatesMap;
+	private static HashMap<String, Integer> nbRessource;
+	private static int numOrdre;
+	/**private RessourceCard RessourceCard1;
+	private RessourceCard RessourceCard2;
+	private RessourceCard RessourceCard3;
 	
-	public static void drawBackCard(ApplicationContext context, int x, int y , int width, int height) {
-		context.renderFrame(graphics -> {
-			graphics.setColor(Color.ORANGE);
-			graphics.fill(new Rectangle2D.Float(x, y, width, height));
-		});
-	}
+	private GoldenCard GoldenCard1;
+	private GoldenCard GoldenCard2;
+	private GoldenCard GoldenCard3;
 	
+	private RessourceCard MainCard1;
+	private RessourceCard MainCard2;
+	private RessourceCard MainCard3;**/
 	
-	public static void drawCard(ApplicationContext context, Card card,int x, int y, int width, int height) {
-			
-		if (card instanceof GoldenCard) {
-			drawBackCard(context, x, y, width, height);
-			drawGoldenCard(context, ((GoldenCard) card), x, y, width, height); 
-		} else if (card instanceof RessourceCard) {
-			drawBackCard(context, x, y, width, height);
-			drawRessourceCard(context, ((RessourceCard) card), x, y, width, height); 
-		}
-	}
-	
-	public static void drawCorner(ApplicationContext context, Card card, int x, int y, int width, int height) {
-		ArrayList<String> Corner = card.getCorner();
-		int squareSize = width/7;
+	public SimpleGameData() {
 		
-		switch (card.cornerBottomLeft()) {
-		case "Animal" -> drawCornerColor(context, x, (y + height - squareSize), squareSize, Color.RED);
-		case "Empty" -> drawCornerColor(context, x, (y + height - squareSize), squareSize, Color.WHITE);
+		// Ouverture des fichiers pour créer les decks resssources et les dorées
+		try {
+			packRessource = RessourceCard.createRessourceCard(Path.of("include/Ressource.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
-		switch (card.cornerTopLeft()) {
-		case "Animal" -> drawCornerColor(context, x, y, squareSize, Color.RED);
-		case "Empty" -> drawCornerColor(context, x, y, squareSize, Color.WHITE);
+		try {
+			packGolden = GoldenCard.createRessourceCard(Path.of("include/Golden.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
-		switch (card.cornerTopRight()) {
-		case "Animal" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.RED);
-		case "Empty" -> drawCornerColor(context, x, y, squareSize, Color.WHITE);
+		ressourceTable = new RessourceCard[3];
+		goldenTable = new GoldenCard[3];
+		mainTable = new Card[3];
+		plateau = new HashMap<Pair, Card>();
+		ordre = new HashMap<Integer, Pair>();
+		coordinatesMap = new HashMap<Card,Pair>();
+		nbRessource = new HashMap<String, Integer>();
+		numOrdre=0;
+		melangeRessource(packRessource);
+        melangeGolden(packGolden);
+		
+		
+		// initialisation des pioches
+		for (int i = 0; i < 3; i++) {
+			ressourceTable[i] = piocheRessource(getPackRessource());
+			goldenTable[i] = piocheGolden(getPackGolden());
 		}
 		
-		switch (card.cornerBottomRight()) {
-		case "Animal" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.RED);
-		case "Empty" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.WHITE);
-		}
+		// initialisation des cartes en main
+		mainTable[0] = piocheRessource(getPackRessource());
+		mainTable[1] = piocheRessource(getPackRessource());
+		mainTable[2] = piocheGolden(getPackGolden());
 		
+//		// carte de départ
+//		plateau.put(new Pair(0, 0), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(1, 1), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(2, 2), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(-1, -1), piocheRessource(getPackRessource()));
+//		plateau.put(new Pair(-1, 1), piocheRessource(getPackRessource()));
+//
+//		ordre.put(0, new Pair(0, 0));
+//		ordre.put(1, new Pair(1, 1));
+//		ordre.put(2, new Pair(2, 2));
+//		ordre.put(3, new Pair(-1, -1));
+//		ordre.put(4, new Pair(-1, 1));
+		
+	}
+	
+	
+	
+	public static ArrayList<RessourceCard> melangeRessource(ArrayList<RessourceCard> packRessource) {
+        Random rand = new Random();
+        Collections.shuffle(packRessource, rand);
+        return packRessource;
+   }
+
+   public static RessourceCard piocheRessource(ArrayList<RessourceCard> packRessource) {
+	   int size = packRessource.size();
+	   if(size==0) {
+		   System.out.println("Partie fini");
+		   return null;
+	   }
+       RessourceCard carte1 = packRessource.remove(0);
+       return carte1;
+   }
+   
+   public static ArrayList<GoldenCard> melangeGolden(ArrayList<GoldenCard> packGolden) {
+        Random rand = new Random();
+        Collections.shuffle(packGolden, rand);
+        return packGolden;
+   }
+
+   public static GoldenCard piocheGolden(ArrayList<GoldenCard> packGolden) {
+	   int size = packGolden.size();
+	   if(size==0) {
+		   System.out.println("Partie fini");
+		   return null;
+	   }
+       GoldenCard carte1 = packGolden.remove(0);
+       return carte1;
+   }
+
+	public RessourceCard[] getRessourceTable() {
+		return ressourceTable;
 	}
 
-	public static void drawCornerColor(ApplicationContext context, int x, int y, int squareSize, Color color) {
-		context.renderFrame(graphics -> {
-			graphics.setColor(color);
-			graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
-		});
+	public GoldenCard[] getGoldenTable() {
+		return goldenTable;
+	}
+	public int getGoldenTableSize() {
+		return goldenTable.length;
 	}
 	
-	public static void drawRessourceCard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
-		var scoring = card.getScoring();
-	    int squareSize = width / 7;  
-		
-	    drawCorner(context, card, x, y, width, height);	    
-	    if (scoring.equals("1")) {
-		    context.renderFrame(graphics -> {
-		        String lettre = " S : 1";
-		        int tailleLettre = (int) (width/11.667);
-		        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+	public Card[] getMainTable() {
+		return mainTable;
+	}
 	
-		  
-		        int startX = x + squareSize * 3 ; 
-		        int startY = y + tailleLettre;
-		        graphics.setFont(font);
-		        graphics.drawString(lettre, startX, startY);
-		    	});
+	public HashMap<Integer, Pair> getOrdre() {
+		return ordre;
+	}
+
+	public ArrayList<RessourceCard> getPackRessource() {
+		return packRessource;
+	}
+
+	public ArrayList<GoldenCard> getPackGolden() {
+		return packGolden;
+	}
+	
+	public HashMap<Pair, Card> getPlateau() {
+		return plateau;
+	}
+	public HashMap<Card, Pair> getcoordinatesMap() {
+		return coordinatesMap;
+	}
+	
+	public void removeCardFromMainTable(int index) {
+	    if (index >= 0 && index < mainTable.length) {
+	        Card[] newMainTable = new Card[mainTable.length - 1];
+	        System.arraycopy(mainTable, 0, newMainTable, 0, index);
+	        System.arraycopy(mainTable, index + 1, newMainTable, index, mainTable.length - index - 1);
+	        mainTable = newMainTable;
+	        //displayMainTable(mainTable);
 	    }
 	}
 
-	public static void drawGoldenCard(ApplicationContext context, GoldenCard card,int x, int y, int width, int height) {
-		int squareSize = width / 7; 
-		var kingdom =  card.getKingdom();
-		var cost = card.getCost();
-		var typescoring = card.gettypescoring();
-		var scoring = card.getScoring();
-		
-	    drawCorner(context, card, x, y, width, height);	  
-	    
-	    int tailleLettre = (int) (width/11.667);
-        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
-	    
-	    switch (kingdom) {
-		case "Animal" -> context.renderFrame(graphics -> {
-	        String lettre = "Animal";	
-	  
-	        int startX = (int) (x + squareSize * 2.5) ; 
-	        int startY = y + tailleLettre * 3;
-	        graphics.setFont(font);
-	        graphics.drawString(lettre, startX, startY);
-	    	});
-	
-		}
-		
-		if (cost>0) {
-			context.renderFrame(graphics -> {
-			String lettre= Integer.toString(cost);
-			String newlettre= "Cost: A:" + lettre ;
-			
-	        int startX = (int) (x + squareSize * 2.5) ; 
-	        int startY = y + tailleLettre;
-	        graphics.setFont(font);
-	        graphics.drawString(newlettre, startX, startY);
-	    });
-			
-		}
-		context.renderFrame(graphics ->{
-			String lettre = Character.toString(typescoring);
-			String lettre1 = Character.toString(scoring);
-			String fusion = "Score:" + lettre + lettre1;
-			
-			int startX = (int) (x + squareSize * 2.5); 
-	        int startY = y + tailleLettre * 5;
-	        graphics.setFont(font);
-	        graphics.drawString(fusion, startX, startY);
-		});
-	    
-	    
-	}	
-
-	public static void drawLeftPack(ApplicationContext context, SimpleGameData data) {
-		int x = 35;
-		int y=300;
-		int y1 = 500;
-		var carteTop = data.getRessourceTable()[1];
-		var carteBottom = data.getRessourceTable()[2];
-	
-		drawBackCard(context,35,100, 350, 150);
-		drawBackCard(context,x,y, 350, 150);
-		drawBackCard(context,x,y1, 350, 150);
-		
-		drawRessourceCard(context, carteTop, x, y, 350, 150);
-		drawRessourceCard(context, carteBottom, x, y1, 350, 150);
-	
+	public void removeCardFromRessourceTableElement0(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        RessourceCard[] newressourceTable = new RessourceCard[ressourceTable.length - 1];
+	        System.arraycopy(ressourceTable, 0, newressourceTable, 0, index);
+	        System.arraycopy(ressourceTable, 1, newressourceTable, index, ressourceTable.length - index - 1);
+	        ressourceTable = newressourceTable;
+	        RessourceCard carte = piocheRessource(getPackRessource());
+	        addCardToRessourceTable(carte,0);
+	    }
+	}
+	public void removeCardFromRessourceTableElement1(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        RessourceCard[] newressourceTable = new RessourceCard[ressourceTable.length - 1];
+	        System.arraycopy(ressourceTable, 0, newressourceTable, 0, index);
+	        System.arraycopy(ressourceTable, index + 1, newressourceTable, index, ressourceTable.length - index - 1);
+	        ressourceTable = newressourceTable;
+	        RessourceCard carte = piocheRessource(getPackRessource());
+	        addCardToRessourceTable(carte, 1);
+	    }
 	}
 
-	public static void drawRightPack(ApplicationContext context, SimpleGameData data) {
-		int x = 35;
-		int y=300;
-		int y1 = 500;
-		int xgolden= 1535;
-		
-		var carteTop = data.getGoldenTable()[1];
-		var carteBottom = data.getGoldenTable()[2];
-	    
-		drawBackCard(context,xgolden,100, 350, 150);
-		drawBackCard(context,xgolden,y1, 350, 150);
-		drawBackCard(context, xgolden, y, 350, 150);
-		
-		drawGoldenCard(context, carteTop, xgolden, y, 350, 150);
-		drawGoldenCard(context, carteBottom, xgolden, y1, 350, 150);
+	
+	public void removeCardFromRessourceTableElement2(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        RessourceCard[] newressourceTable = new RessourceCard[ressourceTable.length - 1];
+	        System.arraycopy(ressourceTable, 0, newressourceTable, 0, index);
+	        System.arraycopy(ressourceTable, 2, newressourceTable, index, ressourceTable.length - index - 1);
+	        ressourceTable = newressourceTable;
+	        RessourceCard carte = piocheRessource(getPackRessource());
+	        addCardToRessourceTable(carte,2);
+	    }
 	}
-
-	public static void drawMainPack(ApplicationContext context, SimpleGameData data) {
-		int width = 350;
-		int height = 150;
-		int y = 875;
-		int xleft = 200;
-		int xmiddle= 800;
-		int xright = 1400;
-		
-		
-		var mainTable = data.getMainTable();
-	     
-	    for (int i = 0; i < mainTable.length; i++) {
-	    	drawCard(context, mainTable[i], 200+600*i,y, 350, 150);
-	    	
-	    	/** Vérification du type de la carte
-	        if (mainTable[i] instanceof GoldenCard) {
-	        	drawBackCard(context,200+600*i,y, 350, 150);
-	        	drawGoldenCard(context, ((GoldenCard) mainTable[i]), 200+600*i, y, width, height); 
-	        } else if (mainTable[i] instanceof RessourceCard) {
-	        	drawBackCard(context,200+600*i,y, 350, 150);
-	        	drawRessourceCard(context, ((RessourceCard) mainTable[i]), 200+600*i, y, width, height); 
-	        }**/
+	public void removeCardFromGoldenTableElement0(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        GoldenCard[] newgoldenTable = new GoldenCard[goldenTable.length - 1];
+	        System.arraycopy(goldenTable, 0, newgoldenTable, 0, index);
+	        System.arraycopy(goldenTable, 1, newgoldenTable, index, goldenTable.length - index - 1);
+	        goldenTable = newgoldenTable;
+	        GoldenCard carte = piocheGolden(getPackGolden());
+	        addCardToGoldenTable(carte,0);
+	    }
+	}
+	public void removeCardFromGoldenTableElement1(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        GoldenCard[] newgoldenTable = new GoldenCard[goldenTable.length - 1];
+	        System.arraycopy(goldenTable, 0, newgoldenTable, 0, index);
+	        System.arraycopy(goldenTable, index + 1, newgoldenTable, index, goldenTable.length - index - 1);
+	        goldenTable = newgoldenTable;
+	        GoldenCard carte = piocheGolden(getPackGolden());
+	        addCardToGoldenTable(carte,1);
+	    }
+	}
+	public void removeCardFromGoldenTableElement2(int index) {
+	    if (index >= 0 && index < ressourceTable.length) {
+	        GoldenCard[] newgoldenTable = new GoldenCard[goldenTable.length - 1];
+	        System.arraycopy(goldenTable, 0, newgoldenTable, 0, index);
+	        System.arraycopy(goldenTable, 2, newgoldenTable, index, goldenTable.length - index - 1);
+	        goldenTable = newgoldenTable;
+	        GoldenCard carte = piocheGolden(getPackGolden());
+	        addCardToGoldenTable(carte,2);
+	    }
+	}
+	
+	public void addCardToMainTable(Card card) {
+	    Card[] newMainTable = new Card[mainTable.length + 1];
+	    System.arraycopy(mainTable, 0, newMainTable, 0, mainTable.length);
+	    newMainTable[mainTable.length] = card;
+	    mainTable = newMainTable;
+	}
+	
+	public void addCardToRessourceTable(RessourceCard card, int index) {
+	    if (index >= 0 && index <= ressourceTable.length) {
+	        RessourceCard[] newRessourceTable = new RessourceCard[ressourceTable.length + 1];
+	        System.arraycopy(ressourceTable, 0, newRessourceTable, 0, index);
+	        newRessourceTable[index] = card;
+	        System.arraycopy(ressourceTable, index, newRessourceTable, index + 1, ressourceTable.length - index);
+	        ressourceTable = newRessourceTable;
+	    }
+	}
+	public void addCardToGoldenTable(GoldenCard card, int index) {
+	    if (index >= 0 && index <= goldenTable.length) {
+	        GoldenCard[] newGoldenCard = new GoldenCard[goldenTable.length + 1];
+	        System.arraycopy(goldenTable, 0, newGoldenCard, 0, index);
+	        newGoldenCard[index] = card;
+	        System.arraycopy(goldenTable, index, newGoldenCard, index + 1, goldenTable.length - index);
+	        goldenTable = newGoldenCard;
 	    }
 	}
 
 
-	public static void drawPlateau(ApplicationContext context, SimpleGameData data, int widthCard) {
-		var screenInfo = context.getScreenInfo();
-		var width = screenInfo.getWidth();
-		var height = screenInfo.getHeight();
-		//int widthCard = 350;
-		int heightCard = widthCard / 7 * 3;
-		
-		//System.out.println("widthCard : " + widthCard + ", heightCard : " + heightCard);
-		
-		var plateau = data.getPlateau();
-		var ordre = data.getOrdre();
-		var coordinateCardplateau = data.getcoordinatesMap();
-		Pair paire1 = new Pair(0,0);	
-		int xFirstCard = (int) (width/2 - widthCard/2);
-		int yFirstCard = (int) (height/2 - heightCard/2);
-		if (!plateau.isEmpty()) {
-		
-			RessourceCard firstCard = (RessourceCard) plateau.get(paire1);
-			//System.out.println(firstCard);
-			coordinateCardplateau.put(firstCard, new Pair(xFirstCard, yFirstCard));
-			drawBackCard(context, xFirstCard, yFirstCard, widthCard, heightCard);
-			drawRessourceCard(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
-			if (plateau.size()>=2) {
-				for (Map.Entry<Integer, Pair> entry : ordre.entrySet()) {
-					int ordeDeJeu = entry.getKey();
-					Pair pair = entry.getValue();
-					Card card = plateau.get(pair); // Récupérer la carte à partir de la deuxième map
-					//System.out.println("Ordre: " + ordeDeJeu + ", Position: "+ pair + ", Carte: " + card);
-					int xCard = xFirstCard + (widthCard - widthCard/7) * pair.x();
-					int yCard = yFirstCard + (heightCard - heightCard/3) * pair.y();
-					if (!cardExistsAtCoordinates(coordinateCardplateau, xCard, yCard)) {
-					coordinateCardplateau.put(card, new Pair(yCard, yFirstCard));
-					}
-					
-					drawCard(context, card, xCard, yCard, widthCard, heightCard);
-				}
-				//System.out.println(coordinateCardplateau);
-				SimpleGameController.getXYCardPlateauPair(data);
-			}
-		}
-	
-	}
-	public static boolean cardExistsAtCoordinates(HashMap<Card, Pair> coordinatesMap, int x, int y) {
-	    for (Pair pair : coordinatesMap.values()) {
-	        if (pair.x() == x && pair.y() == y) {
-	            return true; 
-	        }
+	public static void displayMainTable(Card[] mainTable) {
+	    //System.out.println("Contenu de mainTable :");
+	    for (Card card : mainTable) {
+	        //System.out.println(card);
 	    }
-	    return false; 
-	}
-	
-	public static void refreshScreen(ApplicationContext context, SimpleGameData data, int widthCard) {
-		intitialisation(context);
-		drawLeftPack(context, data);
-		drawRightPack(context, data);
-		drawMainPack(context, data);
-		drawPlateau(context, data, widthCard);
 	}
 
-	
-	private static void checkRange(double min, double value, double max) {
-		if (value < min || value > max) {
-			throw new IllegalArgumentException("Invalid coordinate: " + value);
-		}
-	}
-	
-	public static void image(Graphics2D graphics, BufferedImage image, float x, float y, float dimX, float dimY) {
-		var width = image.getWidth();
-		var height = image.getHeight();
-		var scale = Math.min(dimX / width, dimY / height);
-		var transform = new AffineTransform(scale, 0, 0, scale, x + (dimX - scale * width) / 2,
-				y + (dimY - scale * height) / 2);
-		graphics.drawImage(image, transform, null);
-	}
-
-	
-
-	/**
-	 * Displays an image in a given part of the display area.
-	 * 
-	 * @param graphics Graphics engine that will actually display the image.
-	 * @param image    Image to be displayed.
-	 * @param x        Base abscissa of the part in which the image will be
-	 *                 displayed.
-	 * @param y        Base ordinate of the part in which the image will be
-	 *                 displayed.
-	 * @param dimX     Width of the part in which the image will be displayed.
-	 * @param dimY     Height of the part in which the image will be displayed.
-	 */
-	private void drawImage(Graphics2D graphics, BufferedImage image, float x, float y, float dimX, float dimY) {
-		var width = image.getWidth();
-		var height = image.getHeight();
-		var scale = Math.min(dimX / width, dimY / height);
-		var transform = new AffineTransform(scale, 0, 0, scale, x + (dimX - scale * width) / 2,
-				y + (dimY - scale * height) / 2);
-		graphics.drawImage(image, transform, null);
-	}
-	
-	private void draw(Graphics2D graphics, SimpleGameData data) {
-		// example
-		graphics.setColor(Color.RED);
-		graphics.fill(new Rectangle2D.Float(0, 0, height, width));
-		}
+	public static void BottomRight(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
 		
-	
-
-
-
-	/**
-	 * Draws the game board from its data, using an existing
-	 * {@code ApplicationContext}.
-	 * 
-	 * @param context {@code ApplicationContext} of the game.
-	 * @param data    GameData containing the game data.
-	 * @param view    GameView on which to draw.
-	 */
-	public static void draw(ApplicationContext context, SimpleGameData data, SimpleGameView view) {
-		context.renderFrame(graphics -> view.draw(graphics, data)); // do not modify
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(1, 1),card);
+		ordre.put(numOrdre, new Pair(1, 1));
+		}
 	}
-}
+	public static void TopLeft(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(-1, -1),card);
+		ordre.put(numOrdre, new Pair(-1, -1));
+		}
+	}
+	public static void BottomLeft(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(-1, 1),card);
+		ordre.put(numOrdre, new Pair(-1, 1));
+		}
+	}
+	public static void TopRight(Card card) {
+		if(plateau.isEmpty()) {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(0, 0),card);
+		ordre.put(numOrdre, new Pair(0, 0));
+		}else {
+		numOrdre=numOrdre+1;
+		plateau.put(new Pair(1, -1),card);
+		ordre.put(numOrdre, new Pair(1, -1));
+		}
+	}
+	public static Card[] ajoutercarteplateau() {
+		Collection<Card> values = plateau.values();
+	    Card[] cards = values.toArray(new Card[0]);
+	    return cards;
+	}
+	
+	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
+	}
