@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -265,19 +266,19 @@ public record SimpleGameView(int height, int width) {
 		//int widthCard = 350;
 		int heightCard = widthCard / 7 * 3;
 		
-		System.out.println("widthCard : " + widthCard + ", heightCard : " + heightCard);
+		//System.out.println("widthCard : " + widthCard + ", heightCard : " + heightCard);
 		
 		var plateau = data.getPlateau();
 		var ordre = data.getOrdre();
+		var coordinateCardplateau = data.getcoordinatesMap();
 		Pair paire1 = new Pair(0,0);	
 		int xFirstCard = (int) (width/2 - widthCard/2);
 		int yFirstCard = (int) (height/2 - heightCard/2);
-		
 		if (!plateau.isEmpty()) {
 		
 			RessourceCard firstCard = (RessourceCard) plateau.get(paire1);
 			//System.out.println(firstCard);
-		
+			coordinateCardplateau.put(firstCard, new Pair(xFirstCard, yFirstCard));
 			drawBackCard(context, xFirstCard, yFirstCard, widthCard, heightCard);
 			drawRessourceCard(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
 			if (plateau.size()>=2) {
@@ -288,11 +289,25 @@ public record SimpleGameView(int height, int width) {
 					//System.out.println("Ordre: " + ordeDeJeu + ", Position: "+ pair + ", Carte: " + card);
 					int xCard = xFirstCard + (widthCard - widthCard/7) * pair.x();
 					int yCard = yFirstCard + (heightCard - heightCard/3) * pair.y();
+					if (!cardExistsAtCoordinates(coordinateCardplateau, xCard, yCard)) {
+					coordinateCardplateau.put(card, new Pair(yCard, yFirstCard));
+					}
+					
 					drawCard(context, card, xCard, yCard, widthCard, heightCard);
 				}
+				//System.out.println(coordinateCardplateau);
+				SimpleGameController.getXYCardPlateauPair(data);
 			}
 		}
 	
+	}
+	public static boolean cardExistsAtCoordinates(HashMap<Card, Pair> coordinatesMap, int x, int y) {
+	    for (Pair pair : coordinatesMap.values()) {
+	        if (pair.x() == x && pair.y() == y) {
+	            return true; 
+	        }
+	    }
+	    return false; 
 	}
 	
 	public static void refreshScreen(ApplicationContext context, SimpleGameData data, int widthCard) {
