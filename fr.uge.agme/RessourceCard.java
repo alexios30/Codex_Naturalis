@@ -14,12 +14,14 @@ import java.nio.file.StandardOpenOption;
 
 import fr.umlv.zen5.Application;
 
-public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight,String scoring, int resource) implements Card {
+public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, String cornerTopRight, String cornerBottomRight, String kingdom, String scoring, int resource) implements Card {
     public RessourceCard {
         Objects.requireNonNull(cornerTopLeft);
         Objects.requireNonNull(cornerBottomLeft);
         Objects.requireNonNull(cornerTopRight);
         Objects.requireNonNull(cornerBottomRight);
+        Objects.requireNonNull(kingdom);
+        Objects.requireNonNull(scoring);
     }
 
     //public void CardLeft() {
@@ -48,6 +50,10 @@ public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, Strin
     	return scoring;
     }
     
+    public String getKingdom() {
+    	return kingdom;
+    }
+    
     
     
     public static ArrayList<RessourceCard> createRessourceCard(Path src) throws IOException {
@@ -68,11 +74,12 @@ public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, Strin
     public static RessourceCard addressourcecard(String line) {
         String[] parts = line.split(" ");
 
-        String cornerTopLeft = parts[2].substring(2);
-        String cornerBottomLeft = parts[3];
-        String cornerTopRight = parts[4];
-        String cornerBottomRight = parts[5];
-        String scoring = "0";
+        String cornerTopLeft = readCorner(parts[2]);
+        String cornerBottomLeft = readCorner(parts[3]);
+        String cornerTopRight = readCorner(parts[4]);
+        String cornerBottomRight = readCorner(parts[5]);
+        String kingdom = parts[7];
+        String scoring = parts[9];
 
         int animalCount = 0;
 
@@ -81,12 +88,18 @@ public record RessourceCard(String cornerTopLeft, String cornerBottomLeft, Strin
                 animalCount++;
             }
         }
-        
-        if (parts.length > 8) {
-            scoring = parts[8].substring(2);
-        } 
-        RessourceCard card = new RessourceCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, scoring, animalCount);
+ 
+        RessourceCard card = new RessourceCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, kingdom, scoring, animalCount);
         return card;
+    }
+    
+    public static String readCorner(String corner) {
+    	char firstChar = corner.charAt(0);
+    	// si la valeur est un artefact ou une ressource
+    	if (firstChar == 'A' || firstChar == 'R') {
+			return corner.substring(2);
+		}
+		return corner;    
     }
 
 	@Override
