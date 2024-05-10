@@ -21,7 +21,8 @@ public class SimpleGameData {
 	
 	private static HashMap<Pair, Card> plateau;
 	private static HashMap<Integer, Pair> ordre;
-	private static  HashMap<Card, Pair> coordinatesMap = new HashMap<>();
+	private static HashMap<Card, Pair> coordinatesMap;
+	private static HashMap<String, Integer> nbRessource;
 	private static int numOrdre;
 	/**private RessourceCard RessourceCard1;
 	private RessourceCard RessourceCard2;
@@ -56,6 +57,7 @@ public class SimpleGameData {
 		plateau = new HashMap<Pair, Card>();
 		ordre = new HashMap<Integer, Pair>();
 		coordinatesMap = new HashMap<Card,Pair>();
+		nbRessource = new HashMap<String, Integer>();
 		numOrdre=0;
 		melangeRessource(packRessource);
         melangeGolden(packGolden);
