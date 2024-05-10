@@ -21,6 +21,7 @@ public class SimpleGameData {
 	
 	private static HashMap<Pair, Card> plateau;
 	private static HashMap<Integer, Pair> ordre;
+	private static  HashMap<Card, Pair> coordinatesMap = new HashMap<>();
 	private static int numOrdre;
 	/**private RessourceCard RessourceCard1;
 	private RessourceCard RessourceCard2;
@@ -54,6 +55,7 @@ public class SimpleGameData {
 		mainTable = new Card[3];
 		plateau = new HashMap<Pair, Card>();
 		ordre = new HashMap<Integer, Pair>();
+		coordinatesMap = new HashMap<Card,Pair>();
 		numOrdre=0;
 		melangeRessource(packRessource);
         melangeGolden(packGolden);
@@ -148,6 +150,9 @@ public class SimpleGameData {
 	
 	public HashMap<Pair, Card> getPlateau() {
 		return plateau;
+	}
+	public HashMap<Card, Pair> getcoordinatesMap() {
+		return coordinatesMap;
 	}
 	
 	public void removeCardFromMainTable(int index) {
@@ -251,9 +256,9 @@ public class SimpleGameData {
 
 
 	public static void displayMainTable(Card[] mainTable) {
-	    System.out.println("Contenu de mainTable :");
+	    //System.out.println("Contenu de mainTable :");
 	    for (Card card : mainTable) {
-	        System.out.println(card);
+	        //System.out.println(card);
 	    }
 	}
 
