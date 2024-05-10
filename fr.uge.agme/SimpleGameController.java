@@ -11,6 +11,8 @@ import fr.umlv.zen5.Event.Action;
 import fr.umlv.zen5.KeyboardKey;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -172,6 +174,9 @@ public class SimpleGameController {
 //         }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 		 	var maintable = data.getMainTable();
 		 	SimpleGameData.BottomRight(maintable[1]);
+		 	
+		 	ArrayList<Pair> plateau= getXYCardPlateauPair(data);
+		 	 boucleplateau(plateau, maintable[1], x, y, hauteur, largeur, data);
 		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 		    data.removeCardFromMainTable(1);
 		}
@@ -196,19 +201,19 @@ public class SimpleGameController {
 			    var maintable = data.getMainTable();
 			    if (isBottomleftclicked(x2, y2, x, squareY, squareSize, squareSize)) {
 			    	SimpleGameData.BottomLeft(maintable[2]);
-			        System.out.println("en bas a gauche !");
+			        //System.out.println("en bas a gauche !");
 		    }
 			    if (isBottomRightClicked(x2, y2, x + largeur - squareSize, squareY, squareSize, squareSize)) {
 			    	SimpleGameData.BottomRight(maintable[2]);
-			        System.out.println("Coin en bas à droite cliqué !");
+			        //System.out.println("Coin en bas à droite cliqué !");
 			    }
 			   if (isTopLeftClicked(x2, y2, x, y, squareSize, squareSize)) {
 				   SimpleGameData.TopLeft(maintable[2]);
-		            System.out.println("Coin en haut à gauche cliqué !");	        
+		            //System.out.println("Coin en haut à gauche cliqué !");	        
 		            }
 		    if (isTopRightClicked(x2, y2, x, y, squareSize, squareSize)) {
 		    	SimpleGameData.TopRight(maintable[2]);
-		    	System.out.println("Coin en haut à droite cliqué !");
+		    	//System.out.println("Coin en haut à droite cliqué !");
 		    }
 		        
 			    data.removeCardFromMainTable(2);
@@ -335,8 +340,53 @@ public static boolean isTopRightClicked(float x2, float y2, int rectangleX, int 
 			 return cardWidth;
 	 	}
 	 
-	
-		public static void main(String[] args) throws IOException {
+ public static ArrayList<Pair> getXYCardPlateauPair(SimpleGameData data) {
+	 	var coordinatesMap =data.getcoordinatesMap();
+	    ArrayList<Pair> allCoordinates = new ArrayList<>();
+	    for (Pair pair : coordinatesMap.values()) {
+	        allCoordinates.add(pair);
+	    }
+	    System.out.println(allCoordinates);
+	    return allCoordinates;
+	}
+ 
+ public static void detectecardplateau(Card card,float x2,float y2,int x,int y,int hauteur,int largeur,SimpleGameData data) {
+	 int squareSize = 50;
+	    int squareY = y + hauteur - squareSize;
+	    if (isBottomleftclicked(x2, y2, x, squareY, squareSize, squareSize)) {
+	    	SimpleGameData.BottomLeft(card);
+	        System.out.println("en bas a gauche !");
+ }
+	    if (isBottomRightClicked(x2, y2, x + largeur - squareSize, squareY, squareSize, squareSize)) {
+	    	SimpleGameData.BottomRight(card);
+	        System.out.println("Coin en bas à droite cliqué !");
+	    }
+	   if (isTopLeftClicked(x2, y2, x, y, squareSize, squareSize)) {
+		   SimpleGameData.TopLeft(card);
+         System.out.println("Coin en haut à gauche cliqué !");	        
+         }
+		 if (isTopRightClicked(x2, y2, x, y, squareSize, squareSize)) {
+		 	SimpleGameData.TopRight(card);
+		 	System.out.println("Coin en haut à droite cliqué !");
+		 }
+ }
+ public static float getXplateau(Pair pair) {
+	    float x= pair.x();
+	    return x;
+	}
+ public static float getYplateau(Pair pair) {
+	    float y= pair.y();
+	    return y;
+	}
+ public static void boucleplateau(ArrayList<Pair> pairs, Card card, int x1, int y1, int hauteur, int largeur, SimpleGameData data) {
+	 for (int i = 0; i < pairs.size(); i++) {
+	        Pair pair = pairs.get(i);
+	        float x = getXplateau(pair);
+	        float y = getYplateau(pair);
+	        detectecardplateau(card, x, y, x1, y1, hauteur, largeur, data);
+	    }
+	}
+	public static void main(String[] args) throws IOException {
 			Application.run(Color.BLACK, t -> {
 				try {
 					codex(t);
