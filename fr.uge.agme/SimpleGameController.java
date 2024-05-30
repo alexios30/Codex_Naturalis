@@ -109,7 +109,7 @@ public class SimpleGameController {
         	int cardHeight = 150; 
         	int widthCardPlateau2 = widthCardPlateau ;
         	//System.out.println(widthCardPlateau2);
-
+        	ArrayList<Pair> plateau= getXYCardPlateauPair(data);
             var event = context.pollOrWaitEvent(10);
             if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
                 var location = event.getLocation();
@@ -124,6 +124,10 @@ public class SimpleGameController {
                 SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
+                
+                if(plateau.size()>=1) {
+                	SimpleGameController.detectcardplateau(plateau,location.x, location.y, cardWidth, cardHeight, data, context);
+                }
                 //detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
                 //detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
                 SimpleGameView.refreshScreen(context, data, widthCardPlateau);
@@ -175,9 +179,6 @@ public class SimpleGameController {
 //         }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 		 	var maintable = data.getMainTable();
 		 	SimpleGameData.BottomRight(maintable[1]);
-		 	
-		 	ArrayList<Pair> plateau= getXYCardPlateauPair(data);
-		 	 boucleplateau(plateau, maintable[1], x, y, hauteur, largeur, data);
 		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 		    data.removeCardFromMainTable(1);
 		}
@@ -199,24 +200,7 @@ public class SimpleGameController {
 //	      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 			    int squareSize = 50;
 			    int squareY = y + hauteur - squareSize;
-			    var maintable = data.getMainTable();
-			    if (isBottomleftclicked(x2, y2, x, squareY, squareSize, squareSize)) {
-			    	SimpleGameData.BottomLeft(maintable[2]);
-			        //System.out.println("en bas a gauche !");
-		    }
-			    if (isBottomRightClicked(x2, y2, x + largeur - squareSize, squareY, squareSize, squareSize)) {
-			    	SimpleGameData.BottomRight(maintable[2]);
-			        //System.out.println("Coin en bas à droite cliqué !");
-			    }
-			   if (isTopLeftClicked(x2, y2, x, y, squareSize, squareSize)) {
-				   SimpleGameData.TopLeft(maintable[2]);
-		            //System.out.println("Coin en haut à gauche cliqué !");	        
-		            }
-		    if (isTopRightClicked(x2, y2, x, y, squareSize, squareSize)) {
-		    	SimpleGameData.TopRight(maintable[2]);
-		    	//System.out.println("Coin en haut à droite cliqué !");
-		    }
-		        
+			    var maintable = data.getMainTable();   
 			    data.removeCardFromMainTable(2);
 			}
 	 }
@@ -300,25 +284,46 @@ public class SimpleGameController {
 			}
 		 }
 	 }
+ public static void detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
+	 //Récuperation de lapremière carte avec son x et y
+	 for (Pair carte : plateau) {
+		 float x = getXplateau(carte);
+		 float y = getYplateau(carte);
+	
+		 
+		    if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
+		        System.out.println("Le clic est dans le haut rectangle gauche de la première carte.");
+		    }
+		    if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
+		    	System.out.println("Le clic est dans le haut rectangle droite de la première carte.");
+		    }if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+		        System.out.println("Le clic est dans le bas rectangle gauche de la première carte.");	    	
+		    }if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+		    	System.out.println("Le clic est dans le bas rectangle droite de la première carte.");
+		    }
+	 }
+}
+
  
- public static boolean isBottomleftclicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
-	    return x2 >= rectangleX && x2 <= rectangleX + rectangleWidth && 
-	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight;
-	}
-public static boolean isBottomRightClicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
-	    return x2 >= rectangleX && x2 <= rectangleX + rectangleWidth && 
-	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight;
-	}
-public static boolean isTopLeftClicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
-	    return x2 >= rectangleX && x2 <= rectangleX + rectangleWidth / 2 &&
-	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight / 2;
-	}
-public static boolean isTopRightClicked(float x2, float y2, int rectangleX, int rectangleY, int rectangleWidth, int rectangleHeight) {
-	    return x2 >= rectangleX && x2 >= rectangleX + rectangleWidth / 2 &&
-	           y2 >= rectangleY && y2 <= rectangleY + rectangleHeight / 2;
+ public static boolean detectleftTopcoin(float x, float y, float largeur, float hauteur, float clicX, float clicY) {
+	    return clicX >= x && clicX <= x + (largeur/7) && clicY >= y && clicY <= y + (hauteur/7);
 	}
 
-
+ public static boolean detectrightTopcoin(float x, float y, float largeur, float hauteur, float clicX, float clicY) {
+	 int carre = (int) (largeur/7);
+	 return clicX >= x + (carre*2) && clicX <= x + (carre*3) && clicY >= y && clicY <= y + (hauteur/7);
+	}
+ 
+ public static boolean detectleftBottomcoin(float x, float y, float largeur, float hauteur, float clicX, float clicY) {
+	 int test =(int) (hauteur/7); 
+	    return clicX >= x && clicX <= x + (largeur/7) && clicY >= y +(test*2) && clicY <= y + (test*3);
+	}
+ public static boolean detectrightBottomcoin(float x, float y, float largeur, float hauteur, float clicX, float clicY) {
+	 int test =(int) (hauteur/7); 
+	 int carre = (int) (largeur/7);
+	 return clicX >= x + (carre*2) && clicX <= x + (carre*3) && clicY >= y +(test*2) && clicY <= y + (test*3);
+	}
+ 
  public static int detectButtonLess( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context, int cardWidth ) {
   	int x = 1440; 
   	int y = 50;
@@ -347,30 +352,10 @@ public static boolean isTopRightClicked(float x2, float y2, int rectangleX, int 
 	    for (Pair pair : coordinatesMap.values()) {
 	        allCoordinates.add(pair);
 	    }
-	    System.out.println(allCoordinates);
+	    //System.out.println( "Le GET XYCardPlateauPair" + allCoordinates);
 	    return allCoordinates;
 	}
  
- public static void detectecardplateau(Card card,float x2,float y2,int x,int y,int hauteur,int largeur,SimpleGameData data) {
-	 int squareSize = 50;
-	    int squareY = y + hauteur - squareSize;
-	    if (isBottomleftclicked(x2, y2, x, squareY, squareSize, squareSize)) {
-	    	SimpleGameData.BottomLeft(card);
-	        System.out.println("en bas a gauche !");
- }
-	    if (isBottomRightClicked(x2, y2, x + largeur - squareSize, squareY, squareSize, squareSize)) {
-	    	SimpleGameData.BottomRight(card);
-	        System.out.println("Coin en bas à droite cliqué !");
-	    }
-	   if (isTopLeftClicked(x2, y2, x, y, squareSize, squareSize)) {
-		   SimpleGameData.TopLeft(card);
-         System.out.println("Coin en haut à gauche cliqué !");	        
-         }
-		 if (isTopRightClicked(x2, y2, x, y, squareSize, squareSize)) {
-		 	SimpleGameData.TopRight(card);
-		 	System.out.println("Coin en haut à droite cliqué !");
-		 }
- }
  public static float getXplateau(Pair pair) {
 	    float x= pair.x();
 	    return x;
@@ -378,14 +363,6 @@ public static boolean isTopRightClicked(float x2, float y2, int rectangleX, int 
  public static float getYplateau(Pair pair) {
 	    float y= pair.y();
 	    return y;
-	}
- public static void boucleplateau(ArrayList<Pair> pairs, Card card, int x1, int y1, int hauteur, int largeur, SimpleGameData data) {
-	 for (int i = 0; i < pairs.size(); i++) {
-	        Pair pair = pairs.get(i);
-	        float x = getXplateau(pair);
-	        float y = getYplateau(pair);
-	        detectecardplateau(card, x, y, x1, y1, hauteur, largeur, data);
-	    }
 	}
 	public static void main(String[] args) throws IOException {
 			Application.run(Color.BLACK, t -> {
