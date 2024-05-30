@@ -76,7 +76,6 @@ public class SimpleGameData {
 		
 //		// carte de départ
 //		plateau.put(new Pair(0, 0), piocheRessource(getPackRessource()));
-		
 //		plateau.put(new Pair(1, 1), piocheRessource(getPackRessource()));
 //		plateau.put(new Pair(2, 2), piocheRessource(getPackRessource()));
 //		plateau.put(new Pair(-1, -1), piocheRessource(getPackRessource()));
