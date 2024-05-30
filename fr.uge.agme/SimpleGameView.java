@@ -119,7 +119,6 @@ public record SimpleGameView(int height, int width) {
 		}
 		
 		switch (card.cornerTopLeft()) {
-		case "Invisible" -> {} // ne rien faire 
 		case "Animal" -> drawCornerColor(context, x, y, squareSize, Color.BLUE);
 		case "Fungi" -> drawCornerColor(context, x, y, squareSize, Color.RED);
 		case "Insect" -> drawCornerColor(context, x, y, squareSize, Color.MAGENTA);
@@ -133,7 +132,6 @@ public record SimpleGameView(int height, int width) {
 		}
 		
 		switch (card.cornerTopRight()) {
-		case "Invisible" -> {} // ne rien faire 
 		case "Animal" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.BLUE);
 		case "Fungi" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.RED);
 		case "Insect" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.MAGENTA);
@@ -146,7 +144,6 @@ public record SimpleGameView(int height, int width) {
 		}
 		
 		switch (card.cornerBottomRight()) {
-		case "Invisible" -> {} // ne rien faire 
 		case "Animal" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.BLUE);
 		case "Fungi" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.RED);
 		case "Insect" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.MAGENTA);
@@ -179,7 +176,7 @@ public record SimpleGameView(int height, int width) {
 	    int squareSize = width / 7;  
 		
 	    drawCorner(context, card, x, y, width, height);	    
-	    if (scoring.substring(2).equals("1")) {
+	    if (scoring.equals("1")) {
 		    context.renderFrame(graphics -> {
 		        String lettre = " S : 1";
 		        int tailleLettre = (int) (width/11.667);
@@ -291,7 +288,7 @@ public record SimpleGameView(int height, int width) {
 	     
 	    for (int i = 0; i < mainTable.length; i++) {
 	    	drawCard(context, mainTable[i], 200+600*i,y, 350, 150);
-	    	System.out.println(mainTable[i]);
+	    	//System.out.println("Le main pack "+mainTable[i]);
 	    	
 	    	/** Vérification du type de la carte
 	        if (mainTable[i] instanceof GoldenCard) {
