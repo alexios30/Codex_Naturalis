@@ -286,10 +286,15 @@ public class SimpleGameController {
 	 }
  public static void detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
 	 //Récuperation de lapremière carte avec son x et y
+	 int test = 0;
 	 for (Pair carte : plateau) {
+//	 	 System.out.println(carte);
+//		 System.out.println(plateau);
 		 float x = getXplateau(carte);
 		 float y = getYplateau(carte);
-	
+		 test++;
+		 System.out.println("Le x:" +x + "de la" + test);
+		 System.out.println("Le y" + y + " de la " + test);
 		 
 		    if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
 		        System.out.println("Le clic est dans le haut rectangle gauche de la première carte.");
@@ -297,12 +302,11 @@ public class SimpleGameController {
 		    if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
 		    	System.out.println("Le clic est dans le haut rectangle droite de la première carte.");
 		    }if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-		        System.out.println("Le clic est dans le bas rectangle gauche de la première carte.");	    	
+		        System.out.println("Le clic est dans le bas rectangle gauche de la première carte.");	
 		    }if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
 		    	System.out.println("Le clic est dans le bas rectangle droite de la première carte.");
-		    }
+		    }}
 	 }
-}
 
  
  public static boolean detectleftTopcoin(float x, float y, float largeur, float hauteur, float clicX, float clicY) {
