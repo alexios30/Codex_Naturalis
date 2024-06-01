@@ -333,7 +333,7 @@ public record SimpleGameView(int height, int width) {
 					int xCard = xFirstCard + (widthCard - widthCard/7) * pair.x();
 					int yCard = yFirstCard + (heightCard - heightCard/3) * pair.y();
 					if (!cardExistsAtCoordinates(coordinateCardplateau, xCard, yCard)) {
-					coordinateCardplateau.put(card, new Pair(yCard, yFirstCard));
+					coordinateCardplateau.put(card, new Pair(xCard, yCard));
 					}
 					
 					drawCard(context, card, xCard, yCard, widthCard, heightCard);
