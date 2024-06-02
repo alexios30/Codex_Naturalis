@@ -51,14 +51,14 @@ public class SimpleGameData {
 		
 		melangeRessource(packRessource);
         melangeGolden(packGolden);
-        System.out.println(packStarter+"\n\n");
+        //System.out.println(packStarter+"\n\n");
         melangeStarter(packStarter);
-        System.out.println(packStarter+"\n\n");
+       // System.out.println(packStarter+"\n\n");
         
         //forcer la pose de la starter card ------------------------------------------- ! A modifier
         firstCard = piocheStarter(packStarter);
         firstCard.setVerso(true);
-        System.out.println(firstCard);
+        //System.out.println(firstCard);
         Pair firstPair = new Pair(0, 0);
         plateau.put(firstPair, firstCard);
         ordre.put(numOrdre, firstPair);
@@ -410,100 +410,49 @@ public class SimpleGameData {
 	    }
 	}
 
-    public static void BottomRight(Card card) {
+    public static void BottomRight(Card card, Pair pair) {
         Pair newPair;
-
-        if (plateau.isEmpty()) {
-            newPair = new Pair(0, 0);
-        } else {
-            int maxX = 0;
-            int maxY = 0;
-            for (Pair pair : plateau.keySet()) {
-                if (pair.getX() > maxX && pair.getY()>maxY) {
-                    maxX = pair.getX();
-                    maxY = pair.getY();
-                }
-            }
-
-            newPair = new Pair(maxX + 1, maxY + 1);
-        }
+        int x = pair.getX();
+        int y = pair.getY();
+        newPair = new Pair(x + 1, y + 1);
 
         numOrdre++;
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);
     }
     
-    public static void TopLeft(Card card) {
-        Pair newPair;
+    public static void TopLeft(Card card,Pair pair) {
+    	  Pair newPair;
+          int x = pair.getX();
+          int y = pair.getY();
+          newPair = new Pair(x - 1, y - 1);
 
-        if (plateau.isEmpty()) {
-            newPair = new Pair(0, 0);
-        } else {
-            int minX = 0;
-            int minY = 0;
-            for (Pair pair : plateau.keySet()) {
-                if (pair.getX() < minX && pair.getY() < minY) {
-                    minX = pair.getX();
-                    minY = pair.getY();
-                }
-            }
-
-            newPair = new Pair(minX - 1, minY - 1);
-        }
 
         numOrdre++;
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);
     }
     
-    public static void BottomLeft(Card card) {
+    public static void BottomLeft(Card card,Pair pair) {
         Pair newPair;
-
-        if (plateau.isEmpty()) {
-            newPair = new Pair(0, 0);
-        } else {
-            int minX = 0;
-            int maxY = 0;
-            for (Pair pair : plateau.keySet()) {
-                if (pair.getX() < minX) {
-                    minX = pair.getX();
-                }
-                if (pair.getY() > maxY) {
-                    maxY = pair.getY();
-                }
-            }
-
-            newPair = new Pair(minX - 1, maxY + 1);
-        }
+        int x = pair.getX();
+        int y = pair.getY();
+        newPair = new Pair(x - 1, y + 1);
 
         numOrdre++;
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);
     }
 
-    public static void TopRight(Card card) {
+    public static void TopRight(Card card,Pair pair) {
         Pair newPair;
-
-        if (plateau.isEmpty()) {
-            newPair = new Pair(0, 0);
-        } else {
-            int maxX = 0;
-            int minY = 0;
-            for (Pair pair : plateau.keySet()) {
-                if (pair.getX() > maxX) {
-                    maxX = pair.getX();
-                }
-                if (pair.getY() < minY) {
-                    minY = pair.getY();
-                }
-            }
-
-            newPair = new Pair(maxX + 1, minY - 1);
-        }
+        int x = pair.getX();
+        int y = pair.getY();
+        newPair = new Pair(x + 1, y - 1);
 
         numOrdre++;
         plateau.put(newPair, card);
-        ordre.put(numOrdre, newPair);
+        ordre.put(numOrdre, newPair);  
     }
 	public static Card[] ajoutercarteplateau() {
 		Collection<Card> values = plateau.values();
