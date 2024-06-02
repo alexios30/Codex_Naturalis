@@ -1,6 +1,8 @@
 package fr.uge.game;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,32 +26,33 @@ public class SimpleGameData {
 	private static HashMap<Card, Pair> coordinatesMap;
 	private static HashMap<String, Integer> nbRessource;
 	private static int numOrdre;
-	/**private RessourceCard RessourceCard1;
-	private RessourceCard RessourceCard2;
-	private RessourceCard RessourceCard3;
-	
-	private GoldenCard GoldenCard1;
-	private GoldenCard GoldenCard2;
-	private GoldenCard GoldenCard3;
-	
-	private RessourceCard MainCard1;
-	private RessourceCard MainCard2;
-	private RessourceCard MainCard3;**/
+
 	
 	public SimpleGameData() {
-		
-		// Ouverture des fichiers pour créer les decks resssources et les dorées
-		try {
-			packRessource = RessourceCard.createRessourceCard(Path.of("include/Ressource.txt"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			packGolden = GoldenCard.createRessourceCard(Path.of("include/Golden.txt"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		packRessource = new ArrayList<>();
+        packGolden = new ArrayList<>();
+        try {
+            createCards(Path.of("include/deck2.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+     /*  Ce que l'on faisait avant 
+      * 
+     // Ouverture des fichiers pour créer les decks resssources et les dorées
+     		try {
+     			packRessource = RessourceCard.createRessourceCard(Path.of("include/Ressource.txt"));
+     		} catch (IOException e) {
+     			e.printStackTrace();
+     		}
+     		
+     		try {
+     			packGolden = GoldenCard.createRessourceCard(Path.of("include/Golden.txt"));
+     		} catch (IOException e) {
+     			e.printStackTrace();
+     		}
+      */	
+     		
 		
 		ressourceTable = new RessourceCard[3];
 		goldenTable = new GoldenCard[3];
@@ -74,22 +77,105 @@ public class SimpleGameData {
 		mainTable[1] = piocheRessource(getPackRessource());
 		mainTable[2] = piocheGolden(getPackGolden());
 		
-//		// carte de départ
-//		plateau.put(new Pair(0, 0), piocheRessource(getPackRessource()));
-//		plateau.put(new Pair(1, 1), piocheRessource(getPackRessource()));
-//		plateau.put(new Pair(2, 2), piocheRessource(getPackRessource()));
-//		plateau.put(new Pair(-1, -1), piocheRessource(getPackRessource()));
-//		plateau.put(new Pair(-1, 1), piocheRessource(getPackRessource()));
-//
-//		ordre.put(0, new Pair(0, 0));
-//		ordre.put(1, new Pair(1, 1));
-//		ordre.put(2, new Pair(2, 2));
-//		ordre.put(3, new Pair(-1, -1));
-//		ordre.put(4, new Pair(-1, 1));
+
 		
 	}
 	
+
 	
+	public static ArrayList<GoldenCard> createGoldenCard(Path src) throws IOException {
+        try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
+            String line;
+            ArrayList<GoldenCard> golden = new ArrayList<>();
+            while ((line = reader.readLine()) != null) {
+                var card = addGoldenCard(line);
+                golden.add(card);
+            }
+            return golden;
+        }
+    }
+    
+    public static ArrayList<RessourceCard> createRessourceCard(Path src) throws IOException {
+        try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
+            String line;
+            ArrayList<RessourceCard> ressource = new ArrayList<>();
+            while ((line = reader.readLine()) != null) {
+                var card = addRessourceCard(line);
+                ressource.add(card);
+            }
+            return ressource;
+        }
+    }
+    
+    
+    public void createCards(Path src) throws IOException {
+        try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("ResourceCard")) {
+                    packRessource.add(addRessourceCard(line));
+                } else if (line.startsWith("GoldCard")) {
+                    packGolden.add(addGoldenCard(line));
+                }
+            }
+        }
+    }
+	
+
+	public static RessourceCard addRessourceCard(String line) {
+        String[] parts = line.split(" ");
+
+        String cornerTopLeft = readCorner(parts[2]);
+        String cornerBottomLeft = readCorner(parts[3]);
+        String cornerTopRight = readCorner(parts[4]);
+        String cornerBottomRight = readCorner(parts[5]);
+        String kingdom = parts[7];
+        String scoring = parts[9];
+
+        int animalCount = 0;
+
+        for (String part : parts) {
+            if (part.equalsIgnoreCase("Animal")) {
+                animalCount++;
+            }
+        }
+
+        return new RessourceCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, kingdom, scoring, animalCount, false);
+    }
+	
+	public static GoldenCard addGoldenCard(String line) {
+        String[] parts = line.split(" ");
+        HashMap<String, Integer> cost = new HashMap<>();
+        cost.put("Animal", 0);
+        cost.put("Fungi", 0);
+        cost.put("Insect", 0);
+        cost.put("Plant", 0);
+
+        String cornerTopLeft = readCorner(parts[2]);
+        String cornerBottomLeft = readCorner(parts[3]);
+        String cornerTopRight = readCorner(parts[4]);
+        String cornerBottomRight = readCorner(parts[5]);
+        String kingdom = parts[7];
+        String dernier = parts[parts.length - 1];
+
+        char typescoring = dernier.charAt(0);
+        char scoring = dernier.charAt(2);
+
+        for (int i = 9; i < parts.length - 2; i++) {
+            String mot = parts[i];
+            cost.put(mot, cost.getOrDefault(mot, 0) + 1);
+        }
+
+        return new GoldenCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, kingdom, cost, typescoring, scoring, false);
+    }
+    
+    public static String readCorner(String corner) {
+        char firstChar = corner.charAt(0);
+        if (firstChar == 'A' || firstChar == 'R') {
+            return corner.substring(2);
+        }
+        return corner;
+    }
 	
 	public static ArrayList<RessourceCard> melangeRessource(ArrayList<RessourceCard> packRessource) {
         Random rand = new Random();
