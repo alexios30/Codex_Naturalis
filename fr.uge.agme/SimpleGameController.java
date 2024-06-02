@@ -12,8 +12,10 @@ import fr.umlv.zen5.Event.Action;
 import fr.umlv.zen5.KeyboardKey;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 
@@ -139,15 +141,9 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
 			 	Card card=(maintable[0]);
 			 	
-			 	if(plateau.size()==0) {
-			 	SimpleGameData.BottomRight(maintable[0]);
-			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
-			    data.removeCardFromMainTable(0);
-			    }else {
 			 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
 			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 			    data.removeCardFromMainTable(0);
-			    }
 			}
 	 }
  
@@ -184,15 +180,10 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 		    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
 		 	Card card=(maintable[1]);
 		 	
-		 	if(plateau.size()==0) {
-		 	SimpleGameData.BottomRight(maintable[1]);
-		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
-		    data.removeCardFromMainTable(1);
-		    }else {
+
 		 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
 		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 		    data.removeCardFromMainTable(1);
-		    }
 		}
  }
 
@@ -214,15 +205,11 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
 			 	Card card=(maintable[2]);
 			 	
-			 	if(plateau.size()==0) {
-			 	SimpleGameData.BottomRight(maintable[2]);
-			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
-			    data.removeCardFromMainTable(2);
-			    }else {
+	
 			 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
 			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 			    data.removeCardFromMainTable(2);
-			    }
+
 			}
 	}
 
@@ -306,24 +293,52 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 		 }
 	 }
  public static void detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ,Card card) {
-	 for (Pair carte : plateau) {
-		 float x = getXplateau(carte);
-		 float y = getYplateau(carte);
-		    if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
-		        System.out.println("Le clic est dans le haut rectangle gauche de la première carte.");
-		        SimpleGameData.TopLeft(card);
-		    }
-		    if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
-		    	System.out.println("Le clic est dans le haut rectangle droite de la première carte.");
-		    	 SimpleGameData.TopRight(card);
-		    }if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-		        System.out.println("Le clic est dans le bas rectangle gauche de la première carte.");	
-		        SimpleGameData.BottomLeft(card);
-		    }if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-		    	System.out.println("Le clic est dans le bas rectangle droite de la première carte.");
-		    	 SimpleGameData.BottomRight(card);
-		    }}
-	 }
+     HashMap<Pair, Card> pairplateau =data.getPlateau();
+     HashMap<Card, Pair> getcoordinatesMap=data.getcoordinatesMap();
+     List<Pair> pairposition = new ArrayList<>(pairplateau.keySet());
+     List<Card> cardplateau= new ArrayList<>(pairplateau.values());
+     List<Card> cardcoordinate= new ArrayList<>(getcoordinatesMap.keySet());
+     List<Pair> cardcoordinateXY= new ArrayList<>(getcoordinatesMap.values());
+     int test=0;
+     for (Pair carte : plateau) {
+         float x = getXplateau(carte);
+         float y = getYplateau(carte);
+         if(isPointInsideRectangle(x, y, largeur, hauteur, x2, y2)) {
+                int calcul=0;
+                for(Pair XY : cardcoordinateXY) {
+                	if (XY==carte){
+                		Card card3 =cardcoordinate.get(calcul);
+                		int newcalcul=0;
+                		for(Card searchcard : cardplateau) {
+                			if(card3.equals(searchcard)) {
+                				Pair coordoneecarte = pairposition.get(newcalcul);
+                				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+                	                 SimpleGameData.BottomRight(card,coordoneecarte);
+                				}
+                				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+                	                 SimpleGameData.BottomRight(card,coordoneecarte);
+                	            }if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+                	                SimpleGameData.BottomLeft(card,coordoneecarte);
+                	            }if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
+                	                 SimpleGameData.TopRight(card,coordoneecarte);
+                	            } if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
+                	                SimpleGameData.TopLeft(card,coordoneecarte);
+                	                }
+                				
+                			}
+                			newcalcul++;
+                		}
+                	}
+                	calcul++;
+                }
+            }
+            test++;
+            }
+     }
+ 
+ public static boolean isPointInsideRectangle(float x, float y, float width, float height, float pointX, float pointY) {
+        return pointX >= x && pointX <= x + width && pointY >= y && pointY <= y + height;
+    }
 
  
  public static boolean detectleftTopcoin(float x, float y, float largeur, float hauteur, float clicX, float clicY) {
