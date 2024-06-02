@@ -20,6 +20,8 @@ public class SimpleGameData {
 	
 	private ArrayList<RessourceCard> packRessource;
 	private ArrayList<GoldenCard> packGolden;
+	private ArrayList<StarterCard> packStarter;
+	private StarterCard firstCard;
 	
 	private static HashMap<Pair, Card> plateau;
 	private static HashMap<Integer, Pair> ordre;
@@ -31,28 +33,12 @@ public class SimpleGameData {
 	public SimpleGameData() {
 		packRessource = new ArrayList<>();
         packGolden = new ArrayList<>();
+        packStarter = new ArrayList<>();
         try {
             createCards(Path.of("include/deck2.txt"));
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        
-     /*  Ce que l'on faisait avant 
-      * 
-     // Ouverture des fichiers pour créer les decks resssources et les dorées
-     		try {
-     			packRessource = RessourceCard.createRessourceCard(Path.of("include/Ressource.txt"));
-     		} catch (IOException e) {
-     			e.printStackTrace();
-     		}
-     		
-     		try {
-     			packGolden = GoldenCard.createRessourceCard(Path.of("include/Golden.txt"));
-     		} catch (IOException e) {
-     			e.printStackTrace();
-     		}
-      */	
-     		
+        }	
 		
 		ressourceTable = new RessourceCard[3];
 		goldenTable = new GoldenCard[3];
@@ -62,8 +48,21 @@ public class SimpleGameData {
 		coordinatesMap = new HashMap<Card,Pair>();
 		nbRessource = new HashMap<String, Integer>();
 		numOrdre=0;
+		
 		melangeRessource(packRessource);
         melangeGolden(packGolden);
+        System.out.println(packStarter+"\n\n");
+        melangeStarter(packStarter);
+        System.out.println(packStarter+"\n\n");
+        
+        //forcer la pose de la starter card ------------------------------------------- ! A modifier
+        firstCard = piocheStarter(packStarter);
+        firstCard.setVerso(true);
+        System.out.println(firstCard);
+        Pair firstPair = new Pair(0, 0);
+        plateau.put(firstPair, firstCard);
+        ordre.put(numOrdre, firstPair);
+        
 		
 		
 		// initialisation des pioches
@@ -81,8 +80,14 @@ public class SimpleGameData {
 		
 	}
 	
-
 	
+	
+	
+	
+	
+	
+
+	// plus utiliser
 	public static ArrayList<GoldenCard> createGoldenCard(Path src) throws IOException {
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
             String line;
@@ -95,6 +100,7 @@ public class SimpleGameData {
         }
     }
     
+	// plus utiliser
     public static ArrayList<RessourceCard> createRessourceCard(Path src) throws IOException {
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
             String line;
@@ -108,6 +114,17 @@ public class SimpleGameData {
     }
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public void createCards(Path src) throws IOException {
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
             String line;
@@ -116,6 +133,8 @@ public class SimpleGameData {
                     packRessource.add(addRessourceCard(line));
                 } else if (line.startsWith("GoldCard")) {
                     packGolden.add(addGoldenCard(line));
+                } else if (line.startsWith("StarterCard")) {
+                    packStarter.add(addStarterCard(line));
                 }
             }
         }
@@ -168,6 +187,31 @@ public class SimpleGameData {
 
         return new GoldenCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, kingdom, cost, typescoring, scoring, false);
     }
+	
+	public static StarterCard addStarterCard(String line) {
+        String[] parts = line.split(" ");        	
+        	
+        String rectoCornerTopLeft = readCorner(parts[2]);
+        String rectoCornerBottomLeft = readCorner(parts[3]);
+        String rectoCornerTopRight = readCorner(parts[4]);
+        String rectoCornerBottomRight = readCorner(parts[5]);
+        
+        String versoCornerTopLeft = readCorner(parts[7]);
+        String versoCornerBottomLeft = readCorner(parts[8]);
+        String versoCornerTopRight = readCorner(parts[9]);
+        String versoCornerBottomRight = readCorner(parts[10]);
+
+        String[] versoResources = new String[parts.length-12];
+        int j = 0;
+        for (int i = 12; i < parts.length; i++) {
+        	versoResources[j] = parts[i].substring(2);
+        	j++;
+        }
+        var card = new StarterCard(rectoCornerTopLeft, rectoCornerBottomLeft, rectoCornerTopRight, rectoCornerBottomRight,
+                versoCornerTopLeft, versoCornerBottomLeft, versoCornerTopRight, versoCornerBottomRight,
+                versoResources);
+        return card;
+	}
     
     public static String readCorner(String corner) {
         char firstChar = corner.charAt(0);
@@ -206,6 +250,22 @@ public class SimpleGameData {
 		   return null;
 	   }
        GoldenCard carte1 = packGolden.remove(0);
+       return carte1;
+   }
+   
+   public static ArrayList<StarterCard> melangeStarter(ArrayList<StarterCard> packStarter) {
+       Random rand = new Random();
+       Collections.shuffle(packStarter, rand);
+       return packStarter;
+  }
+   
+   public static StarterCard piocheStarter(ArrayList<StarterCard> packStarter) {
+	   int size = packStarter.size();
+	   if(size==0) {
+		   System.out.println("Partie fini");
+		   return null;
+	   }
+	   StarterCard carte1 = packStarter.remove(0);
        return carte1;
    }
 
