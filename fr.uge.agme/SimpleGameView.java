@@ -1,4 +1,5 @@
 package fr.uge.game;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -8,14 +9,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Random;
-
 import javax.imageio.ImageIO;
 
 
@@ -69,34 +65,33 @@ public record SimpleGameView(int height, int width) {
 		});
 	}
 	
-	public static void drawBackGround2(ApplicationContext context, float width, float height) {
-		context.renderFrame(graphics -> {
-			graphics.setColor(Color.LIGHT_GRAY);
-			graphics.fill(new Rectangle2D.Float(0, 0, width, height));
-			graphics.setColor(Color.BLACK);
-			graphics.drawLine((int) width/5+30, 0, (int) width/5+30, (int) height);
-		});
-	}
+
 	
-	public static void drawBackCard(ApplicationContext context, int x, int y , int width, int height) {
+	public static void drawBackCard(ApplicationContext context, int x, int y , int width, int height, String kingdom) {
+		Objects.requireNonNull(kingdom);
+		
 		context.renderFrame(graphics -> {
-			graphics.setColor(Color.ORANGE);
+			switch (kingdom) {
+			case "Animal" -> graphics.setColor(Color.BLUE);
+			case "Fungi" -> graphics.setColor(Color.RED);
+			case "Insect" -> graphics.setColor(Color.MAGENTA);
+			case "Plant" -> graphics.setColor(Color.GREEN);
+			}
+			
 			graphics.fill(new Rectangle2D.Float(x, y, width, height));
 		});
 	}
 	
-	
 	public static void drawCard(ApplicationContext context, Card card,int x, int y, int width, int height) {
-			
-		if (card instanceof GoldenCard) {
-			drawBackCard(context, x, y, width, height);
+		if (card.isVerso()) {
+			drawRessourceCard(context, card.versoCard(), x, y, width, height);
+		}
+		else if (card instanceof GoldenCard) {
 			drawGoldenCard(context, ((GoldenCard) card), x, y, width, height); 
 		} else if (card instanceof RessourceCard) {
-			drawBackCard(context, x, y, width, height);
 			drawRessourceCard(context, ((RessourceCard) card), x, y, width, height); 
 		}
 	}
-	
 	public static void drawCorner(ApplicationContext context, Card card, int x, int y, int width, int height) {
 		//ArrayList<String> Corner = card.getCorner();
 		//System.out.println(Corner +"\n");
@@ -119,6 +114,7 @@ public record SimpleGameView(int height, int width) {
 		}
 		
 		switch (card.cornerTopLeft()) {
+		case "Invisible" -> {} // ne rien faire 
 		case "Animal" -> drawCornerColor(context, x, y, squareSize, Color.BLUE);
 		case "Fungi" -> drawCornerColor(context, x, y, squareSize, Color.RED);
 		case "Insect" -> drawCornerColor(context, x, y, squareSize, Color.MAGENTA);
@@ -132,6 +128,7 @@ public record SimpleGameView(int height, int width) {
 		}
 		
 		switch (card.cornerTopRight()) {
+		case "Invisible" -> {} // ne rien faire 
 		case "Animal" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.BLUE);
 		case "Fungi" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.RED);
 		case "Insect" -> drawCornerColor(context, (x + width - squareSize), y, squareSize, Color.MAGENTA);
@@ -144,6 +141,7 @@ public record SimpleGameView(int height, int width) {
 		}
 		
 		switch (card.cornerBottomRight()) {
+		case "Invisible" -> {} // ne rien faire 
 		case "Animal" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.BLUE);
 		case "Fungi" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.RED);
 		case "Insect" -> drawCornerColor(context, (x + width - squareSize), (y + height - squareSize), squareSize, Color.MAGENTA);
@@ -168,15 +166,21 @@ public record SimpleGameView(int height, int width) {
 		context.renderFrame(graphics -> {
 			graphics.setColor(color);
 			graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
+			graphics.setColor(Color.BLACK);
+	        graphics.drawRect(x, y, squareSize, squareSize);
 		});
 	}
-	
 	public static void drawRessourceCard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
 		var scoring = card.getScoring();
 	    int squareSize = width / 7;  
-		
+	    
+	    drawBackCard(context, x, y, width, height, card.getKingdom());
 	    drawCorner(context, card, x, y, width, height);	    
-	    if (scoring.equals("1")) {
+	    context.renderFrame(graphics -> {
+	    	graphics.setColor(Color.BLACK);
+	        graphics.drawRect(x, y, width, height);
+	    });
+	    if (scoring.substring(2).equals("1")) {
 		    context.renderFrame(graphics -> {
 		        String lettre = " S : 1";
 		        int tailleLettre = (int) (width/11.667);
@@ -190,6 +194,7 @@ public record SimpleGameView(int height, int width) {
 		    	});
 	    }
 	}
+	
 
 	public static void drawGoldenCard(ApplicationContext context, GoldenCard card,int x, int y, int width, int height) {
 		int squareSize = width / 7; 
@@ -198,35 +203,21 @@ public record SimpleGameView(int height, int width) {
 		var typescoring = card.gettypescoring();
 		var scoring = card.getScoring();
 		
+		drawBackCard(context, x, y, width, height, kingdom);
 	    drawCorner(context, card, x, y, width, height);	  
 	    
 	    int tailleLettre = (int) (width/11.667);
         Font font = new Font("Arial", Font.PLAIN, tailleLettre);
 	    
-	    switch (kingdom) {
-		case "Animal" -> context.renderFrame(graphics -> {
-	        String lettre = "Animal";	
-	  
-	        int startX = (int) (x + squareSize * 2.5) ; 
-	        int startY = y + tailleLettre * 3;
+	    
+	    //System.out.println(cost);
+	    String strCost = card.generateCost(cost);
+	    context.renderFrame(graphics -> {	  
+	    	int startX = (int) (x + squareSize * 3); 
+	        int startY = y + tailleLettre * 5;
 	        graphics.setFont(font);
-	        graphics.drawString(lettre, startX, startY);
+	        graphics.drawString(strCost, startX, startY);
 	    	});
-	
-		}
-		
-//		if (cost>0) {
-//			context.renderFrame(graphics -> {
-//			String lettre= Integer.toString(cost);
-//			String newlettre= "Cost: A:" + lettre ;
-//			
-//	        int startX = (int) (x + squareSize * 2.5) ; 
-//	        int startY = y + tailleLettre;
-//	        graphics.setFont(font);
-//	        graphics.drawString(newlettre, startX, startY);
-//	    });
-//			
-//		}
 	    
 		context.renderFrame(graphics ->{
 			String lettre = Character.toString(typescoring);
@@ -234,29 +225,54 @@ public record SimpleGameView(int height, int width) {
 			String fusion = "Score:" + lettre + lettre1;
 			
 			int startX = (int) (x + squareSize * 2.5); 
-	        int startY = y + tailleLettre * 5;
+	        int startY = y + tailleLettre ;
 	        graphics.setFont(font);
 	        graphics.drawString(fusion, startX, startY);
+	        graphics.setColor(Color.YELLOW);
+	        graphics.drawRect(x, y, width, height);
 		});
 	    
 	    
-	}	
-
+	}
+	private static void drawRessoucreVerso(ApplicationContext context, String kingdom, int x, int y, int widthCard, int heightCard) {
+		int squareSize = widthCard/7;
+		int newX = x + widthCard/2 - squareSize/2;
+		int newY = y + heightCard/2 - squareSize/2;
+		
+		context.renderFrame(graphics -> {
+			switch (kingdom) {
+			case "Animal" -> graphics.setColor(Color.BLUE);
+			case "Fungi" -> graphics.setColor(Color.RED);
+			case "Insect" -> graphics.setColor(Color.MAGENTA);
+			case "Plant" -> graphics.setColor(Color.GREEN);
+			}
+			
+			graphics.fill(new Rectangle2D.Float(newX, newY, squareSize, squareSize));
+		});
+		
+		
+	}
 	public static void drawLeftPack(ApplicationContext context, SimpleGameData data) {
 		int x = 35;
 		int y=300;
 		int y1 = 500;
 		var carteTop = data.getRessourceTable()[1];
 		var carteBottom = data.getRessourceTable()[2];
-	
-		drawBackCard(context,35,100, 350, 150);
-		drawBackCard(context,x,y, 350, 150);
-		drawBackCard(context,x,y1, 350, 150);
+		var cartePile = data.getRessourceTable()[0];
 		
+		//drawBackCard(context,35,100, 350, 150, cartePile.getKingdom());
+		
+		//drawBackCard(context,x,y, 350, 150);
+		//drawBackCard(context,x,y1, 350, 150);
+		
+		drawRessourceCard(context, cartePile.versoCard(), 35,100, 350, 150);
+		drawRessoucreVerso(context, cartePile.getKingdom(), 35, 100, 350, 150);
 		drawRessourceCard(context, carteTop, x, y, 350, 150);
 		drawRessourceCard(context, carteBottom, x, y1, 350, 150);
 	
 	}
+
+	
 
 	public static void drawRightPack(ApplicationContext context, SimpleGameData data) {
 		int x = 35;
@@ -266,11 +282,13 @@ public record SimpleGameView(int height, int width) {
 		
 		var carteTop = data.getGoldenTable()[1];
 		var carteBottom = data.getGoldenTable()[2];
-	    
-		drawBackCard(context,xgolden,100, 350, 150);
-		drawBackCard(context,xgolden,y1, 350, 150);
-		drawBackCard(context, xgolden, y, 350, 150);
+		var cartePile = data.getGoldenTable()[0];
 		
+		//drawBackCard(context, xgolden, 100, 350, 150, cartePile.getKingdom());
+		//drawBackCard(context,xgolden,y1, 350, 150);
+		//drawBackCard(context, xgolden, y, 350, 150);
+		
+		drawRessourceCard(context, cartePile.versoCard(), xgolden, 100, 350, 150);
 		drawGoldenCard(context, carteTop, xgolden, y, 350, 150);
 		drawGoldenCard(context, carteBottom, xgolden, y1, 350, 150);
 	}
@@ -322,7 +340,7 @@ public record SimpleGameView(int height, int width) {
 			RessourceCard firstCard = (RessourceCard) plateau.get(paire1);
 			//System.out.println(firstCard);
 			coordinateCardplateau.put(firstCard, new Pair(xFirstCard, yFirstCard));
-			drawBackCard(context, xFirstCard, yFirstCard, widthCard, heightCard);
+			//drawBackCard(context, xFirstCard, yFirstCard, widthCard, heightCard);
 			drawRessourceCard(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
 			if (plateau.size()>=2) {
 				for (Map.Entry<Integer, Pair> entry : ordre.entrySet()) {
