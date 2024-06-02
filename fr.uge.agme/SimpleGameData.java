@@ -274,6 +274,7 @@ public class SimpleGameData {
 		numOrdre=numOrdre+1;
 		plateau.put(new Pair(1, 1),card);
 		ordre.put(numOrdre, new Pair(1, 1));
+		System.out.println(ordre);
 		}
 	}
 	public static void TopLeft(Card card) {
