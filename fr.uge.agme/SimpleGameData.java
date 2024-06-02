@@ -264,52 +264,101 @@ public class SimpleGameData {
 	    }
 	}
 
-	public static void BottomRight(Card card) {
-		if(plateau.isEmpty()) {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(0, 0),card);
-		ordre.put(numOrdre, new Pair(0, 0));
-		
-		}else {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(1, 1),card);
-		ordre.put(numOrdre, new Pair(1, 1));
-		System.out.println(ordre);
-		}
-	}
-	public static void TopLeft(Card card) {
-		if(plateau.isEmpty()) {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(0, 0),card);
-		ordre.put(numOrdre, new Pair(0, 0));
-		}else {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(-1, -1),card);
-		ordre.put(numOrdre, new Pair(-1, -1));
-		}
-	}
-	public static void BottomLeft(Card card) {
-		if(plateau.isEmpty()) {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(0, 0),card);
-		ordre.put(numOrdre, new Pair(0, 0));
-		}else {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(-1, 1),card);
-		ordre.put(numOrdre, new Pair(-1, 1));
-		}
-	}
-	public static void TopRight(Card card) {
-		if(plateau.isEmpty()) {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(0, 0),card);
-		ordre.put(numOrdre, new Pair(0, 0));
-		}else {
-		numOrdre=numOrdre+1;
-		plateau.put(new Pair(1, -1),card);
-		ordre.put(numOrdre, new Pair(1, -1));
-		}
-	}
+    public static void BottomRight(Card card) {
+        Pair newPair;
+
+        if (plateau.isEmpty()) {
+            newPair = new Pair(0, 0);
+        } else {
+            int maxX = 0;
+            int maxY = 0;
+            for (Pair pair : plateau.keySet()) {
+                if (pair.getX() > maxX && pair.getY()>maxY) {
+                    maxX = pair.getX();
+                    maxY = pair.getY();
+                }
+            }
+
+            newPair = new Pair(maxX + 1, maxY + 1);
+        }
+
+        numOrdre++;
+        plateau.put(newPair, card);
+        ordre.put(numOrdre, newPair);
+    }
+    
+    public static void TopLeft(Card card) {
+        Pair newPair;
+
+        if (plateau.isEmpty()) {
+            newPair = new Pair(0, 0);
+        } else {
+            int minX = 0;
+            int minY = 0;
+            for (Pair pair : plateau.keySet()) {
+                if (pair.getX() < minX && pair.getY() < minY) {
+                    minX = pair.getX();
+                    minY = pair.getY();
+                }
+            }
+
+            newPair = new Pair(minX - 1, minY - 1);
+        }
+
+        numOrdre++;
+        plateau.put(newPair, card);
+        ordre.put(numOrdre, newPair);
+    }
+    
+    public static void BottomLeft(Card card) {
+        Pair newPair;
+
+        if (plateau.isEmpty()) {
+            newPair = new Pair(0, 0);
+        } else {
+            int minX = 0;
+            int maxY = 0;
+            for (Pair pair : plateau.keySet()) {
+                if (pair.getX() < minX) {
+                    minX = pair.getX();
+                }
+                if (pair.getY() > maxY) {
+                    maxY = pair.getY();
+                }
+            }
+
+            newPair = new Pair(minX - 1, maxY + 1);
+        }
+
+        numOrdre++;
+        plateau.put(newPair, card);
+        ordre.put(numOrdre, newPair);
+    }
+
+    public static void TopRight(Card card) {
+        Pair newPair;
+
+        if (plateau.isEmpty()) {
+            newPair = new Pair(0, 0);
+        } else {
+            int maxX = 0;
+            int minY = 0;
+            for (Pair pair : plateau.keySet()) {
+                if (pair.getX() > maxX) {
+                    maxX = pair.getX();
+                }
+                if (pair.getY() < minY) {
+                    minY = pair.getY();
+                }
+            }
+
+            newPair = new Pair(maxX + 1, minY - 1);
+        }
+
+        numOrdre++;
+        plateau.put(newPair, card);
+        ordre.put(numOrdre, newPair);
+    }
 	public static Card[] ajoutercarteplateau() {
 		Collection<Card> values = plateau.values();
 	    Card[] cards = values.toArray(new Card[0]);
