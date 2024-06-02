@@ -100,6 +100,7 @@ public class SimpleGameController {
 			}
 		}
 		
+		
 	}
 	
 	
@@ -115,7 +116,7 @@ public class SimpleGameController {
                 var location = event.getLocation();
                 SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
                 SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
-                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight, data, context);
+                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight, data, context,widthCardPlateau);
                 
                 SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
@@ -125,9 +126,6 @@ public class SimpleGameController {
                 SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
                 
-                if(plateau.size()>=1) {
-                	SimpleGameController.detectcardplateau(plateau,location.x, location.y, cardWidth, cardHeight, data, context);
-                }
                 //detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
                 //detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
                 SimpleGameView.refreshScreen(context, data, widthCardPlateau);
@@ -156,12 +154,35 @@ public class SimpleGameController {
 //	            }
 			 //Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 			 	var maintable = data.getMainTable();
-			 	SimpleGameData.TopLeft(maintable[0]);
+			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
+			 	Card card=(maintable[0]);
+			 	
+			 	if(plateau.size()==0) {
+			 	SimpleGameData.BottomRight(maintable[0]);
 			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 			    data.removeCardFromMainTable(0);
+			    }else {
+			 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
+			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
+			    data.removeCardFromMainTable(0);
+			    }
 			}
 	 }
  
+ public static void detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData data,ApplicationContext context, Card card) {
+	 while (true) {
+	     	int cardWidth = 350; 
+	     	int cardHeight = 150; 
+		 var event = context.pollOrWaitEvent(10);
+         if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
+             var location = event.getLocation();
+             	SimpleGameController.detectcardplateau(plateau,location.x, location.y, cardWidth, cardHeight, data, context,card);
+             	break;
+             }
+		 
+	 }
+ }
+
  public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ,SimpleGameData data, ApplicationContext context, int widthCardPlateau) {
  	int x = 800; 
  	int y = 875;
@@ -178,13 +199,22 @@ public class SimpleGameController {
 //
 //         }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 		 	var maintable = data.getMainTable();
+		    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
+		 	Card card=(maintable[1]);
+		 	
+		 	if(plateau.size()==0) {
 		 	SimpleGameData.BottomRight(maintable[1]);
 		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 		    data.removeCardFromMainTable(1);
+		    }else {
+		 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
+		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
+		    data.removeCardFromMainTable(1);
+		    }
 		}
  }
 
- public static void detectmaincardright( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
+ public static void detectmaincardright( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context, int widthCardPlateau ) {
 	 	int x = 1400; 
 	 	int y = 875;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
@@ -198,12 +228,21 @@ public class SimpleGameController {
 //				    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
 	//
 //	      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
-			    int squareSize = 50;
-			    int squareY = y + hauteur - squareSize;
-			    var maintable = data.getMainTable();   
+			 	var maintable = data.getMainTable();
+			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
+			 	Card card=(maintable[2]);
+			 	
+			 	if(plateau.size()==0) {
+			 	SimpleGameData.BottomRight(maintable[2]);
+			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
 			    data.removeCardFromMainTable(2);
+			    }else {
+			 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
+			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
+			    data.removeCardFromMainTable(2);
+			    }
 			}
-	 }
+	}
 
  
  public static void detectpiochelefttop( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
@@ -284,27 +323,23 @@ public class SimpleGameController {
 			}
 		 }
 	 }
- public static void detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
-	 //Récuperation de lapremière carte avec son x et y
-	 int test = 0;
+ public static void detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ,Card card) {
 	 for (Pair carte : plateau) {
-//	 	 System.out.println(carte);
-//		 System.out.println(plateau);
 		 float x = getXplateau(carte);
 		 float y = getYplateau(carte);
-		 test++;
-		 System.out.println("Le x:" +x + "de la" + test);
-		 System.out.println("Le y" + y + " de la " + test);
-		 
 		    if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
 		        System.out.println("Le clic est dans le haut rectangle gauche de la première carte.");
+		        SimpleGameData.TopLeft(card);
 		    }
 		    if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
 		    	System.out.println("Le clic est dans le haut rectangle droite de la première carte.");
+		    	 SimpleGameData.TopRight(card);
 		    }if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
 		        System.out.println("Le clic est dans le bas rectangle gauche de la première carte.");	
+		        SimpleGameData.BottomLeft(card);
 		    }if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
 		    	System.out.println("Le clic est dans le bas rectangle droite de la première carte.");
+		    	 SimpleGameData.BottomRight(card);
 		    }}
 	 }
 
