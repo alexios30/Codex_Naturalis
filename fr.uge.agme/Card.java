@@ -12,6 +12,13 @@ public interface Card {
 	String cornerBottomRight();
 
 	String cornerTopRight();
-
+	
+	String getKingdom();
+	
+	RessourceCard versoCard();
+	
+	boolean isVerso();
+	
+	void setVerso(boolean verso);
 
 }
