@@ -21,6 +21,9 @@ import java.util.Random;
 
 public class SimpleGameController {
 
+	private static ApplicationContext context;
+	private static float height;
+	private static float width;
 	/**
 	 * Default constructor, which does basically nothing.
 	 */
@@ -29,42 +32,8 @@ public class SimpleGameController {
 	}
 
 	private static boolean gameLoop(ApplicationContext context, SimpleGameView view, SimpleGameData data) throws IOException {
-
-		/**class Area {
-			private Ellipse2D.Float ellipse = new Ellipse2D.Float(0, 0, 0, 0);
-
-			void draw(ApplicationContext context, float x, float y) {
-				context.renderFrame(graphics -> {
-					graphics.setColor(Color.BLACK);
-					graphics.fill(ellipse);
-				});
-			}
-		}**/
-		
 		var event = context.pollOrWaitEvent(10);
-		
-		
-		/**SimpleGameView.intitialisation(context);
-		
-				
-		int x = 35;
-		int y=300;
-		int y1 = 500;
-		int xgolden= 1535;
-		System.out.println("helo");
-		SimpleGameView.drawcard(context,35,100);
-		SimpleGameView.drawcard(context,1535,100);
-		SimpleGameView.drawcard(context,x,y);
-		SimpleGameView.drawcard(context,x,y1);
-		SimpleGameView.drawcard(context,xgolden,y1);
-		SimpleGameView.drawcard(context, xgolden, y);
-		SimpleGameView.dessincardRessource(context, data.getRessourceTable()[1], x, y, 350, 150);
-		SimpleGameView.dessincardRessource(context, data.getRessourceTable()[2], x, y1, 350, 150);
-		SimpleGameView.dessincardGolden(context, data.getGoldenTable()[1], xgolden, y, 350, 150);
-		SimpleGameView.dessincardGolden(context, data.getGoldenTable()[2], xgolden, y1, 350, 150);
-		**/
-		
-		
+
 		if (event == null) {
 			return true;
 		}
@@ -86,11 +55,13 @@ public class SimpleGameController {
 	private static void codex(ApplicationContext context) throws IOException {
 
 		var screenInfo = context.getScreenInfo();
-		var width = screenInfo.getWidth();
-		var height = screenInfo.getHeight();
+		var width = (int) screenInfo.getWidth();
+		var height = (int) screenInfo.getHeight();
 		var view = new SimpleGameView((int)height, (int)width );
 		var data = new SimpleGameData();
+		startMenu(context, height, width);
 		SimpleGameView.refreshScreen(context, data, 140);
+		choixStarterCard(context, data, height, width);
 		while (true) {			
 
 			if (!gameLoop(context, view, data)) {
@@ -103,6 +74,25 @@ public class SimpleGameController {
 		
 	}
 	
+	
+private static void choixStarterCard(ApplicationContext context, SimpleGameData data, int height, int width) {
+		
+		
+	}
+
+public static void startMenu(ApplicationContext context, int height, int width) {
+	SimpleGameView.drawStartMenu(context, height, width);
+	while (true) {
+    	
+        var event = context.pollOrWaitEvent(10);
+        if (event != null && (event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty())) {
+            return;
+        }
+        else if (event != null && event.getKey() == KeyboardKey.SPACE) {
+        	return;
+		}
+    }
+}
 	
  public static void positionclicksouris(ApplicationContext context, SimpleGameData data, int widthCardPlateau) {
         while (true) {
@@ -143,15 +133,7 @@ public class SimpleGameController {
      	int x = 200; 
      	int y = 875;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-//			    var mainTable = data.getMainTable();
-//			    if (mainTable[0] instanceof GoldenCard) {
-//				    SimpleGameView.drawcard(context, 1000, 700);
-//				    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[0]), 1000, 700, largeur, hauteur);
-//	            } else if (mainTable[0] instanceof RessourceCard) {
-//	 			    SimpleGameView.drawcard(context, 1000, 700);
-//	 			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[0]), 1000, 700, largeur, hauteur);
-//
-//	            }
+
 			 //Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 			 	var maintable = data.getMainTable();
 			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
