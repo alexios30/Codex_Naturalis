@@ -95,6 +95,10 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 		}
     }
 }
+public static void inventaire( ApplicationContext context, int height, int width) {
+	SimpleGameView.drawInventaire(context, height, width);
+
+}
 	
  public static void positionclicksouris(ApplicationContext context, SimpleGameData data, int widthCardPlateau) {
         while (true) {
@@ -118,8 +122,8 @@ public static void startMenu(ApplicationContext context, int height, int width) 
                 SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
                 SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
                 
-                //detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
-                //detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
+                detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
+                detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
                 SimpleGameView.refreshScreen(context, data, widthCardPlateau);
                 return;
             }
@@ -128,6 +132,14 @@ public static void startMenu(ApplicationContext context, int height, int width) 
     			context.exit(0);
             	return;
     		}
+            if (event != null && event.getAction() == Action.KEY_PRESSED && event.getKey() == KeyboardKey.I) {
+            	var screenInfo = context.getScreenInfo();
+        		var width = (int) screenInfo.getWidth();
+        		var height = (int) screenInfo.getHeight();
+        		inventaire(context, height, width);
+            	return;
+    		}
+            
         }
     }
  
@@ -208,6 +220,7 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 				    if(mainTable.length<3) {
 				    	data.removeCardFromRessourceTableElement0(0);
 				    	data.addCardToMainTable(card);
+				    	SimpleGameData.addturn();
 				    }
 			}
 	 }
@@ -221,6 +234,7 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 				    if(mainTable.length<3) {
 				    	data.removeCardFromRessourceTableElement1(1);
 				    	data.addCardToMainTable(card);
+				    	SimpleGameData.addturn();
 			    }
 			}
 	 }
@@ -234,6 +248,7 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 				    if(mainTable.length<3) {
 				    	data.removeCardFromRessourceTableElement2(2);
 				    	data.addCardToMainTable(card);
+				    	SimpleGameData.addturn();
 				    }
 			}
 	 }
@@ -247,6 +262,7 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 				    if(mainTable.length<3) {
 				    	data.removeCardFromGoldenTableElement0(0);
 					    data.addCardToMainTable(card);
+					    SimpleGameData.addturn();
 					    }
 		 }
 	 }
@@ -260,6 +276,7 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 				    if(mainTable.length<3) {
 				    	data.removeCardFromGoldenTableElement1(1);
 					    data.addCardToMainTable(card);
+					    SimpleGameData.addturn();
 
 			}
 		 }
@@ -274,11 +291,13 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 				    if(mainTable.length<3) {
 				    	data.removeCardFromGoldenTableElement2(2);
 					    data.addCardToMainTable(card);
+					    SimpleGameData.addturn();
 			}
 		 }
 	 }
+ 
  public static boolean detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ,Card card) {
-     HashMap<Pair, Card> pairplateau =data.getPlateau();
+	 HashMap<Pair, Card> pairplateau =data.getPlateau();
      HashMap<Card, Pair> getcoordinatesMap=data.getcoordinatesMap();
      List<Pair> pairposition = new ArrayList<>(pairplateau.keySet());
      List<Card> cardplateau= new ArrayList<>(pairplateau.values());
@@ -306,22 +325,34 @@ public static void startMenu(ApplicationContext context, int height, int width) 
                 				if(!hautgauche.equals("Invisible")) {
                 					if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
                 						SimpleGameData.TopLeft(card,coordoneecarte);
+                						SimpleGameData.getCardForInventaire(card);
+                						SimpleGameData.VerificationSuperposition(hautgauche);
+                						SimpleGameData.verifautourcard(data,coordoneecarte);
                 						return true;
                     	                }
                 				}if(!basgauche.equals("Invisible")) {
                 					if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
                     	                SimpleGameData.BottomLeft(card,coordoneecarte);
+                    	                SimpleGameData.getCardForInventaire(card);
+                    	                SimpleGameData.VerificationSuperposition(basgauche);
+                    	                SimpleGameData.verifautourcard(data,coordoneecarte);
                     	                return true;
                     	            }
                 				}if(!hautdroite.equals("Invisible")) {
                 					if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
-                   	                 SimpleGameData.TopRight(card,coordoneecarte);
-                   	              return true;
+                   	                  SimpleGameData.TopRight(card,coordoneecarte);
+	                   	              SimpleGameData.getCardForInventaire(card);
+	                   	              SimpleGameData.VerificationSuperposition(hautdroite);
+	                   	           SimpleGameData.verifautourcard(data,coordoneecarte);
+	                   	              return true;
                    	            }
                 				}if(!basdroite.equals("Invisible")) {
                     				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
                    	                 SimpleGameData.BottomRight(card,coordoneecarte);
-                   	              return true;
+                   	                 SimpleGameData.getCardForInventaire(card);
+                   	                 SimpleGameData.VerificationSuperposition(basdroite);
+                   	              SimpleGameData.verifautourcard(data,coordoneecarte);
+                   	                 return true;
                    	            }
                 				}
                 				
