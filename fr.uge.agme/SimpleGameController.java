@@ -141,21 +141,21 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
 			 	Card card=(maintable[0]);
 			 	
-			 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
-			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
-			    data.removeCardFromMainTable(0);
+			 	if(SimpleGameController.detectecoinplateau(plateau,data,context,card)) {
+				 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
+				    data.removeCardFromMainTable(0);
+			 	}
 			}
 	 }
  
- public static void detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData data,ApplicationContext context, Card card) {
+ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData data,ApplicationContext context, Card card) {
 	 while (true) {
 	     	int cardWidth = 350; 
 	     	int cardHeight = 150; 
 		 var event = context.pollOrWaitEvent(10);
          if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
              var location = event.getLocation();
-             	SimpleGameController.detectcardplateau(plateau,location.x, location.y, cardWidth, cardHeight, data, context,card);
-             	break;
+             	 return SimpleGameController.detectcardplateau(plateau,location.x, location.y, cardWidth, cardHeight, data, context,card);
              }
 		 
 	 }
@@ -165,25 +165,17 @@ public static void startMenu(ApplicationContext context, int height, int width) 
  	int x = 800; 
  	int y = 875;
 	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-//		 var mainTable = data.getMainTable();
-//		    if (mainTable[1] instanceof GoldenCard) {
-//			   
-//			    SimpleGameView.drawcard(context, 1000, 700);
-//			    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[1]), 1000, 700, largeur, hauteur);
-//         } else if (mainTable[1] instanceof RessourceCard) {
-//			   
-//			    SimpleGameView.drawcard(context, 1000, 700);
-//			    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[1]), 1000, 700, largeur, hauteur);
-//
-//         }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
+		 
+//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 		 	var maintable = data.getMainTable();
 		    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
 		 	Card card=(maintable[1]);
 		 	
 
-		 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
-		 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
-		    data.removeCardFromMainTable(1);
+		 	if(SimpleGameController.detectecoinplateau(plateau,data,context,card)) {
+			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
+			    data.removeCardFromMainTable(1);
+		 	}
 		}
  }
 
@@ -191,24 +183,17 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 	 	int x = 1400; 
 	 	int y = 875;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-//			 var mainTable = data.getMainTable();
-//			    if (mainTable[2] instanceof GoldenCard) {
-//				   
-//				    SimpleGameView.drawcard(context, 1000, 700);
-//				    SimpleGameView.dessincardGolden(context, ((GoldenCard) mainTable[2]), 1000, 700, largeur, hauteur);
-//	      } else if (mainTable[2] instanceof RessourceCard) {
-//				    SimpleGameView.drawcard(context, 1000, 700);
-//				    SimpleGameView.dessincardRessource(context, ((RessourceCard) mainTable[2]), 1000, 700, largeur, hauteur);
-	//
+
 //	      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
 			 	var maintable = data.getMainTable();
 			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
 			 	Card card=(maintable[2]);
 			 	
 	
-			 	SimpleGameController.detectecoinplateau(plateau,data,context,card);
-			 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
-			    data.removeCardFromMainTable(2);
+			 	if(SimpleGameController.detectecoinplateau(plateau,data,context,card)) {
+				 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
+				    data.removeCardFromMainTable(2);
+			 	}
 
 			}
 	}
@@ -292,7 +277,7 @@ public static void startMenu(ApplicationContext context, int height, int width) 
 			}
 		 }
 	 }
- public static void detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ,Card card) {
+ public static boolean detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ,Card card) {
      HashMap<Pair, Card> pairplateau =data.getPlateau();
      HashMap<Card, Pair> getcoordinatesMap=data.getcoordinatesMap();
      List<Pair> pairposition = new ArrayList<>(pairplateau.keySet());
@@ -312,18 +297,34 @@ public static void startMenu(ApplicationContext context, int height, int width) 
                 		for(Card searchcard : cardplateau) {
                 			if(card3.equals(searchcard)) {
                 				Pair coordoneecarte = pairposition.get(newcalcul);
-                				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-                	                 SimpleGameData.BottomRight(card,coordoneecarte);
+                        		ArrayList<String>coin =card3.getCorner();
+                        		String basgauche =coin.get(0);
+                        		String basdroite = coin.get(1);
+                        		String hautgauche = coin.get(2);
+                        		String hautdroite = coin.get(3);
+
+                				if(!hautgauche.equals("Invisible")) {
+                					if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
+                						SimpleGameData.TopLeft(card,coordoneecarte);
+                						return true;
+                    	                }
+                				}if(!basgauche.equals("Invisible")) {
+                					if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+                    	                SimpleGameData.BottomLeft(card,coordoneecarte);
+                    	                return true;
+                    	            }
+                				}if(!hautdroite.equals("Invisible")) {
+                					if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
+                   	                 SimpleGameData.TopRight(card,coordoneecarte);
+                   	              return true;
+                   	            }
+                				}if(!basdroite.equals("Invisible")) {
+                    				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+                   	                 SimpleGameData.BottomRight(card,coordoneecarte);
+                   	              return true;
+                   	            }
                 				}
-                				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-                	                 SimpleGameData.BottomRight(card,coordoneecarte);
-                	            }if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-                	                SimpleGameData.BottomLeft(card,coordoneecarte);
-                	            }if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
-                	                 SimpleGameData.TopRight(card,coordoneecarte);
-                	            } if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
-                	                SimpleGameData.TopLeft(card,coordoneecarte);
-                	                }
+                				
                 				
                 			}
                 			newcalcul++;
@@ -334,7 +335,8 @@ public static void startMenu(ApplicationContext context, int height, int width) 
             }
             test++;
             }
-     }
+     return false;
+}
  
  public static boolean isPointInsideRectangle(float x, float y, float width, float height, float pointX, float pointY) {
         return pointX >= x && pointX <= x + width && pointY >= y && pointY <= y + height;
