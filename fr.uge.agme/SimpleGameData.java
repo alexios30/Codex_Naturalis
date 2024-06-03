@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class SimpleGameData {
@@ -296,7 +297,7 @@ public class SimpleGameData {
 		return packGolden;
 	}
 	
-	public HashMap<Pair, Card> getPlateau() {
+	public static HashMap<Pair, Card> getPlateau() {
 		return plateau;
 	}
 	public HashMap<Card, Pair> getcoordinatesMap() {
@@ -458,6 +459,15 @@ public class SimpleGameData {
 		Collection<Card> values = plateau.values();
 	    Card[] cards = values.toArray(new Card[0]);
 	    return cards;
+	}
+	public static int Score() {
+		int score =0;
+		 HashMap<Pair, Card> pairplateau = getPlateau();
+		 List<Card> cardplateau= new ArrayList<>(pairplateau.values());
+		 for(Card searchcard : cardplateau) {
+			 
+		 }
+		 return  score;
 	}
 	
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
