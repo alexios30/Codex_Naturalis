@@ -80,6 +80,67 @@ public record SimpleGameView(int height, int width) {
 			drawString(context, (int) ((width/2)-4.5*tailleLettre), height-100, "Click or Press space", font);
 		});
 	}
+	public static void drawInventaire(ApplicationContext context, int height, int width) {
+		int animal=SimpleGameData.returnAnimal();
+		String realanimal = String.valueOf(animal);
+		
+		int plant=SimpleGameData.returnPlant();
+		String realplant = String.valueOf(plant);
+		
+		int insect=SimpleGameData.returnInsect();
+		String realinsect = String.valueOf(insect);
+		
+		int fungi=SimpleGameData.returnFungi();
+		String realfungi = String.valueOf(fungi);
+		
+		int inkwell=SimpleGameData.returnInkwell();
+		String realinkwell = String.valueOf(inkwell);
+		
+		int manuscript=SimpleGameData.returnManuscript();
+		String realmanuscript = String.valueOf(manuscript);
+		
+		int quill=SimpleGameData.returnQuill();
+		String realquill = String.valueOf(quill);
+		
+		int turn=SimpleGameData.returnturn();
+		String realturn = String.valueOf(turn);
+		context.renderFrame(graphics -> {
+			graphics.clearRect(0, 0, (int) width, (int) height);
+			try {
+				SimpleGameView.image(graphics, ImageIO.read(Files.newInputStream(Path.of("include" + "/" + "img" + "/" +"Background.png"))),
+						0, 0, width, height);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			int tailleLettre = 50;
+	        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+	        graphics.setColor(Color.WHITE);
+	        //Affiche les différents ressouces
+			drawString(context, (int) ((width/2)-11*tailleLettre), 100, "Ressources : ", font);
+			drawString(context, (int) ((width/2)-4.5*tailleLettre), 200, "- Animal: ", font);
+			drawString(context, (int) ((width/2)), 200, realanimal, font);
+			drawString(context, (int) ((width/2)-4.5*tailleLettre), 300, "- Plant: ", font);
+			drawString(context, (int) ((width/2)), 300, realplant, font);
+			drawString(context, (int) ((width/2)-4.5*tailleLettre), 400, "- Insect: ", font);
+			drawString(context, (int) ((width/2)), 400, realinsect, font);
+			drawString(context, (int) ((width/2)-4.5*tailleLettre), 500, "- Fungi: ", font);
+			drawString(context, (int) ((width/2)), 500, realfungi, font);
+			
+			//Affiche les différents artéfacts
+			drawString(context, (int) ((width/1.23)), 100, "Artefact : ", font);
+			drawString(context, (int) ((width/1.21)), 200, ":Inkwell", font);
+			drawString(context, (int) ((width/1.23)), 200, realinkwell, font);
+			drawString(context, (int) ((width/1.21)), 300, ":Manuscript", font);
+			drawString(context, (int) ((width/1.23)), 300, realmanuscript, font);
+			drawString(context, (int) ((width/1.21)), 400, ":Quill ", font);
+			drawString(context, (int) ((width/1.23)), 400, realquill, font);
+			
+			drawString(context, (int) ((width/2)-18*tailleLettre), 100, "Score : ", font);
+			
+			drawString(context, (int) ((width/2)-18*tailleLettre), 950, "Tour : ", font);
+			drawString(context, (int) ((width/2)-15*tailleLettre), 950, realturn, font);
+		});
+	}
 	
 	
 	public static void drawBackCard(ApplicationContext context, int x, int y , int width, int height, String kingdom) {
@@ -181,7 +242,6 @@ public record SimpleGameView(int height, int width) {
 	        graphics.drawString(string, x, y);
 		});
 	}
-
 	public static void drawCornerColor(ApplicationContext context, int x, int y, int squareSize, Color color) {
 		context.renderFrame(graphics -> {
 			graphics.setColor(color);
