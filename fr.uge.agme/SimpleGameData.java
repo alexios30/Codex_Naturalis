@@ -29,6 +29,20 @@ public class SimpleGameData {
 	private static HashMap<Card, Pair> coordinatesMap;
 	private static HashMap<String, Integer> nbRessource;
 	private static int numOrdre;
+	
+	// On sauvegarde le nombre de ressource qu'on a 
+	private static int nbAnimal;
+	private static int nbPlant;
+	private static int nbInsect;
+	private static int nbFungi;
+	
+	//On sauvegarde le nombre d'artefact qu'on a 
+	private static int nbInkwell;
+	private static int nbManuscript;
+	private static int nbQuill;
+	
+	private static int nbtours;
+	
 
 	
 	public SimpleGameData() {
@@ -77,8 +91,15 @@ public class SimpleGameData {
 		mainTable[1] = piocheRessource(getPackRessource());
 		mainTable[2] = piocheGolden(getPackGolden());
 		
-
-		
+		//On initiliase nos variables à 0.
+		 int nbAnimal=0;
+		 int nbPlant=0;
+		 int nbInsect=0;
+		 int nbFungi=0;
+		 int nbInkwell=0;
+		 int nbManuscript=0;
+		 int nbQuill=0;
+		 int nbtours=0;
 	}
 	
 	
@@ -114,17 +135,7 @@ public class SimpleGameData {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     public void createCards(Path src) throws IOException {
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
@@ -469,6 +480,102 @@ public class SimpleGameData {
 		 }
 		 return  score;
 	}
+
+	public static void getCardForInventaire(Card card) {
+		ajouterInventaire(card.cornerBottomLeft());
+		ajouterInventaire(card.cornerBottomRight());
+		ajouterInventaire(card.cornerTopLeft());
+		ajouterInventaire(card.cornerTopRight());
+	}
+	public static void ajouterInventaire(String mot) {
+		if(mot.equals("Animal")) {
+			nbAnimal++;
+		}if(mot.equals("Plant")) {
+			nbPlant++;
+		}if(mot.equals("Insect")) {
+			nbInsect++;
+		}if(mot.equals("Fungi")) {
+			nbFungi++;
+		}if(mot.equals("Inkwell")) {
+			nbInkwell++;
+		}if(mot.equals("Manuscript")) {
+			nbManuscript++;
+		}if(mot.equals("Quill")) {
+			nbQuill++;
+		}
+	}
+	public static void addturn() {
+		 nbtours++;
+	}
+	public static int returnturn() {
+		return  nbtours;
+	}
+	public static int returnAnimal() {
+		return nbAnimal;
+	}
+	public static  int returnPlant() {
+		return nbPlant;
+	}
+	public static  int returnInsect() {
+		return nbInsect;
+	}
+	public static int returnFungi() {
+		return nbFungi;
+	}
+	public static  int returnInkwell() {
+		return nbInkwell;
+	}
+	public static int returnManuscript() {
+		return nbManuscript;
+	}
+	public static int returnQuill() {
+		return nbQuill;
+	}
+	
+	public static void VerificationSuperposition(String mot) {
+		if(mot.equals("Animal")) {
+			nbAnimal--;
+		}if(mot.equals("Plant")) {
+			nbPlant--;
+		}if(mot.equals("Insect")) {
+			nbInsect--;
+		}if(mot.equals("Fungi")) {
+			nbFungi--;
+		}if(mot.equals("Inkwell")) {
+			nbInkwell--;
+		}if(mot.equals("Manuscript")) {
+			nbManuscript--;
+		}if(mot.equals("Quill")) {
+			nbQuill--;
+		}
+	}
+	
+    public static void verifautourcard(SimpleGameData data, Pair pair) {
+        int x = pair.getX();
+        int y = pair.getY();
+
+        //System.out.println("La pair" +pair);
+        
+        HashMap<Pair, Card> pairPlateau = data.getPlateau();
+        List<Pair> pairPositions = new ArrayList<>(pairPlateau.keySet());
+        //System.out.println(pairPositions);
+        
+        List<Pair> possiblePositions = new ArrayList<>();
+        possiblePositions.add(new Pair(x - 1, y - 1)); // TOpleft
+        possiblePositions.add(new Pair(x - 1, y + 1)); // BottomLeft
+        possiblePositions.add(new Pair(x + 1, y - 1)); // topright
+        possiblePositions.add(new Pair(x + 1, y + 1)); // bottomright
+
+        for (Pair position : pairPositions) {
+        	for(Pair position1 : possiblePositions) {
+        		if(position.equals(position1)) {
+        			 System.out.println("Carte adjacente trouvée à la position: " + position1);
+                     Card adjacentCard = pairPlateau.get(position);
+                     System.out.println("Carte adjacente: " + adjacentCard);
+        		}
+        	}
+        }
+    }
 	
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
 	}
