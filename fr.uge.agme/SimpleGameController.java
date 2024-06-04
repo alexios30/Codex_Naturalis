@@ -351,11 +351,21 @@ public static void inventaire( ApplicationContext context, int height, int width
                 		for(Card searchcard : cardplateau) {
                 			if(card3.equals(searchcard)) {
                 				Pair coordoneecarte = pairposition.get(newcalcul);
+                				
                         		ArrayList<String>coin =card3.getCorner();
-                        		String basgauche =coin.get(0);
-                        		String basdroite = coin.get(1);
-                        		String hautgauche = coin.get(2);
-                        		String hautdroite = coin.get(3);
+                        		String hautgauche =coin.get(0);
+                        		String basgauche = coin.get(1);
+                        		String hautdroite = coin.get(2);
+                        		String basdroite = coin.get(3);
+                        		
+                				if (card3 instanceof StarterCard) {
+                					if(card3.isVerso()) {
+                                		 hautgauche =coin.get(4);
+                                		 basgauche = coin.get(5);
+                                		 hautdroite = coin.get(6);
+                                		 basdroite = coin.get(7);
+                					}
+                				}
                         		if(SimpleGameData.verifieCost(card)) {
                 				if(!hautgauche.equals("Invisible")) {
                 					if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
