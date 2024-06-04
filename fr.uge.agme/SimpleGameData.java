@@ -42,6 +42,7 @@ public class SimpleGameData {
 	private static int nbQuill;
 	
 	private static int nbtours;
+	private static int score;
 	
 
 	
@@ -100,6 +101,7 @@ public class SimpleGameData {
 		 int nbManuscript=0;
 		 int nbQuill=0;
 		 int nbtours=0;
+		 int score=0;
 	}
 	
 	
@@ -439,7 +441,7 @@ public class SimpleGameData {
           int y = pair.getY();
           newPair = new Pair(x - 1, y - 1);
 
-
+          
         numOrdre++;
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);
@@ -531,34 +533,57 @@ public class SimpleGameData {
 	public static int returnQuill() {
 		return nbQuill;
 	}
+	public static int returnScore() {
+		return score;
+	}
 	
 	public static void VerificationSuperposition(String mot) {
 		if(mot.equals("Animal")) {
 			nbAnimal--;
+			if (nbAnimal<0) {
+				nbAnimal=0;
+			}
 		}if(mot.equals("Plant")) {
 			nbPlant--;
+			if(nbPlant<0) {
+				nbPlant=0;
+			}
 		}if(mot.equals("Insect")) {
 			nbInsect--;
+			if(nbInsect<0) {
+				nbInsect=0;
+			}
 		}if(mot.equals("Fungi")) {
 			nbFungi--;
+			if(nbFungi<0) {
+				nbFungi=0;
+			}
 		}if(mot.equals("Inkwell")) {
 			nbInkwell--;
+			if(nbInkwell<0) {
+				nbInkwell=0;
+			}
 		}if(mot.equals("Manuscript")) {
 			nbManuscript--;
+			if(nbManuscript<0) {
+				nbManuscript=0;
+			}
 		}if(mot.equals("Quill")) {
 			nbQuill--;
+			if(nbQuill<0) {
+				nbQuill=0;
+			}
 		}
 	}
 	
-    public static void verifautourcard(SimpleGameData data, Pair pair) {
+    public static Pair verifautourcard(SimpleGameData data, Pair pair) {
         int x = pair.getX();
         int y = pair.getY();
 
-        //System.out.println("La pair" +pair);
         
         HashMap<Pair, Card> pairPlateau = data.getPlateau();
         List<Pair> pairPositions = new ArrayList<>(pairPlateau.keySet());
-        //System.out.println(pairPositions);
+        //System.out.println("La pairposition" +pairPositions);
         
         List<Pair> possiblePositions = new ArrayList<>();
         possiblePositions.add(new Pair(x - 1, y - 1)); // TOpleft
@@ -569,13 +594,50 @@ public class SimpleGameData {
         for (Pair position : pairPositions) {
         	for(Pair position1 : possiblePositions) {
         		if(position.equals(position1)) {
-        			 System.out.println("Carte adjacente trouvée à la position: " + position1);
-                     Card adjacentCard = pairPlateau.get(position);
-                     System.out.println("Carte adjacente: " + adjacentCard);
+        			System.out.println(position1);
+        			 return position1;
         		}
         	}
         }
+        return null;
     }
 	
+    public static void verifiecarteadjcente(SimpleGameData data, Pair pair) {
+    	 int x = pair.getX();
+         int y = pair.getY();
+
+         System.out.println("La pair" +pair);
+         
+         HashMap<Pair, Card> pairPlateau = data.getPlateau();
+         List<Pair> pairPositions = new ArrayList<>(pairPlateau.keySet());
+         //System.out.println("La pairposition" +pairPositions);
+         
+         List<Pair> possiblePositions = new ArrayList<>();
+         possiblePositions.add(new Pair(x - 1, y - 1)); // TOpleft
+         possiblePositions.add(new Pair(x - 1, y + 1)); // BottomLeft
+         possiblePositions.add(new Pair(x + 1, y - 1)); // topright
+         possiblePositions.add(new Pair(x + 1, y + 1)); // bottomright
+         
+         Pair topleft=(new Pair(x - 1, y - 1)); // TOpleft
+         Pair bottomleft =(new Pair(x - 1, y + 1)); // BottomLeft
+         Pair topright=(new Pair(x + 1, y - 1)); // topright
+         Pair bottomright =(new Pair(x + 1, y + 1)); // bottomright
+
+         for (Pair position : pairPositions) {
+         	for(Pair position1 : possiblePositions) {
+         		if(position.equals(position1)) {
+         			System.out.println(position1);
+         	}
+         }
+     }}
+    
+    public static void detectecardforscoring(Card card) {
+    	
+    }
+    public static void addscoring(int chiffre) {
+    	score+=chiffre;
+    	
+    }
+    
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
 	}
