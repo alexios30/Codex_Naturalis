@@ -475,6 +475,17 @@ public class SimpleGameData {
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);
     }
+    public static boolean detecteBottomRight(Card card,Pair pair,  List<Pair> pairposition) {
+        Pair newPair;
+        int x = pair.getX();
+        int y = pair.getY();
+        newPair = new Pair(x + 1, y + 1);
+        for (Pair test : pairposition) {
+            if (newPair.equals(test)) {
+                return false;
+                }}
+        return true;
+    }
     
     public static void TopLeft(Card card,Pair pair) {
     	Objects.requireNonNull(card);
@@ -494,7 +505,17 @@ public class SimpleGameData {
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);
     }
-    
+    public static boolean detecteTopLeft(Card card,Pair pair,  List<Pair> pairposition) {
+        Pair newPair;
+        int x = pair.getX();
+        int y = pair.getY();
+        newPair = new Pair(x - 1, y - 1);
+        for (Pair test : pairposition) {
+            if (newPair.equals(test)) {
+                return false;
+                }}
+        return true;
+    }
     public static void BottomLeft(Card card,Pair pair) {
     	Objects.requireNonNull(card);
 		Objects.requireNonNull(pair);
@@ -511,6 +532,17 @@ public class SimpleGameData {
         numOrdre++;
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);
+    }
+    public static boolean detecteBottomLeft(Card card,Pair pair,  List<Pair> pairposition) {
+        Pair newPair;
+        int x = pair.getX();
+        int y = pair.getY();
+        newPair = new Pair(x - 1, y + 1);
+        for (Pair test : pairposition) {
+            if (newPair.equals(test)) {
+                return false;
+                }}
+        return true;
     }
 
     public static void TopRight(Card card,Pair pair) {
@@ -529,6 +561,17 @@ public class SimpleGameData {
         numOrdre++;
         plateau.put(newPair, card);
         ordre.put(numOrdre, newPair);  
+    }
+    public static boolean detecteTopRight(Card card,Pair pair,  List<Pair> pairposition) {
+        Pair newPair;
+        int x = pair.getX();
+        int y = pair.getY();
+        newPair = new Pair(x + 1, y - 1);
+        for (Pair test : pairposition) {
+            if (newPair.equals(test)) {
+                return false;
+                }}
+        return true;
     }
 	public static Card[] ajoutercarteplateau() {
 		Collection<Card> values = plateau.values();
