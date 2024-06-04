@@ -322,7 +322,7 @@ public static void inventaire( ApplicationContext context, int height, int width
                         		String basdroite = coin.get(1);
                         		String hautgauche = coin.get(2);
                         		String hautdroite = coin.get(3);
-
+                        		if(SimpleGameData.verifieCost(card)) {
                 				if(!hautgauche.equals("Invisible")) {
                 					if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
                 						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
@@ -383,7 +383,7 @@ public static void inventaire( ApplicationContext context, int height, int width
                 				}
                 				
                 				
-                			}
+                			}}
                 			newcalcul++;
                 		}
                 	}
