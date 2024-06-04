@@ -319,6 +319,10 @@ public class SimpleGameData {
 	public HashMap<Card, Pair> getcoordinatesMap() {
 		return coordinatesMap;
 	}
+
+	public ArrayList<StarterCard> getStarterPack() {
+        	return packStarter;
+	}
 	
 	public void removeCardFromMainTable(int index) {
 	    if (index >= 0 && index < mainTable.length) {
