@@ -451,10 +451,12 @@ public static boolean detectecoinplateau(ArrayList<Pair> plateau, SimpleGameData
 	                							card.setVerso(true);
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
                         					}
+                        					if(SimpleGameData.detecteTopLeft(card,coordoneecarte,pairposition)) {
                         					SimpleGameData.TopLeft(card,coordoneecarte);
 	                						SimpleGameData.getCardForInventaire(card);
 	                						SimpleGameData.VerificationSuperposition(hautgauche);
 	                						return true;
+                        					}
                         				}
                         			}
                         			
@@ -473,11 +475,12 @@ public static boolean detectecoinplateau(ArrayList<Pair> plateau, SimpleGameData
 	                							card.setVerso(true);
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
 	                						}
-
+	                						if(SimpleGameData.detecteBottomLeft(card,coordoneecarte,pairposition)) {
 	                    	                SimpleGameData.BottomLeft(card,coordoneecarte);
 	                    	                SimpleGameData.getCardForInventaire(card);
 	                    	                SimpleGameData.VerificationSuperposition(basgauche);
 	                    	                return true;
+	                						}
                         				}	
                         			}
                         			if(!hautdroite.equals("Invisible")) {
@@ -495,11 +498,12 @@ public static boolean detectecoinplateau(ArrayList<Pair> plateau, SimpleGameData
 	                							card.setVerso(true);
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
 	                						}
-
+	                						if(SimpleGameData.detecteTopRight(card,coordoneecarte,pairposition)) {
 	                						SimpleGameData.TopRight(card,coordoneecarte);
 		                   	              	SimpleGameData.getCardForInventaire(card);
 		                   	              	SimpleGameData.VerificationSuperposition(hautdroite);
 		                   	              	return true;
+	                						}
 	                					}
                         			}
                         			if(!basdroite.equals("Invisible")) {
@@ -518,11 +522,12 @@ public static boolean detectecoinplateau(ArrayList<Pair> plateau, SimpleGameData
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
 	                						}
 	
-	                						
+	                						if(SimpleGameData.detecteBottomRight(card,coordoneecarte,pairposition)) {
 	                						SimpleGameData.BottomRight(card,coordoneecarte);
 	                						SimpleGameData.getCardForInventaire(card);
 	                   	                 	SimpleGameData.VerificationSuperposition(basdroite);
 	                   	                 	return true;
+	                						}
 	                    				}
                         			}
                         		}}
