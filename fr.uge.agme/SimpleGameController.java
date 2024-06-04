@@ -405,7 +405,6 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 	                							card = card.versoCard();
 	                							card.setVerso(true);
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
-	                							System.out.println("+1");
                         					}
                         					SimpleGameData.TopLeft(card,coordoneecarte);
 	                						SimpleGameData.getCardForInventaire(card);
@@ -428,7 +427,6 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 	                							card = card.versoCard();
 	                							card.setVerso(true);
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
-	                							System.out.println("+1");
 	                						}
 
 	                    	                SimpleGameData.BottomLeft(card,coordoneecarte);
@@ -451,7 +449,6 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 	                							card = card.versoCard();
 	                							card.setVerso(true);
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
-	                							System.out.println("+1");
 	                						}
 
 	                						SimpleGameData.TopRight(card,coordoneecarte);
@@ -474,7 +471,6 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 	                							card = card.versoCard();
 	                							card.setVerso(true);
 	                							SimpleGameData.ajouterInventaire(card.getKingdom());
-	                							System.out.println("+1");
 	                						}
 	
 	                						
