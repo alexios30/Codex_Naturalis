@@ -82,4 +82,26 @@ public class RessourceCard implements Card {
         list.add(cornerTopRight);
         return list;
     }
+    
+    public int getrealscoring() {
+        String score= getScoring();
+        int resultat =0;
+        if(!score.equals("None")) {
+        	 for (int i = 0; i < score.length(); i++) {
+                 char lettre = score.charAt(i);
+                 if(i==2) {
+                	 String chiffre1 = Character.toString(lettre);
+                	 int convertedNumber = Integer.parseInt(chiffre1);
+                	 resultat+=convertedNumber;
+                 }
+             }
+        }
+        return resultat;
+    }
+
+    public int convertirStringInt(String score) {
+          int convertedNumber = Integer.parseInt(score);
+          return  convertedNumber;
+
+    }
 }
