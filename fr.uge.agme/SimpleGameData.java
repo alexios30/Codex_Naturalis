@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import fr.umlv.zen5.ApplicationContext;
@@ -646,5 +647,38 @@ public class SimpleGameData {
     	}
     }
     
+    public static boolean verifieCost(Card card) {
+
+        HashMap<String, Integer> cost = card.returncost();
+        boolean hasAllResources = true;
+
+        if (cost != null) {
+            for (Map.Entry<String, Integer> entry : cost.entrySet()) {
+                String ressource = entry.getKey();
+                Integer nombre = entry.getValue();
+
+                if (ressource.equals("Animal")) {
+                    if (nombre > nbAnimal) {
+                        hasAllResources = false;
+                    }
+                } else if (ressource.equals("Plant")) {
+                    if (nombre > nbPlant) {
+                        hasAllResources = false;
+                    }
+                } else if (ressource.equals("Fungi")) {
+                    if (nombre > nbFungi) {
+                        hasAllResources = false;
+                    }
+                } else if (ressource.equals("Insect")) {
+                    if (nombre > nbInsect) {
+                        hasAllResources = false;
+                    }
+                }
+            }
+            return hasAllResources;
+        }
+        return true;
+    }
+    
+}
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
-	}
