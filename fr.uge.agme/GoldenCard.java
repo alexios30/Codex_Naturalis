@@ -92,6 +92,11 @@ public class GoldenCard implements Card {
         this.verso = verso;
     }
 
+    public HashMap<String, Integer> returncost(){
+		return cost;
+    	
+    }
+    
     @Override
     public String toString() {
         return "GoldenCard [cornerTopLeft=" + cornerTopLeft + ", cornerBottomLeft=" + cornerBottomLeft
