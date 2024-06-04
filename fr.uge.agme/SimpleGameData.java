@@ -74,13 +74,6 @@ public class SimpleGameData {
         melangeStarter(packStarter);
        // System.out.println(packStarter+"\n\n");
         
-        //forcer la pose de la starter card ------------------------------------------- ! A modifier
-        firstCard = piocheStarter(packStarter);
-        firstCard.setVerso(true);
-        //System.out.println(firstCard);
-        Pair firstPair = new Pair(0, 0);
-        plateau.put(firstPair, firstCard);
-        ordre.put(numOrdre, firstPair);
         
 		
 		
@@ -495,6 +488,12 @@ public class SimpleGameData {
 		ajouterInventaire(card.cornerBottomRight());
 		ajouterInventaire(card.cornerTopLeft());
 		ajouterInventaire(card.cornerTopRight());
+	}
+	public static void getstartercardverso(StarterCard card) {
+		String[] ressource= card.getVersoResources();
+		for (String mot : ressource) {
+            ajouterInventaire(mot);
+        }
 	}
 	public static void ajouterInventaire(String mot) {
 		if(mot.equals("Animal")) {
