@@ -20,5 +20,7 @@ public interface Card {
 	boolean isVerso();
 	
 	void setVerso(boolean verso);
+	
+	int getrealscoring();
 
 }
