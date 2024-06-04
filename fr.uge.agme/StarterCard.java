@@ -135,6 +135,7 @@ public class StarterCard implements Card {
     public String getKingdom() {
         return "Starter";
     }
+    
 
     @Override
     public RessourceCard versoCard() {
@@ -166,8 +167,16 @@ public class StarterCard implements Card {
             ", verso=" + verso +
             '}';
     }
-    public HashMap<String, Integer> returncost(){
+
+	@Override
+	public int getrealscoring() {
+		return 0;
+	}
+
+	@Override
+	public HashMap<String, Integer> returncost() {
 		return null;
-    	
-    }
+	}
+
+	
 }
