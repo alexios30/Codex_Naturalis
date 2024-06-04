@@ -490,6 +490,10 @@ public class SimpleGameData {
 		ajouterInventaire(card.cornerTopRight());
 	}
 	public static void getstartercardverso(StarterCard card) {
+		ajouterInventaire(card.getVersoCornerTopLeft());
+		ajouterInventaire(card.getVersoCornerBottomLeft());
+		ajouterInventaire(card.getVersoCornerTopRight());
+		ajouterInventaire(card.getVersoCornerBottomRight());
 		String[] ressource= card.getVersoResources();
 		for (String mot : ressource) {
             ajouterInventaire(mot);
@@ -600,7 +604,7 @@ public class SimpleGameData {
         for (Pair position : pairPositions) {
         	for(Pair position1 : possiblePositions) {
         		if(position.equals(position1)) {
-        			System.out.println(position1);
+        			//System.out.println(position1);
         			 return position1;
         		}
         	}
@@ -632,7 +636,7 @@ public class SimpleGameData {
          for (Pair position : pairPositions) {
          	for(Pair position1 : possiblePositions) {
          		if(position.equals(position1)) {
-         			System.out.println(position1);
+         			//System.out.println(position1);
          	}
          }
      }}
