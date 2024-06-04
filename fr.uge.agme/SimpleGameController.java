@@ -134,49 +134,67 @@ public static void inventaire( ApplicationContext context, int height, int width
 
 }
 	
- public static void positionclicksouris(ApplicationContext context, SimpleGameData data, int widthCardPlateau) {
-        while (true) {
-        	int cardWidth = 350; 
-        	int cardHeight = 150; 
-        	int widthCardPlateau2 = widthCardPlateau ;
-        	//System.out.println(widthCardPlateau2);
-        	ArrayList<Pair> plateau= getXYCardPlateauPair(data);
-            var event = context.pollOrWaitEvent(10);
-            if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
-                var location = event.getLocation();
-                SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
-                SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
-                SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight, data, context,widthCardPlateau);
-                
-                SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight, data, context);
-                SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
-                SimpleGameController.detectpiocheleftbottom(location.x, location.y,cardWidth, cardHeight, data, context);
-                
-                SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight, data, context);
-                SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
-                SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
-                
-                detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
-                detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
-                SimpleGameView.refreshScreen(context, data, widthCardPlateau);
-                SimpleGameData.detectewin(context);
-                return;
-            }
-            if (event != null && event.getAction() == Action.KEY_PRESSED && event.getKey() == KeyboardKey.Q) {
-    			System.out.println("Thank you for quitting!");
+public static void positionclicksouris(ApplicationContext context, SimpleGameData data, int widthCardPlateau) {
+    while (true) {
+    	int cardWidth = 350; 
+    	int cardHeight = 150; 
+    	int widthCardPlateau2 = widthCardPlateau ;
+    	//System.out.println(widthCardPlateau2);
+    	ArrayList<Pair> plateau= getXYCardPlateauPair(data);
+        var event = context.pollOrWaitEvent(10);
+        
+        if (event != null && event.getAction() == Action.KEY_PRESSED) {
+        	if (event.getKey() == KeyboardKey.Q) {
+        		System.out.println("Thank you for quitting!");
     			context.exit(0);
             	return;
-    		}
-            if (event != null && event.getAction() == Action.KEY_PRESSED && event.getKey() == KeyboardKey.I) {
-            	var screenInfo = context.getScreenInfo();
+        	}else if (event.getKey() == KeyboardKey.I) {
+        		var screenInfo = context.getScreenInfo();
         		var width = (int) screenInfo.getWidth();
         		var height = (int) screenInfo.getHeight();
         		inventaire(context, height, width);
             	return;
-    		}
-            
+        	}
+        	reverseCard(data, context, event.getKey());
+        	SimpleGameView.refreshScreen(context, data, widthCardPlateau);
         }
+        
+        if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
+            var location = event.getLocation();
+            SimpleGameController.detectmaincardleft(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
+            SimpleGameController.detectmaincardmiddle(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau);
+            SimpleGameController.detectmaincardright(location.x, location.y, cardWidth, cardHeight, data, context,widthCardPlateau);
+            
+            SimpleGameController.detectpiochelefttop(location.x, location.y, cardWidth, cardHeight, data, context);
+            SimpleGameController.detectpiocheleftmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
+            SimpleGameController.detectpiocheleftbottom(location.x, location.y,cardWidth, cardHeight, data, context);
+            
+            SimpleGameController.detectpiocherighttop(location.x, location.y, cardWidth, cardHeight, data, context);
+            SimpleGameController.detectpiocherightmiddle(location.x, location.y, cardWidth, cardHeight, data, context);
+            SimpleGameController.detectpiocherightbottom(location.x, location.y, cardWidth, cardHeight, data, context);
+            
+            detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
+            detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
+            SimpleGameView.refreshScreen(context, data, widthCardPlateau);
+            SimpleGameData.detectewin(context);
+            return;
+        }            
     }
+}
+
+
+public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData data,ApplicationContext context, Card card) {
+	 while (true) {
+	     	int cardWidth = 350; 
+	     	int cardHeight = 150; 
+	     	var event = context.pollOrWaitEvent(10);
+	     	if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
+	     		var location = event.getLocation();
+	     		return SimpleGameController.detectcardplateau(plateau,location.x, location.y, cardWidth, cardHeight, data, context,card);
+            }
+		 
+	 }
+}
  
  public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context, int widthCardPlateau ) {
      	int x = 200; 
@@ -195,19 +213,6 @@ public static void inventaire( ApplicationContext context, int height, int width
 			}
 	 }
  
- public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData data,ApplicationContext context, Card card) {
-	 while (true) {
-	     	int cardWidth = 350; 
-	     	int cardHeight = 150; 
-		 var event = context.pollOrWaitEvent(10);
-         if (event != null && event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty()) {
-             var location = event.getLocation();
-             	 return SimpleGameController.detectcardplateau(plateau,location.x, location.y, cardWidth, cardHeight, data, context,card);
-             }
-		 
-	 }
- }
-
  public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ,SimpleGameData data, ApplicationContext context, int widthCardPlateau) {
  	int x = 800; 
  	int y = 875;
@@ -244,6 +249,24 @@ public static void inventaire( ApplicationContext context, int height, int width
 
 			}
 	}
+ 
+ public static void reverseCard(SimpleGameData data, ApplicationContext context, KeyboardKey keyboardKey) {
+	 var maintable = data.getMainTable();
+	 int longueur = maintable.length;
+	 if (keyboardKey == KeyboardKey.A && longueur > 0) {
+		 Card card=(maintable[0]);
+		 card.setVerso(!card.isVerso());
+	 }else if (keyboardKey == KeyboardKey.Z && longueur > 1) {
+    	 Card card=(maintable[1]);
+    	 card.setVerso(!card.isVerso());
+	 }else if (keyboardKey == KeyboardKey.E && longueur > 2) {
+    	 Card card=(maintable[2]);
+    	 card.setVerso(!card.isVerso());
+    	 
+	 }
+	 return;
+ }
+
 
  
  public static void detectpiochelefttop( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
@@ -366,76 +389,110 @@ public static void inventaire( ApplicationContext context, int height, int width
                                 		 basdroite = coin.get(7);
                 					}
                 				}
-                        		if(SimpleGameData.verifieCost(card)) {
-                				if(!hautgauche.equals("Invisible")) {
-                					if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
-                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
-                						if(newpair!=null) {
+                        		if(card.isVerso() ||SimpleGameData.verifieCost(card)) {
+                        			if(!hautgauche.equals("Invisible")) {
+                        				if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
+                        					Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+                        					if(newpair!=null) {
                 							SimpleGameData.verifiecarteadjcente(data,newpair);
-                						}
+                        					}
                 						
-                						int score =card.getrealscoring();
-                						SimpleGameData.addscoring(score);
-                						
-                						SimpleGameData.TopLeft(card,coordoneecarte);
-                						SimpleGameData.getCardForInventaire(card);
-                						SimpleGameData.VerificationSuperposition(hautgauche);
-                						return true;
-                    	                }
-                				}if(!basgauche.equals("Invisible")) {
-                					if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
-                						if(newpair!=null) {
-                							SimpleGameData.verifiecarteadjcente(data,newpair);
-                						}
-                						int score =card.getrealscoring();
-                						SimpleGameData.addscoring(score);
-                						
-                    	                SimpleGameData.BottomLeft(card,coordoneecarte);
-                    	                SimpleGameData.getCardForInventaire(card);
-                    	                SimpleGameData.VerificationSuperposition(basgauche);
-                    	                return true;
-                    	            }
-                				}if(!hautdroite.equals("Invisible")) {
-                					if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
-                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
-                						if(newpair!=null) {
-                							SimpleGameData.verifiecarteadjcente(data,newpair);
-                						}
-                						int score =card.getrealscoring();
-                						SimpleGameData.addscoring(score);
-                						
-                   	                  SimpleGameData.TopRight(card,coordoneecarte);
-	                   	              SimpleGameData.getCardForInventaire(card);
-	                   	              SimpleGameData.VerificationSuperposition(hautdroite);
-	                   	              return true;
-                   	            }
-                				}if(!basdroite.equals("Invisible")) {
-                    				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
-                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
-                						if(newpair!=null) {
-                							SimpleGameData.verifiecarteadjcente(data,newpair);
-                						}
-                						int score =card.getrealscoring();
-                						SimpleGameData.addscoring(score);
-                						
-                   	                 SimpleGameData.BottomRight(card,coordoneecarte);
-                   	                 SimpleGameData.getCardForInventaire(card);
-                   	                 SimpleGameData.VerificationSuperposition(basdroite);
-                   	                 return true;
-                   	            }
-                				}
-                				
-                				
-                			}}
+                        					if (!card.isVerso()) {
+	                							int score =card.getrealscoring();
+	                    						SimpleGameData.addscoring(score);
+	                    						SimpleGameData.ajouterInventaire(card.getKingdom());
+                        					}else {
+	                							card = card.versoCard();
+	                							card.setVerso(true);
+	                							SimpleGameData.ajouterInventaire(card.getKingdom());
+	                							System.out.println("+1");
+                        					}
+                        					SimpleGameData.TopLeft(card,coordoneecarte);
+	                						SimpleGameData.getCardForInventaire(card);
+	                						SimpleGameData.VerificationSuperposition(hautgauche);
+	                						return true;
+                        				}
+                        			}
+                        			
+                        			if(!basgauche.equals("Invisible")) {
+                        				if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+	                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+	                						if(newpair!=null) {
+	                							SimpleGameData.verifiecarteadjcente(data,newpair);
+	                						}
+	                						
+	                						if (!card.isVerso()) {
+	                							int score =card.getrealscoring();
+	                    						SimpleGameData.addscoring(score);
+	                						}else {
+	                							card = card.versoCard();
+	                							card.setVerso(true);
+	                							SimpleGameData.ajouterInventaire(card.getKingdom());
+	                							System.out.println("+1");
+	                						}
+
+	                    	                SimpleGameData.BottomLeft(card,coordoneecarte);
+	                    	                SimpleGameData.getCardForInventaire(card);
+	                    	                SimpleGameData.VerificationSuperposition(basgauche);
+	                    	                return true;
+                        				}	
+                        			}
+                        			if(!hautdroite.equals("Invisible")) {
+	                					if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
+	                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+	                						if(newpair!=null) {
+	                							SimpleGameData.verifiecarteadjcente(data,newpair);
+	                						}
+	                						if (!card.isVerso()) {
+	                							int score =card.getrealscoring();
+	                    						SimpleGameData.addscoring(score);
+	                    						SimpleGameData.ajouterInventaire(card.getKingdom());
+	                						}else {
+	                							card = card.versoCard();
+	                							card.setVerso(true);
+	                							SimpleGameData.ajouterInventaire(card.getKingdom());
+	                							System.out.println("+1");
+	                						}
+
+	                						SimpleGameData.TopRight(card,coordoneecarte);
+		                   	              	SimpleGameData.getCardForInventaire(card);
+		                   	              	SimpleGameData.VerificationSuperposition(hautdroite);
+		                   	              	return true;
+	                					}
+                        			}
+                        			if(!basdroite.equals("Invisible")) {
+	                    				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+	                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+	                						if(newpair!=null) {
+	                							SimpleGameData.verifiecarteadjcente(data,newpair);
+	                						}
+	                						if (!card.isVerso()) {
+	                							int score =card.getrealscoring();
+	                    						SimpleGameData.addscoring(score);
+	                    						SimpleGameData.ajouterInventaire(card.getKingdom());
+	                						}else {
+	                							card = card.versoCard();
+	                							card.setVerso(true);
+	                							SimpleGameData.ajouterInventaire(card.getKingdom());
+	                							System.out.println("+1");
+	                						}
+	
+	                						
+	                						SimpleGameData.BottomRight(card,coordoneecarte);
+	                						SimpleGameData.getCardForInventaire(card);
+	                   	                 	SimpleGameData.VerificationSuperposition(basdroite);
+	                   	                 	return true;
+	                    				}
+                        			}
+                        		}}
                 			newcalcul++;
                 		}
                 	}
                 	calcul++;
                 }
-            }
-            test++;
-            }
+         }
+         test++;
+     }
      return false;
 }
  
