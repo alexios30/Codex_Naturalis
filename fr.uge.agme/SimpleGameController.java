@@ -102,11 +102,13 @@ private static void choixStarterCard(ApplicationContext context, SimpleGameData 
 	        		firstCard.setVerso(false);
 	        		SimpleGameData.getPlateau().put(firstPair, firstCard);
 	        	    data.getOrdre().put(0, firstPair);
+		        	SimpleGameData.getCardForInventaire(firstCard);
 	        		return;
 	        	}
 	        	else if (x >= xVerso && x <= xVerso + widthCard && y >= yVerso && y <= yVerso + heightCard) {
 	        		SimpleGameData.getPlateau().put(firstPair, firstCard);
 	        	    data.getOrdre().put(0, firstPair);
+		        	SimpleGameData.getstartercardverso(firstCard);
 	        		return;
 		        }
 	        }	
