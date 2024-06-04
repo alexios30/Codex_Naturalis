@@ -2,10 +2,7 @@
 package fr.uge.game;
 
 import java.awt.Color;
-import java.awt.geom.Ellipse2D;
 import java.io.IOException;
-import java.nio.file.Path;
-
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event.Action;
@@ -14,9 +11,7 @@ import fr.umlv.zen5.KeyboardKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
+import java.util.Objects;
 
 
 
@@ -34,6 +29,12 @@ public class SimpleGameController {
 	}
 
 	private static boolean gameLoop(ApplicationContext context, SimpleGameView view, SimpleGameData data) throws IOException {
+		Objects.requireNonNull(context);
+		Objects.requireNonNull(view);
+		Objects.requireNonNull(data);
+
+
+		
 		var event = context.pollOrWaitEvent(10);
 
 		if (event == null) {
@@ -55,6 +56,7 @@ public class SimpleGameController {
 	
 	
 	private static void codex(ApplicationContext context) throws IOException {
+		Objects.requireNonNull(context);
 
 		var screenInfo = context.getScreenInfo();
 		var width = (int) screenInfo.getWidth();
@@ -78,6 +80,10 @@ public class SimpleGameController {
 	
 	
 private static void choixStarterCard(ApplicationContext context, SimpleGameData data, int height, int width) {
+	Objects.requireNonNull(context);
+	Objects.requireNonNull(data);
+
+	
 	int widthCard = 350;
 	int heightCard = widthCard / 7 *3;
 	int xRecto = width/2 - (30+widthCard);
@@ -117,6 +123,8 @@ private static void choixStarterCard(ApplicationContext context, SimpleGameData 
 
 
 public static void startMenu(ApplicationContext context, int height, int width) {
+	Objects.requireNonNull(context);
+
 	SimpleGameView.drawStartMenu(context, height, width);
 	while (true) {
     	
@@ -130,11 +138,16 @@ public static void startMenu(ApplicationContext context, int height, int width) 
     }
 }
 public static void inventaire( ApplicationContext context, int height, int width) {
+	Objects.requireNonNull(context);
+
 	SimpleGameView.drawInventaire(context, height, width);
 
 }
 	
 public static void positionclicksouris(ApplicationContext context, SimpleGameData data, int widthCardPlateau) {
+	Objects.requireNonNull(context);
+	Objects.requireNonNull(data);
+
     while (true) {
     	int cardWidth = 350; 
     	int cardHeight = 150; 
@@ -183,7 +196,12 @@ public static void positionclicksouris(ApplicationContext context, SimpleGameDat
 }
 
 
-public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData data,ApplicationContext context, Card card) {
+public static boolean detectecoinplateau(ArrayList<Pair> plateau, SimpleGameData data, ApplicationContext context, Card card) {
+	Objects.requireNonNull(plateau);
+	Objects.requireNonNull(data);
+	Objects.requireNonNull(context);
+	Objects.requireNonNull(card);
+
 	 while (true) {
 	     	int cardWidth = 350; 
 	     	int cardHeight = 150; 
@@ -196,7 +214,10 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 	 }
 }
  
- public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context, int widthCardPlateau ) {
+ public static void detectmaincardleft( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context, int widthCardPlateau ) {
+		Objects.requireNonNull(data);
+		Objects.requireNonNull(context);
+	 
      	int x = 200; 
      	int y = 875;
 		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
@@ -214,8 +235,10 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 	 }
  
  public static void detectmaincardmiddle( float x2,float y2,  int largeur, int hauteur ,SimpleGameData data, ApplicationContext context, int widthCardPlateau) {
- 	int x = 800; 
- 	int y = 875;
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);int x = 800; 
+		
+	 int y = 875;
 	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 		 
 //Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
@@ -232,25 +255,28 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
  }
 
  public static void detectmaincardright( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context, int widthCardPlateau ) {
-	 	int x = 1400; 
-	 	int y = 875;
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 int x = 1400; 
+	 int y = 875;
+	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
 
 //	      }//Pour afficher la carte sur le plateur(on ne la voit pas a cause du refresh)
-			 	var maintable = data.getMainTable();
-			    ArrayList<Pair> plateau= getXYCardPlateauPair(data);
-			 	Card card=(maintable[2]);
-			 	
-	
-			 	if(SimpleGameController.detectecoinplateau(plateau,data,context,card)) {
-				 	SimpleGameView.drawPlateau(context, data, widthCardPlateau);
-				    data.removeCardFromMainTable(2);
-			 	}
-
-			}
-	}
+		 var maintable = data.getMainTable();
+		 ArrayList<Pair> plateau= getXYCardPlateauPair(data);
+		 Card card=(maintable[2]);
+		 if(SimpleGameController.detectecoinplateau(plateau,data,context,card)) {
+			 SimpleGameView.drawPlateau(context, data, widthCardPlateau);
+			 data.removeCardFromMainTable(2);
+		 }	
+	 }
+}
  
  public static void reverseCard(SimpleGameData data, ApplicationContext context, KeyboardKey keyboardKey) {
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 Objects.requireNonNull(keyboardKey);
+	 
 	 var maintable = data.getMainTable();
 	 int longueur = maintable.length;
 	 if (keyboardKey == KeyboardKey.A && longueur > 0) {
@@ -270,98 +296,117 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 
  
  public static void detectpiochelefttop( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
-     	int x = 35; 
-     	int y = 100;
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    var mainTable = data.getMainTable();
-			    	RessourceCard card = data.getRessourceTable()[0];
-				    if(mainTable.length<3) {
-				    	data.removeCardFromRessourceTableElement0(0);
-				    	data.addCardToMainTable(card);
-				    	SimpleGameData.addturn();
-				    }
-			}
-	 }
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 
+	 int x = 35; 
+     int y = 100;
+     if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+    	 var mainTable = data.getMainTable();
+    	 RessourceCard card = data.getRessourceTable()[0];
+    	 if(mainTable.length<3) {
+    		 data.removeCardFromRessourceTableElement0(0);
+    		 data.addCardToMainTable(card);
+    		 SimpleGameData.addturn();
+    	 }
+     }
+}
  
  public static void detectpiocheleftmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context ) {
-     	int x = 35; 
-     	int y = 300;
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    var mainTable = data.getMainTable();
-			    	RessourceCard card = data.getRessourceTable()[1];
-				    if(mainTable.length<3) {
-				    	data.removeCardFromRessourceTableElement1(1);
-				    	data.addCardToMainTable(card);
-				    	SimpleGameData.addturn();
-			    }
-			}
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 
+	 int x = 35; 
+	 int y = 300;
+	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+		 var mainTable = data.getMainTable();
+		 RessourceCard card = data.getRessourceTable()[1];
+		 if(mainTable.length<3) {
+			 data.removeCardFromRessourceTableElement1(1);
+			 data.addCardToMainTable(card);
+			 SimpleGameData.addturn();
+		 }
 	 }
+}
  
  public static void detectpiocheleftbottom( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
-     	int x = 35; 
-     	int y = 500;
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    var mainTable = data.getMainTable();
-			    	RessourceCard card = data.getRessourceTable()[2];
-				    if(mainTable.length<3) {
-				    	data.removeCardFromRessourceTableElement2(2);
-				    	data.addCardToMainTable(card);
-				    	SimpleGameData.addturn();
-				    }
-			}
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 
+	 int x = 35; 
+	 int y = 500;
+	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+		 var mainTable = data.getMainTable();
+		 RessourceCard card = data.getRessourceTable()[2];
+		 if(mainTable.length<3) {
+			 data.removeCardFromRessourceTableElement2(2);
+			 data.addCardToMainTable(card);
+			 SimpleGameData.addturn();
+		 }
 	 }
+}
  
  public static void detectpiocherighttop( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
-     	int x = 1535; 
-     	int y = 100;
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    var mainTable = data.getMainTable();
-			    	GoldenCard card = data.getGoldenTable()[0];
-				    if(mainTable.length<3) {
-				    	data.removeCardFromGoldenTableElement0(0);
-					    data.addCardToMainTable(card);
-					    SimpleGameData.addturn();
-					    }
-		 }
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 
+	 int x = 1535; 
+	 int y = 100;
+	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+		    var mainTable = data.getMainTable();
+		    GoldenCard card = data.getGoldenTable()[0];
+		    if(mainTable.length<3) {
+		    	data.removeCardFromGoldenTableElement0(0);
+		    	data.addCardToMainTable(card);
+		    	SimpleGameData.addturn();
+		    }
 	 }
+}
 
  public static void detectpiocherightmiddle( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context) {
-     	int x = 1535; 
-     	int y = 300;
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    var mainTable = data.getMainTable();
-			    	GoldenCard card = data.getGoldenTable()[1];
-				    if(mainTable.length<3) {
-				    	data.removeCardFromGoldenTableElement1(1);
-					    data.addCardToMainTable(card);
-					    SimpleGameData.addturn();
-
-			}
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 int x = 1535; 
+	 int y = 300;
+	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+		 var mainTable = data.getMainTable();
+		 GoldenCard card = data.getGoldenTable()[1];
+		 if(mainTable.length<3) {
+			 data.removeCardFromGoldenTableElement1(1);
+			 data.addCardToMainTable(card);
+			 SimpleGameData.addturn();
 		 }
 	 }
+}
 
  public static void detectpiocherightbottom( float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ) {
-     	int x = 1535; 
-     	int y = 500;
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    var mainTable = data.getMainTable();
-			    	GoldenCard card = data.getGoldenTable()[2];
-				    if(mainTable.length<3) {
-				    	data.removeCardFromGoldenTableElement2(2);
-					    data.addCardToMainTable(card);
-					    SimpleGameData.addturn();
-			}
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(context);
+	 int x = 1535; 
+	 int y = 500;
+	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+		 var mainTable = data.getMainTable();
+		 GoldenCard card = data.getGoldenTable()[2];
+		 if(mainTable.length<3) {
+			 data.removeCardFromGoldenTableElement2(2);
+			 data.addCardToMainTable(card);
+			 SimpleGameData.addturn();
 		 }
 	 }
+}
  
- public static boolean detectcardplateau(ArrayList<Pair> plateau,float x2,float y2,  int largeur, int hauteur,SimpleGameData data, ApplicationContext context ,Card card) {
-	 HashMap<Pair, Card> pairplateau =data.getPlateau();
+ public static boolean detectcardplateau(ArrayList<Pair> plateau,float x2,float y2, int largeur, int hauteur, SimpleGameData data, ApplicationContext context ,Card card) {
+	 Objects.requireNonNull(plateau);
+	 Objects.requireNonNull(context);
+	 Objects.requireNonNull(data);
+	 Objects.requireNonNull(card);
+	 
+	 HashMap<Pair, Card> pairplateau =SimpleGameData.getPlateau();
      HashMap<Card, Pair> getcoordinatesMap=data.getcoordinatesMap();
      List<Pair> pairposition = new ArrayList<>(pairplateau.keySet());
      List<Card> cardplateau= new ArrayList<>(pairplateau.values());
      List<Card> cardcoordinate= new ArrayList<>(getcoordinatesMap.keySet());
      List<Pair> cardcoordinateXY= new ArrayList<>(getcoordinatesMap.values());
-     int test=0;
      for (Pair carte : plateau) {
          float x = getXplateau(carte);
          float y = getYplateau(carte);
@@ -487,7 +532,6 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
                 	calcul++;
                 }
          }
-         test++;
      }
      return false;
 }
@@ -517,28 +561,35 @@ public static boolean detectecoinplateau(ArrayList<Pair>plateau,SimpleGameData d
 	}
  
  public static int detectButtonLess( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context, int cardWidth ) {
+	Objects.requireNonNull(context);
+	Objects.requireNonNull(data);
   	int x = 1440; 
   	int y = 50;
   	int cardWidth2 = cardWidth*(80/100);
-		 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-			    //SimpleGameView.refreshScreen(context, data, cardWidth2);
-			    return cardWidth2;
-		 }
-		 return cardWidth2;
- 	}
+  	if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+  		//SimpleGameView.refreshScreen(context, data, cardWidth2);
+  		return cardWidth2;
+  	}
+  	return cardWidth2;
+ }
  
  public static int detectButtonMore( float x2,float y2,  int largeur, int hauteur, SimpleGameData data, ApplicationContext context, int cardWidth ) {
-	  	int x = 1365; 
-	  	int y = 50;
-	  	int cardWidth2 = cardWidth*(1+20/100);
-			 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
-				    //SimpleGameView.refreshScreen(context, data, cardWidth2);
-				    return cardWidth2;
-			 }
-			 return cardWidth;
-	 	}
+	 Objects.requireNonNull(context);
+	 Objects.requireNonNull(data);
+	 
+	 int x = 1365; 
+	 int y = 50;
+	 int cardWidth2 = cardWidth*(1+20/100);
+	 if (x2 >= x && x2 <= x + largeur && y2 >= y && y2 <= y + hauteur) {
+		 //SimpleGameView.refreshScreen(context, data, cardWidth2);
+		 return cardWidth2;
+	 }
+	 return cardWidth;
+ }
 	 
  public static ArrayList<Pair> getXYCardPlateauPair(SimpleGameData data) {
+		Objects.requireNonNull(data);
+		
 	 	var coordinatesMap =data.getcoordinatesMap();
 	    ArrayList<Pair> allCoordinates = new ArrayList<>();
 	    for (Pair pair : coordinatesMap.values()) {
