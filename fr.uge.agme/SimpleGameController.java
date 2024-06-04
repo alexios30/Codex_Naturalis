@@ -125,6 +125,7 @@ public static void inventaire( ApplicationContext context, int height, int width
                 detectButtonLess(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
                 detectButtonMore(location.x, location.y, cardWidth, cardHeight, data, context, widthCardPlateau2);
                 SimpleGameView.refreshScreen(context, data, widthCardPlateau);
+                SimpleGameData.detectewin(context);
                 return;
             }
             if (event != null && event.getAction() == Action.KEY_PRESSED && event.getKey() == KeyboardKey.Q) {
