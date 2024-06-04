@@ -1,12 +1,8 @@
 package fr.uge.game;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.io.IOException;
-import java.nio.file.Files;
 
 public class RessourceCard implements Card {
     private final String cornerTopLeft;
