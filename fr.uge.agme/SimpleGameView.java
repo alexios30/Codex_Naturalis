@@ -104,6 +104,10 @@ public record SimpleGameView(int height, int width) {
 		
 		int turn=SimpleGameData.returnturn();
 		String realturn = String.valueOf(turn);
+		 
+		int score= SimpleGameData.returnScore();
+		String realscore = String.valueOf(score);
+		
 		context.renderFrame(graphics -> {
 			graphics.clearRect(0, 0, (int) width, (int) height);
 			try {
@@ -136,6 +140,7 @@ public record SimpleGameView(int height, int width) {
 			drawString(context, (int) ((width/1.23)), 400, realquill, font);
 			
 			drawString(context, (int) ((width/2)-18*tailleLettre), 100, "Score : ", font);
+			drawString(context, (int) ((width/2)-14*tailleLettre), 100, realscore, font);
 			
 			drawString(context, (int) ((width/2)-18*tailleLettre), 950, "Tour : ", font);
 			drawString(context, (int) ((width/2)-15*tailleLettre), 950, realturn, font);
