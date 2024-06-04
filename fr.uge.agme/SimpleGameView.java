@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.imageio.ImageIO;
@@ -32,6 +30,8 @@ public record SimpleGameView(int height, int width) {
 
 	// ecran de partie
 	public static void intitialisation(ApplicationContext context) {
+    	Objects.requireNonNull(context);
+
 		var screenInfo = context.getScreenInfo();
 		var width = screenInfo.getWidth();
 		var height = screenInfo.getHeight();
@@ -53,6 +53,8 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawBackGround(ApplicationContext context, float width, float height) {
+    	Objects.requireNonNull(context);
+
 		context.renderFrame(graphics -> {
 			try {
 				SimpleGameView.image(graphics, ImageIO.read(Files.newInputStream(Path.of("include" + "/" + "img" + "/" +"Background.png"))),
@@ -65,6 +67,8 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawStartMenu(ApplicationContext context, int height, int width) {
+    	Objects.requireNonNull(context);
+
 		context.renderFrame(graphics -> {
 			graphics.clearRect(0, 0, (int) width, (int) height);
 			try {
@@ -81,6 +85,8 @@ public record SimpleGameView(int height, int width) {
 		});
 	}
 	public static void drawInventaire(ApplicationContext context, int height, int width) {
+    	Objects.requireNonNull(context);
+
 		int animal=SimpleGameData.returnAnimal();
 		String realanimal = String.valueOf(animal);
 		
@@ -148,6 +154,8 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawWinner(ApplicationContext context) {
+    	Objects.requireNonNull(context);
+
 		int score= SimpleGameData.returnScore();
 		String realscore = String.valueOf(score);
 		var screenInfo = context.getScreenInfo();
@@ -171,6 +179,7 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawBackCard(ApplicationContext context, int x, int y , int width, int height, String kingdom) {
+    	Objects.requireNonNull(context);
 		Objects.requireNonNull(kingdom);
 		
 		context.renderFrame(graphics -> {
@@ -188,9 +197,9 @@ public record SimpleGameView(int height, int width) {
 	
 	
 	public static void drawCard(ApplicationContext context, Card card,int x, int y, int width, int height) {
-		/*if (card.isVerso()) {
-			draw(context, card.versoCard(), x, y, width, height);
-		}*/
+    	Objects.requireNonNull(context);
+    	Objects.requireNonNull(card);
+
 		if (card instanceof GoldenCard) {
 			drawGoldenCard(context, ((GoldenCard) card), x, y, width, height); 
 		} else if (card instanceof RessourceCard) {
@@ -201,6 +210,9 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawCorner(ApplicationContext context, Card card, int x, int y, int width, int height) {
+    	Objects.requireNonNull(context);
+    	Objects.requireNonNull(card);
+
 		//ArrayList<String> Corner = card.getCorner();
 		//System.out.println(Corner +"\n");
 		int squareSize = width/7;
@@ -264,12 +276,19 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawString(ApplicationContext context, int x, int y, String string, Font font) {
+    	Objects.requireNonNull(context);
+    	Objects.requireNonNull(string);
+    	Objects.requireNonNull(font);
+
 		context.renderFrame(graphics -> {
 			graphics.setFont(font);
 	        graphics.drawString(string, x, y);
 		});
 	}
 	public static void drawCornerColor(ApplicationContext context, int x, int y, int squareSize, Color color) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(color);
+    	
 		context.renderFrame(graphics -> {
 			graphics.setColor(color);
 			graphics.fill(new Rectangle2D.Float(x, y, squareSize, squareSize));
@@ -279,6 +298,9 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	private static void drawVerso(ApplicationContext context, Card card, int x, int y, int width, int height) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(card);
+    	
 		var card2 = card.versoCard();		
 		drawRessourceCard(context, card2, x, y, width, height);
 		drawCenterRessource(context, card2.getKingdom(), x, y, width, height);
@@ -292,6 +314,9 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawRessourceCard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(card);
+    	
 	    int squareSize = width / 7;  
 	    
 	    if (!card.isVerso()) {
@@ -314,10 +339,6 @@ public record SimpleGameView(int height, int width) {
 			        graphics.setFont(font);
 			        graphics.drawString(lettre, startX, startY);    
 		        }
-	        /*if (card.isVerso()) {
-	        	
-	        	drawCornerColor(context, x, (y + height - squareSize), squareSize, Color.WHITE)
-	        }*/
 		    });
 	    }else {
 	    	drawVerso(context, card, x, y, width, height);
@@ -326,6 +347,9 @@ public record SimpleGameView(int height, int width) {
 
 
 	public static void drawGoldenCard(ApplicationContext context, GoldenCard card,int x, int y, int width, int height) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(card);
+    	
 		int squareSize = width / 7; 
 		if (!card.isVerso()) {
 			var kingdom =  card.getKingdom();
@@ -367,7 +391,9 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void drawStarterCard(ApplicationContext context, StarterCard card,int x, int y, int width, int height) {
-	    int squareSize = width / 7;  
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(card);
+    	
 	    String kingdom = "Starter";
 	    drawBackCard(context, x, y, width, height, kingdom);
 	    drawCorner(context, card, x, y, width, height);	    
@@ -381,6 +407,9 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	private static void drawVersoRessourceStarter(ApplicationContext context, int x, int y, int widthCard, int heightCard, String[] versoResources) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(versoResources);
+    	
 		int squareSize = widthCard/7;
 		int lenght = versoResources.length;
 		int newX = x + widthCard/2 - squareSize*lenght/2;
@@ -406,6 +435,9 @@ public record SimpleGameView(int height, int width) {
 	}
 
 	private static void drawCenterRessource(ApplicationContext context, String kingdom, int x, int y, int widthCard, int heightCard) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(kingdom);
+    	
 		int squareSize = widthCard/7;
 		int newX = x + widthCard/2 - squareSize/2;
 		int newY = y + heightCard/2 - squareSize/2;
@@ -426,6 +458,9 @@ public record SimpleGameView(int height, int width) {
 	}
 
 	public static void drawLeftPack(ApplicationContext context, SimpleGameData data) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(data);
+    	
 		int x = 35;
 		int y=300;
 		int y1 = 500;
@@ -442,7 +477,10 @@ public record SimpleGameView(int height, int width) {
 	
 
 	public static void drawRightPack(ApplicationContext context, SimpleGameData data) {
-		int x = 35;
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(data);
+    	
+		//int x = 35;
 		int y=300;
 		int y1 = 500;
 		int xgolden= 1535;
@@ -457,6 +495,9 @@ public record SimpleGameView(int height, int width) {
 	}
 
 	public static void drawMainPack(ApplicationContext context, SimpleGameData data) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(data);
+    	
 		var mainTable = data.getMainTable();	     
 	    for (int i = 0; i < mainTable.length; i++) {
 	    	drawCard(context, mainTable[i], 200+600*i,875, 350, 150);
@@ -466,6 +507,9 @@ public record SimpleGameView(int height, int width) {
 
 
 	public static void drawPlateau(ApplicationContext context, SimpleGameData data, int widthCard) {
+		Objects.requireNonNull(context);
+    	Objects.requireNonNull(data);
+    	
 		var screenInfo = context.getScreenInfo();
 		var width = screenInfo.getWidth();
 		var height = screenInfo.getHeight();
@@ -474,7 +518,7 @@ public record SimpleGameView(int height, int width) {
 		
 		//System.out.println("widthCard : " + widthCard + ", heightCard : " + heightCard);
 		
-		var plateau = data.getPlateau();
+		var plateau = SimpleGameData.getPlateau();
 		var ordre = data.getOrdre();
 		var coordinateCardplateau = data.getcoordinatesMap();
 		Pair paire1 = new Pair(0,0);	
@@ -485,7 +529,6 @@ public record SimpleGameView(int height, int width) {
 			Card firstCard = plateau.get(paire1);
 			//System.out.println(firstCard);
 			coordinateCardplateau.put(firstCard, new Pair(xFirstCard, yFirstCard));
-			//drawBackCard(context, xFirstCard, yFirstCard, widthCard, heightCard);
 			drawCard(context, firstCard , xFirstCard, yFirstCard, widthCard, heightCard);
 			if (plateau.size()>=2) {
 				for (Map.Entry<Integer, Pair> entry : ordre.entrySet()) {
@@ -509,6 +552,8 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static boolean cardExistsAtCoordinates(HashMap<Card, Pair> coordinatesMap, int x, int y) {
+		Objects.requireNonNull(coordinatesMap);
+		
 	    for (Pair pair : coordinatesMap.values()) {
 	        if (pair.x() == x && pair.y() == y) {
 	            return true; 
@@ -518,6 +563,9 @@ public record SimpleGameView(int height, int width) {
 	}
 	
 	public static void refreshScreen(ApplicationContext context, SimpleGameData data, int widthCard) {
+		Objects.requireNonNull(context);
+		Objects.requireNonNull(data);
+
 		intitialisation(context);
 		drawLeftPack(context, data);
 		drawRightPack(context, data);
@@ -527,6 +575,9 @@ public record SimpleGameView(int height, int width) {
 
 	
 	public static void image(Graphics2D graphics, BufferedImage image, float x, float y, float dimX, float dimY) {
+		Objects.requireNonNull(graphics);
+		Objects.requireNonNull(image);
+		
 		var width = image.getWidth();
 		var height = image.getHeight();
 		var scale = Math.min(dimX / width, dimY / height);
