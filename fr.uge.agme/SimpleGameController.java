@@ -78,9 +78,41 @@ public class SimpleGameController {
 	
 	
 private static void choixStarterCard(ApplicationContext context, SimpleGameData data, int height, int width) {
-		
-		
+	int widthCard = 350;
+	int heightCard = widthCard / 7 *3;
+	int xRecto = width/2 - (30+widthCard);
+	int yRecto = height/2 - heightCard/2;
+	int xVerso = width/2 + 30;
+	int yVerso = height/2 - heightCard/2;
+	Pair firstPair = new Pair(0, 0);
+	var firstCard = SimpleGameData.piocheStarter(data.getStarterPack());
+
+	SimpleGameView.drawCard(context, firstCard, xRecto, yRecto, widthCard, heightCard);
+	firstCard.setVerso(true);
+	SimpleGameView.drawCard(context, firstCard, xVerso, yVerso, widthCard, heightCard);
+	while (true) {
+	    	
+	       	var event = context.pollOrWaitEvent(10);
+	        if (event != null && (event.getAction() == Action.POINTER_DOWN && event.getModifiers().isEmpty())) {
+	        	var location = event.getLocation();
+	        	float x = location.x;
+	        	float y = location.y;
+
+	        	if (x >= xRecto && x <= xRecto + widthCard && y >= yRecto && y <= yRecto + heightCard) {
+	        		firstCard.setVerso(false);
+	        		SimpleGameData.getPlateau().put(firstPair, firstCard);
+	        	    data.getOrdre().put(0, firstPair);
+	        		return;
+	        	}
+	        	else if (x >= xVerso && x <= xVerso + widthCard && y >= yVerso && y <= yVerso + heightCard) {
+	        		SimpleGameData.getPlateau().put(firstPair, firstCard);
+	        	    data.getOrdre().put(0, firstPair);
+	        		return;
+		        }
+	        }	
+		}
 	}
+
 
 public static void startMenu(ApplicationContext context, int height, int width) {
 	SimpleGameView.drawStartMenu(context, height, width);
