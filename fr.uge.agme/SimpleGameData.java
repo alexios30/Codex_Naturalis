@@ -632,7 +632,7 @@ public class SimpleGameData {
     	 int x = pair.getX();
          int y = pair.getY();
 
-         System.out.println("La pair" +pair);
+         //System.out.println("La pair" +pair);
          
          HashMap<Pair, Card> pairPlateau = data.getPlateau();
          List<Pair> pairPositions = new ArrayList<>(pairPlateau.keySet());
