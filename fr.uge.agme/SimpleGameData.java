@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import fr.umlv.zen5.ApplicationContext;
+
 public class SimpleGameData {
 
 	private RessourceCard[] ressourceTable; 
@@ -636,7 +638,12 @@ public class SimpleGameData {
     }
     public static void addscoring(int chiffre) {
     	score+=chiffre;
-    	
+
+    }
+    public static void detectewin(ApplicationContext context) {
+    	if(score>=20) {
+    		SimpleGameView.drawWinner(context);
+    	}
     }
     
 	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
