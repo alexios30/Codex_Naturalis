@@ -1,6 +1,7 @@
 package fr.uge.game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface Card {
 	ArrayList<String> getCorner();
@@ -23,4 +24,5 @@ public interface Card {
 	
 	int getrealscoring();
 
+	HashMap<String, Integer>  returncost();
 }
