@@ -1,4 +1,4 @@
-package fr.uge.game;
+ package fr.uge.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,6 +106,31 @@ public class GoldenCard implements Card {
         list.add(cornerTopLeft);
         list.add(cornerTopRight);
         return list;
+    }
+    public int getrealscoring() {
+        char type=gettypescoring();
+        int resultat=0;
+         String lettre = Character.toString(type);
+         
+         char chiffre= getScoring();
+         String chiffre1 = Character.toString(chiffre);
+         int convertedNumber = Integer.parseInt(chiffre1);
+
+         if(lettre.equals("D")) {
+             resultat=convertedNumber;
+         }if(lettre.equals("C")) {
+             resultat=convertedNumber;
+         }if(lettre.equals("Q")) {
+             int quill=SimpleGameData.returnQuill();
+             resultat=convertedNumber*quill;
+         }if(lettre.equals("M")) {
+             int manuscript=SimpleGameData.returnManuscript();
+             resultat=convertedNumber*manuscript;
+         }if(lettre.equals("I")) {
+             int inkwell= SimpleGameData.returnInkwell();
+             resultat=convertedNumber*inkwell;
+         }
+         return resultat;
     }
 
 }
