@@ -147,6 +147,28 @@ public record SimpleGameView(int height, int width) {
 		});
 	}
 	
+	public static void drawWinner(ApplicationContext context) {
+		int score= SimpleGameData.returnScore();
+		String realscore = String.valueOf(score);
+		var screenInfo = context.getScreenInfo();
+		var width = screenInfo.getWidth();
+		var height = screenInfo.getHeight();
+		
+		context.renderFrame(graphics -> {
+			try {
+				SimpleGameView.image(graphics, ImageIO.read(Files.newInputStream(Path.of("include" + "/" + "img" + "/" +"Background.png"))),
+						0, 0, width, height);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int tailleLettre = 50;
+	        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+	        graphics.setColor(Color.WHITE);
+			drawString(context, (int) ((width/2)-11*tailleLettre), 100, "Vous avez gagné avec un total de", font);
+			drawString(context, (int) ((width/1.50)), 100, realscore, font);
+		});
+	}
 	
 	public static void drawBackCard(ApplicationContext context, int x, int y , int width, int height, String kingdom) {
 		Objects.requireNonNull(kingdom);
