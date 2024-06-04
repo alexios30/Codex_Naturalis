@@ -2,6 +2,7 @@ package fr.uge.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -164,5 +165,9 @@ public class StarterCard implements Card {
             ", versoResources=" + Arrays.toString(versoResources) +
             ", verso=" + verso +
             '}';
+    }
+    public HashMap<String, Integer> returncost(){
+		return null;
+    	
     }
 }
