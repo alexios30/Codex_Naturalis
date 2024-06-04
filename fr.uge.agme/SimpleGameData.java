@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import fr.umlv.zen5.ApplicationContext;
@@ -109,7 +109,9 @@ public class SimpleGameData {
 
 	// plus utiliser
 	public static ArrayList<GoldenCard> createGoldenCard(Path src) throws IOException {
-        try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
+		Objects.requireNonNull(src);
+
+		try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
             String line;
             ArrayList<GoldenCard> golden = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
@@ -122,6 +124,8 @@ public class SimpleGameData {
     
 	// plus utiliser
     public static ArrayList<RessourceCard> createRessourceCard(Path src) throws IOException {
+    	Objects.requireNonNull(src);
+    	
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
             String line;
             ArrayList<RessourceCard> ressource = new ArrayList<>();
@@ -136,6 +140,8 @@ public class SimpleGameData {
 
     
     public void createCards(Path src) throws IOException {
+    	Objects.requireNonNull(src);
+    	
         try (var reader = Files.newBufferedReader(src, StandardCharsets.UTF_8)) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -152,6 +158,8 @@ public class SimpleGameData {
 	
 
 	public static RessourceCard addRessourceCard(String line) {
+		Objects.requireNonNull(line);
+		
         String[] parts = line.split(" ");
 
         String cornerTopLeft = readCorner(parts[2]);
@@ -173,6 +181,9 @@ public class SimpleGameData {
     }
 	
 	public static GoldenCard addGoldenCard(String line) {
+		Objects.requireNonNull(line);
+
+		
         String[] parts = line.split(" ");
         HashMap<String, Integer> cost = new HashMap<>();
         cost.put("Animal", 0);
@@ -194,11 +205,12 @@ public class SimpleGameData {
             String mot = parts[i];
             cost.put(mot, cost.getOrDefault(mot, 0) + 1);
         }
-
         return new GoldenCard(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight, kingdom, cost, typescoring, scoring, false);
     }
 	
 	public static StarterCard addStarterCard(String line) {
+		Objects.requireNonNull(line);
+
         String[] parts = line.split(" ");        	
         	
         String rectoCornerTopLeft = readCorner(parts[2]);
@@ -224,6 +236,8 @@ public class SimpleGameData {
 	}
     
     public static String readCorner(String corner) {
+		Objects.requireNonNull(corner);
+
         char firstChar = corner.charAt(0);
         if (firstChar == 'A' || firstChar == 'R') {
             return corner.substring(2);
@@ -232,12 +246,16 @@ public class SimpleGameData {
     }
 	
 	public static ArrayList<RessourceCard> melangeRessource(ArrayList<RessourceCard> packRessource) {
+		Objects.requireNonNull(packRessource);
+
         Random rand = new Random();
         Collections.shuffle(packRessource, rand);
         return packRessource;
    }
 
    public static RessourceCard piocheRessource(ArrayList<RessourceCard> packRessource) {
+		Objects.requireNonNull(packRessource);
+
 	   int size = packRessource.size();
 	   if(size==0) {
 		   System.out.println("Partie fini");
@@ -248,12 +266,16 @@ public class SimpleGameData {
    }
    
    public static ArrayList<GoldenCard> melangeGolden(ArrayList<GoldenCard> packGolden) {
+		Objects.requireNonNull(packGolden);
+
         Random rand = new Random();
         Collections.shuffle(packGolden, rand);
         return packGolden;
    }
 
    public static GoldenCard piocheGolden(ArrayList<GoldenCard> packGolden) {
+		Objects.requireNonNull(packGolden);
+
 	   int size = packGolden.size();
 	   if(size==0) {
 		   System.out.println("Partie fini");
@@ -264,12 +286,16 @@ public class SimpleGameData {
    }
    
    public static ArrayList<StarterCard> melangeStarter(ArrayList<StarterCard> packStarter) {
+		Objects.requireNonNull(packStarter);
+
        Random rand = new Random();
        Collections.shuffle(packStarter, rand);
        return packStarter;
   }
    
    public static StarterCard piocheStarter(ArrayList<StarterCard> packStarter) {
+		Objects.requireNonNull(packStarter);
+
 	   int size = packStarter.size();
 	   if(size==0) {
 		   System.out.println("Partie fini");
@@ -391,6 +417,8 @@ public class SimpleGameData {
 	}
 	
 	public void addCardToMainTable(Card card) {
+		Objects.requireNonNull(card);
+
 	    Card[] newMainTable = new Card[mainTable.length + 1];
 	    System.arraycopy(mainTable, 0, newMainTable, 0, mainTable.length);
 	    newMainTable[mainTable.length] = card;
@@ -398,6 +426,8 @@ public class SimpleGameData {
 	}
 	
 	public void addCardToRessourceTable(RessourceCard card, int index) {
+		Objects.requireNonNull(card);
+
 	    if (index >= 0 && index <= ressourceTable.length) {
 	        RessourceCard[] newRessourceTable = new RessourceCard[ressourceTable.length + 1];
 	        System.arraycopy(ressourceTable, 0, newRessourceTable, 0, index);
@@ -407,6 +437,8 @@ public class SimpleGameData {
 	    }
 	}
 	public void addCardToGoldenTable(GoldenCard card, int index) {
+		Objects.requireNonNull(card);
+
 	    if (index >= 0 && index <= goldenTable.length) {
 	        GoldenCard[] newGoldenCard = new GoldenCard[goldenTable.length + 1];
 	        System.arraycopy(goldenTable, 0, newGoldenCard, 0, index);
@@ -418,6 +450,8 @@ public class SimpleGameData {
 
 
 	public static void displayMainTable(Card[] mainTable) {
+		Objects.requireNonNull(mainTable);
+
 	    //System.out.println("Contenu de mainTable :");
 	    for (Card card : mainTable) {
 	        //System.out.println(card);
@@ -425,6 +459,9 @@ public class SimpleGameData {
 	}
 
     public static void BottomRight(Card card, Pair pair) {
+		Objects.requireNonNull(card);
+		Objects.requireNonNull(pair);
+
         Pair newPair;
         int x = pair.getX();
         int y = pair.getY();
@@ -440,15 +477,18 @@ public class SimpleGameData {
     }
     
     public static void TopLeft(Card card,Pair pair) {
-    	  Pair newPair;
-          int x = pair.getX();
-          int y = pair.getY();
-          newPair = new Pair(x - 1, y - 1);
-          if (card.isVerso()) {
-  			card = card.versoCard();
-  			card.setVerso(true);
-          }
-
+    	Objects.requireNonNull(card);
+		Objects.requireNonNull(pair);
+		
+		Pair newPair;
+		int x = pair.getX();
+		int y = pair.getY();
+		newPair = new Pair(x - 1, y - 1);
+		if (card.isVerso()) {
+			card = card.versoCard();
+			card.setVerso(true);
+		}
+		
           
         numOrdre++;
         plateau.put(newPair, card);
@@ -456,6 +496,9 @@ public class SimpleGameData {
     }
     
     public static void BottomLeft(Card card,Pair pair) {
+    	Objects.requireNonNull(card);
+		Objects.requireNonNull(pair);
+		
         Pair newPair;
         int x = pair.getX();
         int y = pair.getY();
@@ -471,6 +514,9 @@ public class SimpleGameData {
     }
 
     public static void TopRight(Card card,Pair pair) {
+    	Objects.requireNonNull(card);
+		Objects.requireNonNull(pair);
+		
         Pair newPair;
         int x = pair.getX();
         int y = pair.getY();
@@ -489,6 +535,7 @@ public class SimpleGameData {
 	    Card[] cards = values.toArray(new Card[0]);
 	    return cards;
 	}
+	
 	public static int Score() {
 		int score =0;
 		 HashMap<Pair, Card> pairplateau = getPlateau();
@@ -500,12 +547,16 @@ public class SimpleGameData {
 	}
 
 	public static void getCardForInventaire(Card card) {
+		Objects.requireNonNull(card);
+
 		ajouterInventaire(card.cornerBottomLeft());
 		ajouterInventaire(card.cornerBottomRight());
 		ajouterInventaire(card.cornerTopLeft());
 		ajouterInventaire(card.cornerTopRight());
 	}
 	public static void getstartercardverso(StarterCard card) {
+		Objects.requireNonNull(card);
+	
 		ajouterInventaire(card.getVersoCornerTopLeft());
 		ajouterInventaire(card.getVersoCornerBottomLeft());
 		ajouterInventaire(card.getVersoCornerTopRight());
@@ -516,6 +567,7 @@ public class SimpleGameData {
         }
 	}
 	public static void ajouterInventaire(String mot) {
+		Objects.requireNonNull(mot);
 		if(mot.equals("Animal")) {
 			nbAnimal++;
 		}if(mot.equals("Plant")) {
@@ -564,6 +616,8 @@ public class SimpleGameData {
 	}
 	
 	public static void VerificationSuperposition(String mot) {
+		Objects.requireNonNull(mot);
+		
 		if(mot.equals("Animal")) {
 			nbAnimal--;
 			if (nbAnimal<0) {
@@ -603,11 +657,14 @@ public class SimpleGameData {
 	}
 	
     public static Pair verifautourcard(SimpleGameData data, Pair pair) {
+		Objects.requireNonNull(data);
+		Objects.requireNonNull(pair);
+
         int x = pair.getX();
         int y = pair.getY();
 
         
-        HashMap<Pair, Card> pairPlateau = data.getPlateau();
+        HashMap<Pair, Card> pairPlateau = SimpleGameData.getPlateau();
         List<Pair> pairPositions = new ArrayList<>(pairPlateau.keySet());
         //System.out.println("La pairposition" +pairPositions);
         
@@ -629,12 +686,15 @@ public class SimpleGameData {
     }
 	
     public static void verifiecarteadjcente(SimpleGameData data, Pair pair) {
+    	Objects.requireNonNull(data);
+		Objects.requireNonNull(pair);
+		
     	 int x = pair.getX();
          int y = pair.getY();
 
          //System.out.println("La pair" +pair);
          
-         HashMap<Pair, Card> pairPlateau = data.getPlateau();
+         HashMap<Pair, Card> pairPlateau = SimpleGameData.getPlateau();
          List<Pair> pairPositions = new ArrayList<>(pairPlateau.keySet());
          //System.out.println("La pairposition" +pairPositions);
          
@@ -665,12 +725,14 @@ public class SimpleGameData {
 
     }
     public static void detectewin(ApplicationContext context) {
+    	Objects.requireNonNull(context);
     	if(score>=20) {
     		SimpleGameView.drawWinner(context);
     	}
     }
     
     public static boolean verifieCost(Card card) {
+    	Objects.requireNonNull(card);
 
         HashMap<String, Integer> cost = card.returncost();
         boolean hasAllResources = true;
@@ -704,4 +766,3 @@ public class SimpleGameData {
     }
     
 }
-	//public static RessourceCard firstCard = new RessourceCard("animal", "void", "animal", "void", null, 2); 
