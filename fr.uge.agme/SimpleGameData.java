@@ -429,6 +429,10 @@ public class SimpleGameData {
         int x = pair.getX();
         int y = pair.getY();
         newPair = new Pair(x + 1, y + 1);
+        if (card.isVerso()) {
+			card = card.versoCard();
+			card.setVerso(true);
+		}
 
         numOrdre++;
         plateau.put(newPair, card);
@@ -440,6 +444,10 @@ public class SimpleGameData {
           int x = pair.getX();
           int y = pair.getY();
           newPair = new Pair(x - 1, y - 1);
+          if (card.isVerso()) {
+  			card = card.versoCard();
+  			card.setVerso(true);
+          }
 
           
         numOrdre++;
@@ -452,6 +460,10 @@ public class SimpleGameData {
         int x = pair.getX();
         int y = pair.getY();
         newPair = new Pair(x - 1, y + 1);
+        if (card.isVerso()) {
+			card = card.versoCard();
+			card.setVerso(true);
+		}
 
         numOrdre++;
         plateau.put(newPair, card);
@@ -463,6 +475,10 @@ public class SimpleGameData {
         int x = pair.getX();
         int y = pair.getY();
         newPair = new Pair(x + 1, y - 1);
+        if (card.isVerso()) {
+			card = card.versoCard();
+			card.setVerso(true);
+		}
 
         numOrdre++;
         plateau.put(newPair, card);
