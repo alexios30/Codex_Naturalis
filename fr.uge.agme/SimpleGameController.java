@@ -324,34 +324,59 @@ public static void inventaire( ApplicationContext context, int height, int width
 
                 				if(!hautgauche.equals("Invisible")) {
                 					if (detectleftTopcoin(x, y, largeur, hauteur, x2, y2)) {
+                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+                						if(newpair!=null) {
+                							SimpleGameData.verifiecarteadjcente(data,newpair);
+                						}
+                						
+                						int score =card.getrealscoring();
+                						SimpleGameData.addscoring(score);
+                						
                 						SimpleGameData.TopLeft(card,coordoneecarte);
                 						SimpleGameData.getCardForInventaire(card);
                 						SimpleGameData.VerificationSuperposition(hautgauche);
-                						SimpleGameData.verifautourcard(data,coordoneecarte);
                 						return true;
                     	                }
                 				}if(!basgauche.equals("Invisible")) {
                 					if(detectleftBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+                						if(newpair!=null) {
+                							SimpleGameData.verifiecarteadjcente(data,newpair);
+                						}
+                						int score =card.getrealscoring();
+                						SimpleGameData.addscoring(score);
+                						
                     	                SimpleGameData.BottomLeft(card,coordoneecarte);
                     	                SimpleGameData.getCardForInventaire(card);
                     	                SimpleGameData.VerificationSuperposition(basgauche);
-                    	                SimpleGameData.verifautourcard(data,coordoneecarte);
                     	                return true;
                     	            }
                 				}if(!hautdroite.equals("Invisible")) {
                 					if(detectrightTopcoin(x, y, largeur, hauteur, x2, y2)) {
+                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+                						if(newpair!=null) {
+                							SimpleGameData.verifiecarteadjcente(data,newpair);
+                						}
+                						int score =card.getrealscoring();
+                						SimpleGameData.addscoring(score);
+                						
                    	                  SimpleGameData.TopRight(card,coordoneecarte);
 	                   	              SimpleGameData.getCardForInventaire(card);
 	                   	              SimpleGameData.VerificationSuperposition(hautdroite);
-	                   	           SimpleGameData.verifautourcard(data,coordoneecarte);
 	                   	              return true;
                    	            }
                 				}if(!basdroite.equals("Invisible")) {
                     				if(detectrightBottomcoin(x, y, largeur, hauteur, x2, y2)) {
+                						Pair newpair =SimpleGameData.verifautourcard(data,coordoneecarte);
+                						if(newpair!=null) {
+                							SimpleGameData.verifiecarteadjcente(data,newpair);
+                						}
+                						int score =card.getrealscoring();
+                						SimpleGameData.addscoring(score);
+                						
                    	                 SimpleGameData.BottomRight(card,coordoneecarte);
                    	                 SimpleGameData.getCardForInventaire(card);
                    	                 SimpleGameData.VerificationSuperposition(basdroite);
-                   	              SimpleGameData.verifautourcard(data,coordoneecarte);
                    	                 return true;
                    	            }
                 				}
