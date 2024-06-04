@@ -278,70 +278,92 @@ public record SimpleGameView(int height, int width) {
 		});
 	}
 	
+	private static void drawVerso(ApplicationContext context, Card card, int x, int y, int width, int height) {
+		var card2 = card.versoCard();		
+		drawRessourceCard(context, card2, x, y, width, height);
+		drawCenterRessource(context, card2.getKingdom(), x, y, width, height);
+		
+		if (card instanceof GoldenCard) {
+			context.renderFrame(graphics -> {	
+		        graphics.setColor(Color.YELLOW);
+		        graphics.drawRect(x, y, width, height);
+			});
+		}		
+	}
+	
 	public static void drawRessourceCard(ApplicationContext context, RessourceCard card,int x, int y, int width, int height) {
-		var scoring = card.getScoring();
 	    int squareSize = width / 7;  
 	    
-	    drawBackCard(context, x, y, width, height, card.getKingdom());
-	    drawCorner(context, card, x, y, width, height);	    
-	    context.renderFrame(graphics -> {
-	    	graphics.setColor(Color.BLACK);
-	        graphics.drawRect(x, y, width, height);
-	        if (scoring.substring(2).equals("1")) {
-		        String lettre = " S : 1";
-		        int tailleLettre = (int) (width/11.667);
-		        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
-	
-		  
-		        int startX = x + squareSize * 3 ; 
-		        int startY = y + tailleLettre;
-		        graphics.setFont(font);
-		        graphics.drawString(lettre, startX, startY);    
-	        }
+	    if (!card.isVerso()) {
+	    	var scoring = card.getScoring();
+		    
+	    
+		    drawBackCard(context, x, y, width, height, card.getKingdom());
+		    drawCorner(context, card, x, y, width, height);	    
+		    context.renderFrame(graphics -> {
+		    	graphics.setColor(Color.BLACK);
+		        graphics.drawRect(x, y, width, height);
+		        if (scoring.substring(2).equals("1")) {
+			        String lettre = " S : 1";
+			        int tailleLettre = (int) (width/11.667);
+			        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+		
+			  
+			        int startX = x + squareSize * 3 ; 
+			        int startY = y + tailleLettre;
+			        graphics.setFont(font);
+			        graphics.drawString(lettre, startX, startY);    
+		        }
 	        /*if (card.isVerso()) {
 	        	
 	        	drawCornerColor(context, x, (y + height - squareSize), squareSize, Color.WHITE)
 	        }*/
-	    });
+		    });
+	    }else {
+	    	drawVerso(context, card, x, y, width, height);
+	    }
 	}
+
 
 	public static void drawGoldenCard(ApplicationContext context, GoldenCard card,int x, int y, int width, int height) {
 		int squareSize = width / 7; 
-		var kingdom =  card.getKingdom();
-		var cost = card.getCost();
-		var typescoring = card.gettypescoring();
-		var scoring = card.getScoring();
-		
-		drawBackCard(context, x, y, width, height, kingdom);
-	    drawCorner(context, card, x, y, width, height);	  
-	    
-	    int tailleLettre = (int) (width/11.667);
-        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
-	    
-	    
-	    //System.out.println(cost);
-	    String strCost = card.generateCost(cost);
-	    context.renderFrame(graphics -> {	
-	    	// dessin du coûts de la carte
-	    	int startX = (int) (x + squareSize * 3); 
-	        int startY = y + tailleLettre * 5;
-	        graphics.setFont(font);
-	        graphics.drawString(strCost, startX, startY);
-	     
-	        // dessin du score de la carte
-			String lettre = Character.toString(typescoring);
-			String lettre1 = Character.toString(scoring);
-			String fusion = "Score:" + lettre + lettre1;
+		if (!card.isVerso()) {
+			var kingdom =  card.getKingdom();
+			var cost = card.getCost();
+			var typescoring = card.gettypescoring();
+			var scoring = card.getScoring();
 			
-			int startX2 = (int) (x + squareSize * 2.5); 
-	        int startY1 = y + tailleLettre ;
-	        graphics.setFont(font);
-	        graphics.drawString(fusion, startX2, startY1);
-	        graphics.setColor(Color.YELLOW);
-	        graphics.drawRect(x, y, width, height);
-		});
-	    
-	    
+			drawBackCard(context, x, y, width, height, kingdom);
+		    drawCorner(context, card, x, y, width, height);	  
+		    
+		    int tailleLettre = (int) (width/11.667);
+	        Font font = new Font("Arial", Font.PLAIN, tailleLettre);
+		    
+		    
+		    //System.out.println(cost);
+		    String strCost = card.generateCost(cost);
+		    context.renderFrame(graphics -> {	
+		    	// dessin du coûts de la carte
+		    	int startX = (int) (x + squareSize * 3); 
+		        int startY = y + tailleLettre * 5;
+		        graphics.setFont(font);
+		        graphics.drawString(strCost, startX, startY);
+		     
+		        // dessin du score de la carte
+				String lettre = Character.toString(typescoring);
+				String lettre1 = Character.toString(scoring);
+				String fusion = "Score:" + lettre + lettre1;
+				
+				int startX2 = (int) (x + squareSize * 2.5); 
+		        int startY1 = y + tailleLettre ;
+		        graphics.setFont(font);
+		        graphics.drawString(fusion, startX2, startY1);
+		        graphics.setColor(Color.YELLOW);
+		        graphics.drawRect(x, y, width, height);
+			});
+		}else {
+	    	drawVerso(context, card, x, y, width, height);
+	    }
 	}
 	
 	public static void drawStarterCard(ApplicationContext context, StarterCard card,int x, int y, int width, int height) {
@@ -383,7 +405,7 @@ public record SimpleGameView(int height, int width) {
 		
 	}
 
-	private static void drawRessourceVerso(ApplicationContext context, String kingdom, int x, int y, int widthCard, int heightCard) {
+	private static void drawCenterRessource(ApplicationContext context, String kingdom, int x, int y, int widthCard, int heightCard) {
 		int squareSize = widthCard/7;
 		int newX = x + widthCard/2 - squareSize/2;
 		int newY = y + heightCard/2 - squareSize/2;
@@ -411,8 +433,7 @@ public record SimpleGameView(int height, int width) {
 		var carteBottom = data.getRessourceTable()[2];
 		var cartePile = data.getRessourceTable()[0];		
 		
-		drawRessourceCard(context, cartePile.versoCard(), 35,100, 350, 150);
-		drawRessourceVerso(context, cartePile.getKingdom(), 35, 100, 350, 150);
+		drawVerso(context, cartePile, 35,100, 350, 150);
 		drawRessourceCard(context, carteTop, x, y, 350, 150);
 		drawRessourceCard(context, carteBottom, x, y1, 350, 150);
 	
@@ -430,8 +451,7 @@ public record SimpleGameView(int height, int width) {
 		var carteBottom = data.getGoldenTable()[2];
 		var cartePile = data.getGoldenTable()[0];
 		
-		drawRessourceCard(context, cartePile.versoCard(), xgolden, 100, 350, 150);
-		drawRessourceVerso(context, cartePile.getKingdom(), xgolden, 100, 350, 150);
+		drawVerso(context, cartePile, xgolden, 100, 350, 150);
 		drawGoldenCard(context, carteTop, xgolden, y, 350, 150);
 		drawGoldenCard(context, carteBottom, xgolden, y1, 350, 150);
 	}
