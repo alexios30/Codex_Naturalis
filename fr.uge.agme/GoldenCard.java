@@ -29,7 +29,7 @@ public class GoldenCard implements Card {
     }
 
     public RessourceCard versoCard() {
-        return new RessourceCard("Empty", "Empty", "Empty", "Empty", kingdom, "None", 1, true);
+        return new RessourceCard("Empty", "Empty", "Empty", "Empty", kingdom, "None", 1, false);
     }
 
 
